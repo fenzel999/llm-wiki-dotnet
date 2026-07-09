@@ -43,8 +43,8 @@ updated: 2026-07-09
 - [异步编程](concepts/async-await.md) — Task 模型与同步上下文
 - [泛型](concepts/generics.md) — 类型参数与约束
 - [ValueTask](concepts/value-task.md) — 热路径异步零分配
-- [源生成器](concepts/source-generators.md) — 编译期代码生成
-- [Result 类型](concepts/result-type.md) — 显式错误而非异常
+  - [源生成器](concepts/source-generators.md) — 编译期代码生成
+
 
 ### 工程规范
 - [命名](standards/naming.md) — 类型/成员/变量命名约定

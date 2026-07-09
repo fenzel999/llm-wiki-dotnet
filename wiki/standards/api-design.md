@@ -14,7 +14,7 @@ updated: 2026-07-09
 - **参数校验守卫**：公共 API 入口立即校验参数，抛具体异常（见 [异常处理](../standards/exception-handling.md)）。
 - **最小可见性**：默认 `private`/`internal`，仅暴露必要的 `public`，避免内部类型外泄。
 - **不可变输入/输出**：方法接收与返回的类型尽量不可变（`record`/`readonly struct`/`IReadOnlyList`），避免调用方修改内部状态。
-- **一致返回类型**：同类操作返回一致的类型与包装（如统一 `Result<T>` 或统一抛出），不要时而返回值、时而返回 `null`。
+- **一致返回类型**：同类操作返回一致的类型与包装（如统一 `Results<T>`/`TypedResults` 或统一抛出），不要时而返回值、时而返回 `null`。
 - **版本演进**：新增功能用新增方法/重载，保持向后兼容（见 [.NET 版本演进](../comparisons/net-evolution.md)），不要破坏已有签名。
 
 ## 正确做法

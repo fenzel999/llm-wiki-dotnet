@@ -15,6 +15,12 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-09 · 去掉自定义 Result<T>（与最小 API Results<T> 重复）
+- 删除 `concepts/result-type.md`：自造 `Result<T>` 与最小 API 内建 `Results<T>`/`TypedResults` 语义重复。
+- `minimal-api-organization.md` 新增「类型化返回」小节，统一改用 `Results<T>`/`TypedResults` 表达多响应；示例中去除对自定义 Result 的依赖。
+- 同步清理引用：`index.md`、`思维导图.md`、`overview.md`、`swallowing-exceptions.md`（`标准/null-handling.md`、`api-design.md` 改为推荐 `Results<T>`/`TypedResults`）。
+- 影响：concepts/result-type.md（删除）、patterns/minimal-api-organization.md、index.md、思维导图.md、overview.md、anti-patterns/swallowing-exceptions.md、standards/*。
+
 ## 2026-07-09 · 整理：去 3D 图谱、合并分类、移出 Result/仓储
 - 删除 3D 关系图：移除 `知识图谱3D.md`、`graph.json`、`gen_graph.py`；导航与首页不再含 3D 入口，仅保留可导航思维导图。
 - 合并分类为 4 个顶层：`.NET 10` / `语言与规范`（概念+规范）/ `实践`（模式+反模式+对比）/ `治理`，思维导图与索引同步重构。

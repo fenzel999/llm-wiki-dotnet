@@ -65,6 +65,9 @@ markdown_extensions:
 extra:
   generator: false
 
+extra_css:
+  - extra/readable.css
+
 nav:
   - 首页: index.md
   - 全景: overview.md

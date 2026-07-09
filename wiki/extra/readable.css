@@ -1,0 +1,91 @@
+/* ============================================================
+   阅读舒适度增强（readable.css）
+   目标：更大正文、舒适行距、限制行宽、优化标题与代码块。
+   仅覆盖 Material 主题变量与少量布局，不影响功能。
+   ============================================================ */
+
+:root {
+  /* 正文字号与行距：默认偏小，放大到更舒适 */
+  --md-text-font-size: 1.0rem;          /* ~16px */
+  --md-code-font-size: 0.875rem;        /* 代码略小于正文，避免喧宾夺主 */
+  --md-line-height: 1.75;               /* 宽松行距，长文不拥挤 */
+
+  /* 中英文混排更顺眼的字体栈 */
+  --md-text-font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+                  -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --md-code-font: "JetBrains Mono", "Fira Code", "Cascadia Code",
+                 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* 正文内容限制宽度，提升单行可读长度（45–90 字符为宜） */
+.md-content__inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* 标题更舒展的间距 */
+.md-typeset h1 { font-weight: 700; letter-spacing: .5px; margin-top: .4em; }
+.md-typeset h2 {
+  margin-top: 1.8em;
+  padding-bottom: .3em;
+  border-bottom: 1px solid var(--md-divider-color);
+}
+.md-typeset h3 { margin-top: 1.4em; font-weight: 600; }
+.md-typeset h4 { margin-top: 1.2em; font-weight: 600; }
+
+/* 段落与列表更透气 */
+.md-typeset p { margin: 1em 0; }
+.md-typeset li { margin: .35em 0; }
+.md-typeset ul, .md-typeset ol { margin: .6em 0; }
+
+/* 行内代码：柔和底色，避免刺眼高对比 */
+.md-typeset code {
+  border-radius: 4px;
+  padding: .1em .4em;
+}
+
+/* 代码块：更大内边距、圆角、轻微阴影 */
+.md-typeset pre {
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+.md-typeset pre > code {
+  padding: 1em 1.1em;
+  line-height: 1.6;
+}
+
+/* 表格：行高更舒适 */
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: .6em .8em;
+}
+
+/* 链接：更清晰的下划线，悬停高亮 */
+.md-typeset a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.md-typeset a:hover { text-decoration-thickness: 2px; }
+
+/* 引用块：更柔和 */
+.md-typeset blockquote {
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: var(--md-code-bg-color);
+  border-radius: 0 6px 6px 0;
+  padding: .4em 1em;
+  color: var(--md-typeset-color);
+}
+
+/* 提示框（admonition）圆角更柔和 */
+.md-typeset .admonition {
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+/* 思维导图容器：同样限制宽度并居中 */
+.mm { max-width: 860px; margin: 12px auto 24px; }
+
+@media screen and (max-width: 960px) {
+  .md-content__inner { max-width: 100%; }
+}

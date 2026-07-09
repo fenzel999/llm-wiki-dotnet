@@ -79,4 +79,5 @@ await chart.SetValueAsync("title", "新标题");          // 写入属性
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[.NET 10 主题地图](../overview.md)
+- 官方文档：[What's new in ASP.NET Core 10 (Blazor JS interop)](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0)
 

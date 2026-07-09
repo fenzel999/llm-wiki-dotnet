@@ -63,4 +63,5 @@ b.Entity<Customer>()
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[命名查询筛选器](named-query-filters.md)
+- 官方文档：[What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew)
 

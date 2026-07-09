@@ -54,4 +54,5 @@ static long SumEven(ReadOnlySpan<int> data)
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[隐式 Span 转换](../csharp/implicit-span-conversions.md)、[原生 AOT](../native-aot.md)
+- 官方文档：[.NET runtime compilation config (PGO)](https://learn.microsoft.com/dotnet/core/runtime-config/compilation)
 

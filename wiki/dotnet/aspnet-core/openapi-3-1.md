@@ -67,4 +67,5 @@ builder.Services.AddOpenApi(options =>
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[最小 API 内置验证](minimal-api-validation.md)
+- 官方文档：[What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0)
 

@@ -86,3 +86,4 @@ public class CreateUser : IValidatableObject
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[原生 OpenAPI 3.1](openapi-3-1.md)
+- 官方文档：[What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0)

@@ -61,5 +61,6 @@ Console.WriteLine("done".Humanize());
 
 - [源汇总 sources/README.md](../sources/README.md)
 - 相关：[.NET 10 主题地图](overview.md)
+- 官方文档：[File-based apps (.NET)](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps)
 
 

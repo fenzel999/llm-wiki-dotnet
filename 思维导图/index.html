@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#css-js" class="md-skip">
           跳转至
         </a>
       
@@ -3366,126 +3366,173 @@
   
 
 
-<h1 id="_1">思维导图（可导航）<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>下方为全库思维导图（由 markmap 在浏览器中渲染，依赖已随仓库本地化，无需联网）。<strong>点击任意节点可跳转到对应页面</strong>。
-默认展开到一级分组，点击分组可展开/收起。</p>
-<div id="mm" style="height: 82vh; border: 1px solid #2a2f3a; border-radius: 8px; background:#0b0e14;"></div>
+<h1 id="css-js">思维导图（自写 CSS + JS，可导航）<a class="headerlink" href="#css-js" title="Permanent link">&para;</a></h1>
+<p>下方为全库思维导图，<strong>纯 CSS + 原生 JS 实现，不依赖任何第三方库/CDN</strong>。
+点击分类前的 <code>▸</code> 展开/收起；<strong>点击叶子节点跳转到对应页面</strong>。默认展开到一级分组。</p>
+<div id="mm" class="mm"></div>
 
-<script src="assets/vendor/d3.min.js"></script>
-<script src="assets/vendor/markmap-lib.min.js"></script>
-<script src="assets/vendor/markmap-view.min.js"></script>
-
-<script type="text/markmap" id="mm-md">
-# .NET LLM Wiki
-
-## 🟦 .NET 10
-- [.NET 总览](dotnet/overview.md)
-- [文件型应用](dotnet/file-based-apps.md)
-- [原生 AOT](dotnet/native-aot.md)
-- C#
-  - [扩展成员](dotnet/csharp/extension-members.md)
-  - [field 关键字](dotnet/csharp/field-keyword.md)
-  - [空条件赋值](dotnet/csharp/null-conditional-assignment.md)
-  - [nameof 非绑定泛型](dotnet/csharp/nameof-unbound-generics.md)
-  - [隐式 Span 转换](dotnet/csharp/implicit-span-conversions.md)
-  - [lambda 参数修饰符](dotnet/csharp/lambda-parameter-modifiers.md)
-- ASP.NET Core
-  - [最小 API 验证](dotnet/aspnet-core/minimal-api-validation.md)
-  - [OpenAPI 3.1](dotnet/aspnet-core/openapi-3-1.md)
-- EF Core
-  - [复杂类型与 JSON](dotnet/ef-core/complex-types-json.md)
-  - [命名查询筛选](dotnet/ef-core/named-query-filters.md)
-  - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md)
-- [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md)
-- [Blazor JS 改进](dotnet/blazor/javascript-improvements.md)
-- 版本对照
-  - [.NET 8 / C# 12](dotnet/versions/net8.md)
-  - [.NET 9 / C# 13](dotnet/versions/net9.md)
-  - [.NET 版本演进](comparisons/net-evolution.md)
-
-## 🟩 语言与规范
-- 语言概念
-  - [可空引用类型](concepts/nullable-reference-types.md)
-  - [记录 record](concepts/records.md)
-  - [模式匹配](concepts/pattern-matching.md)
-  - [Span 与 Memory](concepts/span-memory.md)
-  - [依赖注入](concepts/dependency-injection.md)
-  - [异步编程](concepts/async-await.md)
-  - [泛型](concepts/generics.md)
-  - [ValueTask](concepts/value-task.md)
-  - [源生成器](concepts/source-generators.md)
-- 工程规范
-  - [命名](standards/naming.md)
-  - [异常处理](standards/exception-handling.md)
-  - [日志](standards/logging.md)
-  - [配置](standards/configuration.md)
-  - [单元测试](standards/unit-testing.md)
-  - [API 设计](standards/api-design.md)
-  - [异步最佳实践](standards/async-best-practices.md)
-  - [空处理](standards/null-handling.md)
-
-## 🟪 实践
-- 模式
-  - [Options 模式](patterns/options-pattern.md)
-  - [管道行为](patterns/pipeline-behavior.md)
-  - [泛型主机](patterns/generic-host.md)
-  - [最小 API 组织](patterns/minimal-api-organization.md)
-  - [释放与 using](patterns/disposable-using.md)
-- 反模式
-  - [吞掉异常](anti-patterns/swallowing-exceptions.md)
-  - [async void](anti-patterns/async-void.md)
-  - [魔法数字](anti-patterns/magic-numbers.md)
-  - [上帝方法](anti-patterns/god-methods.md)
-  - [服务定位器](anti-patterns/service-locator.md)
-  - [过度可变](anti-patterns/excessive-mutability.md)
-  - [阻塞异步](anti-patterns/blocking-async.md)
-  - [过早优化](anti-patterns/premature-optimization.md)
-- 对比
-  - [record vs class](comparisons/record-vs-class.md)
-  - [List vs ImmutableArray](comparisons/list-vs-immutablearray.md)
-  - [RAG vs LLM Wiki](comparisons/rag-vs-llm-wiki.md)
-  - [.NET 版本演进](comparisons/net-evolution.md)
-
-## ⚙️ 治理
-- [质量准则 QA](governance/qa.md)
-- [持久约定 POLICY](governance/policy.md)
-- [质量报告](governance/qa-report.md)
-- [如何反馈](governance/feedback.md)
-- [资料索引](sources/README.md)
-</script>
+<style>
+  .mm { max-width: 1080px; margin: 12px 0 24px; font: 14px/1.5 var(--md-default-font-family, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif); }
+  .mm ul { list-style: none; margin: 0; padding-left: 20px; position: relative; }
+  .mm > ul { padding-left: 0; }
+  .mm li { position: relative; padding: 2px 0; }
+  .mm ul ul::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 2px solid #2a3140; }
+  .mm li > .row::before { content: ""; position: absolute; left: -20px; top: 15px; width: 16px; border-top: 2px solid #2a3140; }
+  .mm > ul > li > .row::before { display: none; }
+  .mm .row { display: inline-flex; align-items: center; gap: 6px; }
+  .mm .toggle { cursor: pointer; user-select: none; width: 14px; text-align: center; color: #8b97a7; font-size: 12px; }
+  .mm .toggle:hover { color: #e6edf3; }
+  .mm .node {
+    display: inline-block; padding: 3px 10px; border-radius: 8px;
+    background: #11161f; border: 1px solid #2a3140; color: #e6edf3;
+    text-decoration: none; transition: border-color .15s, background .15s;
+  }
+  .mm .node:hover { border-color: #6ea8fe; background: #161d2b; }
+  .mm .node.cat-root { border-color: #6ea8fe; font-weight: 600; background: #14233b; }
+  .mm .node.cat-net  { border-left: 4px solid #6ea8fe; }
+  .mm .node.cat-lang { border-left: 4px solid #79d17b; }
+  .mm .node.cat-prac { border-left: 4px solid #c792ea; }
+  .mm .node.cat-gov  { border-left: 4px solid #f78c6c; }
+  .mm .node.leaf::after { content: " ↗"; color: #5b6675; font-size: 11px; }
+  .mm .collapsed > ul { display: none; }
+  .mm .collapsed > .row .toggle { transform: rotate(0deg); }
+</style>
 
 <script>
-  (function () {
-    var md = document.getElementById('mm-md').textContent;
-    var COLORS = {
-      '.NET 10': '#6ea8fe', '语言与规范': '#79d17b', '实践': '#c792ea', '治理': '#f78c6c'
-    };
-    var t = new markmap.Transformer();
-    var result = t.transform(md);
-    var mm = markmap.Markmap.create(
-      document.getElementById('mm'),
-      {
-        duration: 300,
-        maxWidth: 280,
-        paddingX: 12,
-        spacingVertical: 8,
-        spacingHorizontal: 80,
-        initialExpandLevel: 1,
-        color: function (node) {
-          try {
-            var p = (node.state && node.state.path) || [];
-            return COLORS[p[0]] || '#9aa7b5';
-          } catch (e) { return '#9aa7b5'; }
-        }
-      },
-      result.root
-    );
-  })();
+  // 全库结构（链接相对当前页：本页位于 /思维导图/，故统一加 ../ 前缀指向站点根下各页）
+  var TREE = {
+    t: ".NET LLM Wiki", c: "root", children: [
+      { t: ".NET 8 / 9 / 10", c: "net", children: [
+        { t: ".NET 总览", h: "../dotnet/overview/" },
+        { t: "文件型应用", h: "../dotnet/file-based-apps/" },
+        { t: "原生 AOT", h: "../dotnet/native-aot/" },
+        { t: "C#", c: "net", children: [
+          { t: "扩展成员", h: "../dotnet/csharp/extension-members/" },
+          { t: "field 关键字", h: "../dotnet/csharp/field-keyword/" },
+          { t: "空条件赋值", h: "../dotnet/csharp/null-conditional-assignment/" },
+          { t: "nameof 非绑定泛型", h: "../dotnet/csharp/nameof-unbound-generics/" },
+          { t: "隐式 Span 转换", h: "../dotnet/csharp/implicit-span-conversions/" },
+          { t: "lambda 参数修饰符", h: "../dotnet/csharp/lambda-parameter-modifiers/" }
+        ]},
+        { t: "ASP.NET Core", c: "net", children: [
+          { t: "最小 API 验证", h: "../dotnet/aspnet-core/minimal-api-validation/" },
+          { t: "OpenAPI 3.1", h: "../dotnet/aspnet-core/openapi-3-1/" }
+        ]},
+        { t: "EF Core", c: "net", children: [
+          { t: "复杂类型与 JSON", h: "../dotnet/ef-core/complex-types-json/" },
+          { t: "命名查询筛选", h: "../dotnet/ef-core/named-query-filters/" },
+          { t: "EF Core 数据访问", h: "../dotnet/ef-core/ef-data-access/" }
+        ]},
+        { t: "运行时 JIT 优化", h: "../dotnet/runtime/jit-optimizations/" },
+        { t: "Blazor JS 改进", h: "../dotnet/blazor/javascript-improvements/" },
+        { t: "版本对照", c: "net", children: [
+          { t: ".NET 8 / C# 12", h: "../dotnet/versions/net8/" },
+          { t: ".NET 9 / C# 13", h: "../dotnet/versions/net9/" },
+          { t: ".NET 版本演进", h: "../comparisons/net-evolution/" }
+        ]}
+      ]},
+      { t: "语言与规范", c: "lang", children: [
+        { t: "语言概念", c: "lang", children: [
+          { t: "可空引用类型", h: "../concepts/nullable-reference-types/" },
+          { t: "记录 record", h: "../concepts/records/" },
+          { t: "模式匹配", h: "../concepts/pattern-matching/" },
+          { t: "Span 与 Memory", h: "../concepts/span-memory/" },
+          { t: "依赖注入", h: "../concepts/dependency-injection/" },
+          { t: "异步编程", h: "../concepts/async-await/" },
+          { t: "泛型", h: "../concepts/generics/" },
+          { t: "ValueTask", h: "../concepts/value-task/" },
+          { t: "源生成器", h: "../concepts/source-generators/" }
+        ]},
+        { t: "工程规范", c: "lang", children: [
+          { t: "命名", h: "../standards/naming/" },
+          { t: "异常处理", h: "../standards/exception-handling/" },
+          { t: "日志", h: "../standards/logging/" },
+          { t: "配置", h: "../standards/configuration/" },
+          { t: "单元测试", h: "../standards/unit-testing/" },
+          { t: "API 设计", h: "../standards/api-design/" },
+          { t: "异步最佳实践", h: "../standards/async-best-practices/" },
+          { t: "空处理", h: "../standards/null-handling/" }
+        ]}
+      ]},
+      { t: "实践", c: "prac", children: [
+        { t: "模式", c: "prac", children: [
+          { t: "Options 模式", h: "../patterns/options-pattern/" },
+          { t: "管道行为", h: "../patterns/pipeline-behavior/" },
+          { t: "泛型主机", h: "../patterns/generic-host/" },
+          { t: "最小 API 组织", h: "../patterns/minimal-api-organization/" },
+          { t: "释放与 using", h: "../patterns/disposable-using/" }
+        ]},
+        { t: "反模式", c: "prac", children: [
+          { t: "吞掉异常", h: "../anti-patterns/swallowing-exceptions/" },
+          { t: "async void", h: "../anti-patterns/async-void/" },
+          { t: "魔法数字", h: "../anti-patterns/magic-numbers/" },
+          { t: "上帝方法", h: "../anti-patterns/god-methods/" },
+          { t: "服务定位器", h: "../anti-patterns/service-locator/" },
+          { t: "过度可变", h: "../anti-patterns/excessive-mutability/" },
+          { t: "阻塞异步", h: "../anti-patterns/blocking-async/" },
+          { t: "过早优化", h: "../anti-patterns/premature-optimization/" }
+        ]},
+        { t: "对比", c: "prac", children: [
+          { t: "record vs class", h: "../comparisons/record-vs-class/" },
+          { t: "List vs ImmutableArray", h: "../comparisons/list-vs-immutablearray/" },
+          { t: "RAG vs LLM Wiki", h: "../comparisons/rag-vs-llm-wiki/" },
+          { t: ".NET 版本演进", h: "../comparisons/net-evolution/" }
+        ]}
+      ]},
+      { t: "治理", c: "gov", children: [
+        { t: "质量准则 QA", h: "../governance/qa/" },
+        { t: "持久约定 POLICY", h: "../governance/policy/" },
+        { t: "质量报告", h: "../governance/qa-report/" },
+        { t: "如何反馈", h: "../governance/feedback/" },
+        { t: "资料索引", h: "../sources/" }
+      ]}
+    ]
+  };
+
+  function build(node, depth) {
+    var li = document.createElement("li");
+    if (depth >= 1) li.className = "collapsed";
+    var row = document.createElement("div");
+    row.className = "row";
+
+    if (node.children && node.children.length) {
+      var tog = document.createElement("span");
+      tog.className = "toggle";
+      tog.textContent = depth >= 1 ? "▸" : "▾";
+      row.appendChild(tog);
+      tog.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = li.classList.toggle("collapsed");
+        tog.textContent = open ? "▸" : "▾";
+      });
+    }
+
+    var el = document.createElement(node.h ? "a" : "span");
+    el.className = "node cat-" + (node.c || "root") + (node.h ? " leaf" : "");
+    el.textContent = node.t;
+    if (node.h) el.href = node.h;
+    row.appendChild(el);
+
+    li.appendChild(row);
+
+    if (node.children && node.children.length) {
+      var ul = document.createElement("ul");
+      node.children.forEach(function (ch) { ul.appendChild(build(ch, depth + 1)); });
+      li.appendChild(ul);
+    }
+    return li;
+  }
+
+  var root = document.getElementById("mm");
+  var ul = document.createElement("ul");
+  ul.appendChild(build(TREE, 0));
+  root.appendChild(ul);
 </script>
 
 <blockquote>
-<p>节点颜色按主题分组；拖拽平移、滚轮缩放、点击展开/收起、点击叶子节点跳转页面。</p>
+<p>节点颜色按主题分组（蓝=.NET、绿=语言与规范、紫=实践、橙=治理）。点击分类展开/收起，点击叶子节点在新位置打开对应页面。</p>
 </blockquote>
+<noscript>本思维导图需要启用 JavaScript 才能展开与跳转；也可直接通过左侧导航浏览全库。</noscript>
 
 
 

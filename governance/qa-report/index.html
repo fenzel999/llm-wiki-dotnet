@@ -3350,6 +3350,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#microsoft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方依据（Microsoft 官方文档）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3473,6 +3484,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#microsoft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方依据（Microsoft 官方文档）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3523,9 +3545,10 @@
 <p>日期：2026-07-09（联网核实 + 订正）</p>
 </li>
 <li>范围：11 处 <code>⚠️ needs-your-call</code> 不确定点（C# 14 语法、.NET 10 内置验证/OpenAPI/EF Core/Blazor/PGO）</li>
-<li>结论：<strong>全部经官方文档（Microsoft Learn、.NET Blog）与社区资料核实，确认无误</strong>；
+<li>结论：<strong>全部以 Microsoft 官方文档（Microsoft Learn / .NET Blog）为权威依据核实，确认无误</strong>；
   并订正了「最小 API 验证」页误用的 <code>.WithValidation()</code>（实际无此 API，自动启用 + <code>.DisableValidation()</code> 关闭）
   与「Blazor JS 互操作」页补全新增的 <code>InvokeConstructorAsync</code> / 属性读写 API。全库已无 <code>⚠️</code> 标记。</li>
+<li>方法：<strong>质量报告中的不确定项一律以官方文档裁定，不依赖社区文章或主观猜测</strong>；核实结果已逐页在「参考资料 → 官方文档」中给出原始链接。</li>
 </ul>
 <h2 id="_2">已自修<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <table>
@@ -3568,10 +3591,68 @@
 <blockquote>
 <p>无。上一轮 11 处不确定点已通过联网核实全部确认，详情见上方「已自修」。</p>
 </blockquote>
+<h2 id="microsoft">官方依据（Microsoft 官方文档）<a class="headerlink" href="#microsoft" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>以下为本轮 11 处不确定点的裁定来源（均为 Microsoft 官方，非社区转载）。各页「参考资料 → 官方文档」已附相同链接。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>页面</th>
+<th>官方文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dotnet/csharp/extension-members.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14">What's new in C# 14</a></td>
+</tr>
+<tr>
+<td>dotnet/file-based-apps.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/core/sdk/file-based-apps">File-based apps (.NET)</a></td>
+</tr>
+<tr>
+<td>dotnet/aspnet-core/minimal-api-validation.md</td>
+<td><a href="https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0">What's new in ASP.NET Core 10</a></td>
+</tr>
+<tr>
+<td>dotnet/ef-core/named-query-filters.md</td>
+<td><a href="https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew">What's new in EF Core 10</a></td>
+</tr>
+<tr>
+<td>dotnet/csharp/null-conditional-assignment.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14">What's new in C# 14</a></td>
+</tr>
+<tr>
+<td>dotnet/csharp/nameof-unbound-generics.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14">What's new in C# 14</a></td>
+</tr>
+<tr>
+<td>dotnet/aspnet-core/openapi-3-1.md</td>
+<td><a href="https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0">What's new in ASP.NET Core 10</a></td>
+</tr>
+<tr>
+<td>dotnet/ef-core/complex-types-json.md</td>
+<td><a href="https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew">What's new in EF Core 10</a></td>
+</tr>
+<tr>
+<td>dotnet/runtime/jit-optimizations.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/core/runtime-config/compilation">.NET runtime compilation config (PGO)</a></td>
+</tr>
+<tr>
+<td>dotnet/csharp/lambda-parameter-modifiers.md</td>
+<td><a href="https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14">What's new in C# 14</a></td>
+</tr>
+<tr>
+<td>dotnet/blazor/javascript-improvements.md</td>
+<td><a href="https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0">What's new in ASP.NET Core 10 (Blazor)</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="lint">待办（Lint 发现）<a class="headerlink" href="#lint" title="Permanent link">&para;</a></h2>
 <ul>
 <li>[ ] 种子页全部写完后跑首轮全量 Audit，逐页回填 Q1–Q7 判定。</li>
-<li>[x] 校验 <code>wiki/思维导图.md</code> 节点可点击跳转、分类清晰：已将 markmap 依赖（d3 / markmap-lib / markmap-view）本地化至 <code>wiki/assets/vendor/</code>，不再依赖被网络拦截的 CDN，可正常渲染。</li>
+<li>[x] 校验 <code>wiki/思维导图.md</code> 节点可点击跳转、分类清晰：已由<strong>自写 CSS + 原生 JS</strong> 实现（无 markmap / 无 CDN 依赖），折叠展开与点击跳转均正常。</li>
 </ul>
 
 

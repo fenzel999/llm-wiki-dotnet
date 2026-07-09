@@ -25,6 +25,12 @@ updated: 2026-07-09
 - frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
 - 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
 
+## 2026-07-10 · 可读性收尾（第三轮）
+
+- 将上一轮未覆盖的 **dotnet 内容页（10 篇）与 comparisons（4 篇）** 同样改写为流畅中文长文（csharp-14 / aspnet-core-10 / ef-core-10 / ef-data-access / file-based-apps / native-aot / blazor / jit-optimizations / net8 / net9；以及 4 个对比页），保留合并页锚点与跨页链接。
+- 重排 `index.md`：人类读者视角优先——开头加「欢迎语 + 建议阅读路径」，目录居中，「给 AI 的使用说明」移到底部并标注。
+- `mkdocs build --strict` 零警告通过。
+
 ## 2026-07-10 · 页面可读性与密度重构（第二轮）
 
 - **排版主题**：新增 `wiki/extra/readable.css` 并经 `mkdocs.yml` 的 `extra_css` 接入——放大正文字号(16px)、行距 1.75、内容限宽 860px、代码块圆角/阴影、更柔和链接与引用块、中英文混排字体栈。治「排版累眼」。

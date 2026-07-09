@@ -11,11 +11,13 @@ updated: 2026-07-10
 
 ## 概述
 
-原生 AOT（Native AOT，ahead-of-time compilation，提前编译）在发布时将应用直接编译为独立的原生可执行文件，无需在目标机安装 .NET 运行时。优点是启动快、内存占用低、体积可控；代价是构建期需 trimming（裁剪未使用代码），且对运行时反射（reflection）与动态代码生成有较强限制。它适合命令行工具、Serverless 函数、容器化微服务等对启动速度与部署体积敏感的场景。
+通常我们发布的 .NET 应用，跑起来时还得靠目标机器上的 .NET 运行时，代码是到运行时才被 JIT 编译的。原生 AOT（Native AOT，ahead-of-time compilation，提前编译）走的是另一条路：它在**发布阶段**就把你的应用连同运行时的一部分一起，编译成一个独立的原生可执行文件。用户拿到手就能直接跑，机器上装不装 .NET 都无所谓。
+
+这么做换来了什么？启动极快（没有 JIT 热身的那段延迟）、内存占用低、最终文件体积可控——这些都是命令行工具、Serverless 函数、容器化微服务这类场景最在意的指标。代价呢？因为编译期就要确定“哪些代码真正用得到”，所以它会做 trimming（裁剪），把判定为用不到的代码删掉；而一旦做了裁剪，运行时靠反射、靠动态生成代码的那套机制就会受限。换句话说，AOT 是用“灵活性”换“部署体验”，你得清楚自己换掉的是什么。
 
 ## 正确做法
 
-在项目文件中启用 AOT 与不变全球化（可减少依赖的数据表，进一步缩小体积）：
+开启 AOT 很简单，在项目文件里把开关打开，顺手把不变全球化（invariant globalization）也开了——它能砍掉一部分和文化相关的数据表，进一步缩小体积：
 
 ```csharp
 // MyApp.csproj
@@ -25,13 +27,13 @@ updated: 2026-07-10
 // </PropertyGroup>
 ```
 
-发布命令指定运行时标识符（RID）：
+发布时指定目标运行时标识符（RID）即可：
 
 ```csharp
 // dotnet publish -c Release -r win-x64
 ```
 
-对可能被裁剪破坏的反射代码，用特性标注以获得编译期警告，从而显式处理：
+真正需要注意的，是那些会被 trimming 误伤的代码。最典型的就是反射：编译器在静态分析时看不出你“将来会在运行时通过名字去加载哪个类型”，于是可能把它裁掉，等到运行时才崩溃。应对办法是用特性把这类代码标注出来，让编译器在构建期就给你警告，逼你显式处理：
 
 ```csharp
 using System.Diagnostics.CodeAnalysis;
@@ -43,9 +45,11 @@ static void ScanPlugins()
 }
 ```
 
+有了这个特性，构建时只要扫到这段代码被调用，就会弹出 `IL2xxx` 级别的警告，提醒你“这里在 AOT 下不安全”。
+
 ## 反例（常见错误）
 
-- ❌ 依赖运行时反射序列化（如未配置的 `System.Text.Json`）；应改用 source generator（`JsonSerializerContext`）。
+踩坑的重灾区几乎都和“被裁掉”有关。比如用 `System.Text.Json` 做序列化时图省事直接 `JsonSerializer.Serialize(obj)`——在 AOT 下 `obj` 的类型可能被剪掉，运行时才会失败。正确做法是用源生成器（source generator），通过 `[JsonSerializable]` 标注一个 `JsonSerializerContext`：
 
 ```csharp
 // ❌ AOT 下类型可能被裁剪，导致运行时失败
@@ -53,9 +57,7 @@ var json = JsonSerializer.Serialize(obj);
 // ✅ 改用 [JsonSerializable] 标注的 JsonSerializerContext 源生成
 ```
 
-- 使用 `Assembly.Load` / `Type.GetType(string)` 动态加载，在 trimming 后目标类型被裁掉。
-- 忽略 `IL2xxx` / `IL3xxx` 裁剪与 AOT 警告，导致运行时才崩溃。
-- 引入不兼容 AOT 的第三方库而未验证。
+类似的，凡是 `Assembly.Load`、`Type.GetType(string)` 这种“按字符串动态加载类型”的写法，在 trimming 之后目标类型大概率已不在程序集里。构建时那些 `IL2xxx` / `IL3xxx` 的裁剪与 AOT 警告千万不能视而不见——它们是唯一能在上线前抓住问题的信号，等到了运行时才崩，定位和回滚都麻烦得多。最后，引用第三方库前最好确认它对 AOT 友好，不少旧库内部大量依赖反射，不经改造是没法 AOT 发布的。
 
 ## 适用版本
 

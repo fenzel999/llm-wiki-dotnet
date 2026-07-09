@@ -1,4 +1,4 @@
-﻿---
+---
 title: 最小 API 验证（.NET 10 内置）
 summary: .NET 10 最小 API 用框架内置验证，带数据注解的参数自动校验并返 400，无需第三方库。
 tags: [aspnetcore, minimal-api, validation, net10]

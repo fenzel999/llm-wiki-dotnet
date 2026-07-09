@@ -1,4 +1,4 @@
-﻿---
+---
 title: 文件型应用（file-based apps）
 summary: .NET 10 中无需项目文件即可运行的单文件 C# 程序与隐式 global using。
 tags: [dotnet, file-based-apps, net10, tooling]

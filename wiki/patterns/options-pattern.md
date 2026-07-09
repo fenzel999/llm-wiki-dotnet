@@ -1,4 +1,4 @@
-﻿---
+---
 title: Options 模式（强类型配置）
 summary: 用强类型类绑定配置，通过 IOptions 注入并校验，避免散落的字符串键。
 tags: [pattern, configuration]

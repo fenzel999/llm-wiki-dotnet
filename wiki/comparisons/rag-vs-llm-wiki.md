@@ -24,7 +24,7 @@ updated: 2026-07-09
 ## 何时选哪个
 
 - 选 **RAG**：语料规模巨大且持续变化、无法预先整理、需要覆盖长尾未知问题。
-- 选 **LLM Wiki**：知识相对稳定、要求一致性/可维护/可审计、希望零运行期检索开销，并能用相对链接形成知识图谱（符合 [POLICY](../POLICY.md) 的 P8 相对路径约定）。
+- 选 **LLM Wiki**：知识相对稳定、要求一致性/可维护/可审计、希望零运行期检索开销，并能用相对链接形成知识图谱（符合 [POLICY](../governance/policy.md) 的 P8 相对路径约定）。
 - 本仓库（`.NET / C# LLM Wiki`）采用 **LLM Wiki**：把 .NET 惯用法、反模式、标准在摄入时编译为带 `source` 引用的 Markdown，既避免检索漂移，又可直接被工具链与 Agent 引用。
 
 ## 代码示例
@@ -46,5 +46,5 @@ var answer = await llm.Complete($"上下文:\n{context}\n\n问题:{query}");
 
 - [record 与 class 对比](record-vs-class.md)
 - [List 与 ImmutableArray 对比](list-vs-immutablearray.md)
-- [持久约定 POLICY](../POLICY.md)
+- [持久约定 POLICY](../governance/policy.md)
 - [.NET 版本演进](net-evolution.md)

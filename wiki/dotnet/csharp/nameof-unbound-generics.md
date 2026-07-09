@@ -1,4 +1,4 @@
-﻿---
+---
 title: nameof 非绑定泛型
 summary: C# 14 允许对非绑定泛型类型使用 nameof，如 nameof(List<>) 返回 "List"。
 tags: [csharp, nameof, generics, csharp14, net10]

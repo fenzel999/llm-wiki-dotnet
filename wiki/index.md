@@ -13,6 +13,25 @@ updated: 2026-07-09
 
 > 全库页面目录。每条 = 一句话摘要 + 链接。新页面必须在此登记（POLICY P9）。
 
+## 给 AI 的使用说明
+
+本知识库供 LLM（opencode / Claude Code）检索与维护，约定如下：
+
+- **入口**：先读本页 `index.md`，再按需读目标页。每页顶部 YAML `frontmatter` 含
+  `title` / `summary` / `tags` / `introduced-in` / `applies-to` / `status` / `source`，
+  可直接用于判断与检索，**不必通读全文**。
+- **分类（目录即主题，简单明确）**：
+  - `dotnet/` —— .NET 10 / C# 14 及 ASP.NET Core、EF Core、运行时、Blazor 特性
+  - `concepts/` —— 语言概念（NRT、record、模式匹配、Span、DI、异步、泛型…）
+  - `standards/` —— 工程规范（命名、异常、日志、配置、测试、API 设计…）
+  - `patterns/` —— 推荐做法（Options、管道、泛型主机、最小 API 组织、释放）
+  - `anti-patterns/` —— 反模式（含 ❌ 错误 / ✅ 正确 对比）
+  - `comparisons/` —— 取舍对比（record vs class 等）
+  - `governance/` —— 质量准则 `qa.md`、约定 `policy.md`、报告 `qa-report.md`、反馈 `feedback.md`
+  - `sources/` —— 一手来源登记
+- **链接**：全程相对 Markdown 链接，GitHub / MkDocs / 网页三处均可解析。
+- **质量**：内容需经 `governance/qa.md` 判定；不确定处标 `⚠️ needs-your-call`。
+
 ## .NET 10
 
 - [.NET 总览](dotnet/overview.md) — .NET 10 / C# 14 关键主题地图
@@ -82,6 +101,6 @@ updated: 2026-07-09
 - [.NET 版本演进](comparisons/net-evolution.md) — 关键版本时间线与 LTS
 
 ## 治理
-- [质量准则 QA](QA.md) · [持久约定 POLICY](POLICY.md) · [质量报告](QA-REPORT.md)
-- [如何反馈](如何反馈.md) · [资料索引](sources/README.md)
+- [质量准则 QA](governance/qa.md) · [持久约定 POLICY](governance/policy.md) · [质量报告](governance/qa-report.md)
+- [如何反馈](governance/feedback.md) · [资料索引](sources/README.md)
 - [思维导图](思维导图.md)

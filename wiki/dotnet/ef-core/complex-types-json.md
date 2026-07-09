@@ -1,4 +1,4 @@
-﻿---
+---
 title: EF Core 复杂类型与 JSON 列
 summary: 将值对象映射为 complex type 或 JSON 列，无独立主键，随宿主实体存取。
 tags: [efcore, complex-types, json, value-object, net10]

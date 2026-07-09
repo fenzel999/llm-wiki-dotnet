@@ -1,4 +1,4 @@
-﻿---
+---
 title: Blazor JavaScript 互操作增强
 summary: .NET 10 Blazor 增强 JS 互操作：更简洁的调用、更好的资源生命周期管理。
 tags: [blazor, javascript, interop, net10]

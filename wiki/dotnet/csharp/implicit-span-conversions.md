@@ -1,4 +1,4 @@
-﻿---
+---
 title: 隐式 Span 转换
 summary: .NET 10 改进数组到 Span<T>、字符串到 ReadOnlySpan<char> 的隐式转换。
 tags: [csharp, span, performance, net10]

@@ -32,7 +32,7 @@ C# 语言版本与运行时绑定（部分）：
 ## 何时选哪个
 
 - 新建生产项目：优先 **.NET 8 / .NET 10（LTS）**，避免 STS 的短支持窗口。
-- 需要最新语言特性（如 `field` 关键字、`extension` 块）：需 **.NET 10 / C# 14**，并参照 [POLICY](../POLICY.md) 的 P1 优先展示最新惯用法。
+- 需要最新语言特性（如 `field` 关键字、`extension` 块）：需 **.NET 10 / C# 14**，并参照 [POLICY](../governance/policy.md) 的 P1 优先展示最新惯用法。
 - 跨版本差异（如某 API 行为变化）：用选项卡对比（P4），不在正文含糊表述。
 
 ## 内容组织策略（主题优先 + 版本元数据）
@@ -63,7 +63,7 @@ public class Order
 
 ## 相关
 
-- [持久约定 POLICY](../POLICY.md)
+- [持久约定 POLICY](../governance/policy.md)
 - [record 与 class 对比](record-vs-class.md)
 - [RAG 与 LLM Wiki 对比](rag-vs-llm-wiki.md)
 - [List 与 ImmutableArray 对比](list-vs-immutablearray.md)

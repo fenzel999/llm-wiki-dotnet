@@ -1,4 +1,4 @@
-﻿---
+---
 title: .NET 10 / C# 14 主题地图
 summary: .NET 10（LTS）与 C# 14 新特性的导航页，链接到各子主题页面。
 tags: [dotnet, csharp, overview, net10]

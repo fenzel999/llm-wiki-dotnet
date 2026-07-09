@@ -1,4 +1,4 @@
-﻿---
+---
 title: lambda 参数修饰符
 summary: C# 14 允许在 lambda 参数上使用 ref/in/out 修饰符，无需显式写出参数类型。
 tags: [csharp, lambda, ref, csharp14, net10]

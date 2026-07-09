@@ -1,4 +1,4 @@
-﻿---
+---
 title: EF Core 命名查询筛选器
 summary: .NET 10 支持为实体定义多个命名的全局查询筛选器，并可按名选择性禁用。
 tags: [efcore, query-filter, soft-delete, multitenancy, net10]

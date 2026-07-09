@@ -1,4 +1,4 @@
-﻿---
+---
 title: 原生 AOT（Native AOT）部署
 summary: 提前编译为原生可执行文件，配合 trimming，反射受限，适合启动快/内存小的场景。
 tags: [dotnet, native-aot, trimming, deployment, net10]

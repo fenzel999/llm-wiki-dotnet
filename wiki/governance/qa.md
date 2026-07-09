@@ -27,7 +27,7 @@ Agent 执行 **Audit** 时，按以下 7 条逐页判定「对 / 错 / 存疑」
 - 预览特性标 `preview`，不写成稳定承诺。
 
 ## Q3 一致性
-- 与 `POLICY.md` 及其他页面不矛盾。
+- 与 `policy.md` 及其他页面不矛盾。
 - 同一定义/术语在全库用法统一。
 - 版本差异用选项卡呈现，不互相打架。
 
@@ -51,7 +51,7 @@ Agent 执行 **Audit** 时，按以下 7 条逐页判定「对 / 错 / 存疑」
 
 ---
 
-## 判定输出格式（写入 QA-REPORT.md）
+## 判定输出格式（写入 qa-report.md）
 
 ```
 ### wiki/dotnet/csharp/field-keyword.md

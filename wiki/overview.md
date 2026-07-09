@@ -48,6 +48,6 @@ updated: 2026-07-09
 
 ## 怎么用
 
-1. 浏览网页，发现不对 → 见 [如何反馈](如何反馈.md) 或提 GitHub Issue。
+1. 浏览网页，发现不对 → 见 [如何反馈](governance/feedback.md) 或提 GitHub Issue。
 2. 有最新资料 → 丢进 `raw/`，由 Agent 执行 Ingest。
-3. Agent 会按 [QA](QA.md) 自审、按 [POLICY](POLICY.md) 守约，并自动 commit + push。
+3. Agent 会按 [QA](governance/qa.md) 自审、按 [POLICY](governance/policy.md) 守约，并自动 commit + push。

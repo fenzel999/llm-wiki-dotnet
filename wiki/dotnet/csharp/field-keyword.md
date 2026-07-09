@@ -1,4 +1,4 @@
-﻿---
+---
 title: field 关键字
 summary: C# 14 在属性访问器中用 field 引用编译器生成的支持字段，免手写私有字段。
 tags: [csharp, field, properties, csharp14, net10]

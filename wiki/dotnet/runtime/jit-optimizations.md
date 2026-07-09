@@ -1,4 +1,4 @@
-﻿---
+---
 title: .NET 10 JIT 性能优化
 summary: .NET 10 运行时的 JIT 改进：动态 PGO、循环与内联优化、更好的去虚拟化。
 tags: [dotnet, runtime, jit, performance, pgo, net10]

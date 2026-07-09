@@ -11,7 +11,7 @@
   含中文界面、暗色主题、**可导航思维导图**。
 - **Agent 视图**：仓库根的 `AGENTS.md`（opencode）/ `CLAUDE.md`（Claude Code）是同一份 Schema，
   告诉 LLM 如何 Ingest / Query / Lint / Audit / Correct 知识。
-- **质量自校正**：内置 `QA.md` 质量准则与 `POLICY.md` 持久约定，Agent 会主动判对错、自修并报告。
+- **质量自校正**：内置 `wiki/governance/qa.md` 质量准则与 `wiki/governance/policy.md` 持久约定，Agent 会主动判对错、自修并报告。
 
 ## 快速开始（本地预览）
 
@@ -30,15 +30,14 @@ llm-wiki-dotnet/
 ├── .github/workflows/pages.yml  # push main → 自动部署 Pages
 ├── raw/                         # 不可变原始资料（文章/论文/素材）
 └── wiki/                        # LLM 全权维护的知识层
-    ├── index.md log.md overview.md
-    ├── POLICY.md  QA.md  QA-REPORT.md
-    ├── 思维导图.md  如何反馈.md
+    ├── index.md log.md overview.md 思维导图.md
+    ├── governance/   # 质量准则/约定/报告/反馈（qa.md, policy.md, qa-report.md, feedback.md）
     ├── dotnet/ concepts/ standards/ patterns/ anti-patterns/ comparisons/ sources/
 ```
 
 ## 如何贡献知识
 
-1. 读网页，发现错误 → 看 [`wiki/如何反馈.md`](wiki/如何反馈.md) 或直接提 GitHub Issue。
+1. 读网页，发现错误 → 看 [`wiki/governance/feedback.md`](wiki/governance/feedback.md) 或直接提 GitHub Issue。
 2. 有最新资料 → 丢进 `raw/`，由 Agent 执行 Ingest 编译进 `wiki/`。
 
 详见 [AGENTS.md](AGENTS.md)。

@@ -1,4 +1,4 @@
-﻿---
+---
 title: 最小 API 组织模式（Minimal API Organization）
 summary: 用 MapGroup 对最小 API 进行分组与模块化，直接注入 DbContext，不用 Controller。
 tags: [pattern, aspnet-core, minimal-api]

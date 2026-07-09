@@ -15,6 +15,13 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-09 · 内容整理（AI 友好）
+- 治理页归入 `wiki/governance/`：`QA.md→governance/qa.md`、`POLICY.md→governance/policy.md`、`QA-REPORT.md→governance/qa-report.md`、`如何反馈.md→governance/feedback.md`；更新全库链接与导航。
+- `index.md` 增加「给 AI 的使用说明」：目录即主题（dotnet/concepts/standards/patterns/anti-patterns/comparisons/governance/sources），说明 frontmatter（tags/summary/source）用法。
+- 去除 17 个文件（dotnet/ef/patterns 种子页）的 UTF-8 BOM，统一为无 BOM UTF-8；全库 frontmatter 审计（title/summary/tags/source）通过。
+- 分类明确简单：目录即主题，便于 LLM 检索与维护。
+- 影响：governance/*、index.md、思维导图.md、overview.md、AGENTS.md、CLAUDE.md、README.md、comparisons/* 及导航。
+
 ## 2026-07-09 · 去掉自定义 Result<T>（与最小 API Results<T> 重复）
 - 删除 `concepts/result-type.md`：自造 `Result<T>` 与最小 API 内建 `Results<T>`/`TypedResults` 语义重复。
 - `minimal-api-organization.md` 新增「类型化返回」小节，统一改用 `Results<T>`/`TypedResults` 表达多响应；示例中去除对自定义 Result 的依赖。

@@ -1,4 +1,4 @@
-﻿---
+---
 title: ASP.NET Core 原生 OpenAPI 3.1
 summary: .NET 10 内置生成 OpenAPI 3.1 文档，不依赖 Swashbuckle/Swagger。
 tags: [aspnetcore, openapi, net10]

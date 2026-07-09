@@ -12,9 +12,9 @@ Markdown（非查询时 RAG），随每次贡献累积、互相链接、自动�
 
 开始任何操作前，按顺序读取（若已存在）：
 
-1. `wiki/POLICY.md` —— 持久约定与自学习规则，**最高优先级，必须严格遵守**
-2. `wiki/QA.md` —— 质量准则 Rubric，用来判断内容对错
-3. `wiki/QA-REPORT.md` —— 最近一次自审报告（了解已知问题与待办）
+1. `wiki/governance/policy.md` —— 持久约定与自学习规则，**最高优先级，必须严格遵守**
+2. `wiki/governance/qa.md` —— 质量准则 Rubric，用来判断内容对错
+3. `wiki/governance/qa-report.md` —— 最近一次自审报告（了解已知问题与待办）
 
 读完后把本次要做的操作追加到 `wiki/log.md`。
 
@@ -52,13 +52,13 @@ CLAUDE.md
 - 所有内部链接可解析（无死链）。
 - 每个页面至少被一处链接（可被 `wiki/index.md` 或某页引用）。
 - 校验 `wiki/思维导图.md` 的节点链接是否都指向真实页面。
-- 输出问题清单到 `QA-REPORT.md`。
+- 输出问题清单到 `governance/qa-report.md`。
 
 ### Audit（自审）
-按 `wiki/QA.md` 的 Rubric **主动**判断每页内容对错：
+按 `wiki/governance/qa.md` 的 Rubric **主动**判断每页内容对错：
 - 事实是否准确、是否过时（对照 `introduced-in`/`applies-to`/`status`）。
-- 是否与 `POLICY.md` 冲突。
-- 给出「对/错/存疑」结论与**理由**，写入 `QA-REPORT.md`。
+- 是否与 `governance/policy.md` 冲突。
+- 给出「对/错/存疑」结论与**理由**，写入 `governance/qa-report.md`。
 
 ### Correct（校正）
 基于 Audit 结论修复错误。见 §4 自治边界。
@@ -89,11 +89,11 @@ updated: 2026-07-09
 
 ## 4. 质量自治边界（方案 A：混合自治）
 
-- **能确证**：依据 `QA.md` Rubric 与 `POLICY.md` 能确定对错时，**直接自修**，
-  并在 `QA-REPORT.md` 记录「改了什么、为什么」。
+- **能确证**：依据 `governance/qa.md` Rubric 与 `governance/policy.md` 能确定对错时，**直接自修**，
+  并在 `governance/qa-report.md` 记录「改了什么、为什么」。
 - **拿不准**：不要猜。在页面相关处标 `⚠️ needs-your-call：<疑问>`，
-  并把问题写入 `QA-REPORT.md` 的「待你判定」区，**停下来问人类**。
-- **反复出现同一类错误**：提炼成一条 `POLICY.md` 常驻规则（自学习），下次自动遵守。
+  并把问题写入 `governance/qa-report.md` 的「待你判定」区，**停下来问人类**。
+- **反复出现同一类错误**：提炼成一条 `governance/policy.md` 常驻规则（自学习），下次自动遵守。
 
 原则：**宁可标 ⚠️ 等你判定，也不要把错误织进结构里。**
 
@@ -116,7 +116,7 @@ updated: 2026-07-09
 2. 禁止无 `source` 编造事实。
 3. 每页必须 `cite` `sources/`（或外部 URL）。
 4. 新页面必须被至少一处链接（进 `wiki/index.md` 或某页正文）。
-5. 与其他页矛盾时，标 `⚠️` 并写入 `QA-REPORT.md`，不要静默覆盖。
+5. 与其他页矛盾时，标 `⚠️` 并写入 `governance/qa-report.md`，不要静默覆盖。
 6. 每次操作后必须更新 `wiki/log.md`（时间、操作、影响页面）。
 7. `wiki/index.md` / `wiki/思维导图.md` 必须随内容保持同步。
 
@@ -145,6 +145,6 @@ updated: 2026-07-09
 
 ## 9. 人类如何纠错 / 补充
 
-- 网页每页有「编辑」按钮，并见 `wiki/如何反馈.md` 模板。
+- 网页每页有「编辑」按钮，并见 `wiki/governance/feedback.md` 模板。
 - 也可在 GitHub 提 Issue（`.github/ISSUE_TEMPLATE/feedback.yml`）。
 - 你收到反馈后执行 Correct / Ingest，并 `commit`+`push`。

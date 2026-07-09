@@ -1,4 +1,4 @@
-﻿---
+---
 title: extension 成员（extension 块）
 summary: C# 14 用 extension 块统一声明扩展方法、属性与运算符，替代传统静态扩展类。
 tags: [csharp, extension, csharp14, net10]

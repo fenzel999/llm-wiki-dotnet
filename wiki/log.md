@@ -25,6 +25,13 @@ updated: 2026-07-09
 - frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
 - 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
 
+## 2026-07-10 · 视觉层整体重构（字体 + 设计）
+
+- 放弃零散修补，重做整套视觉：**统一字体**（`extra/fonts.css` 经 Google Fonts 加载 Inter + 思源黑体 Noto Sans SC + JetBrains Mono，全设备中文渲染一致）。
+- 重写 `extra/readable.css` 为 `extra/theme.css`：克制靛蓝配色、内容限宽 800px 居中、标题层级与分隔线、圆角代码块/表格/提示框、柔和引用与链接、更透气的侧栏导航；浅色与深色方案均做了配色与字体覆盖。移除旧 `readable.css`。
+- 保留并适配 `extra/modes.css` / `modes.js`（护眼暖色 + 专注模式），与新变量一致。
+- `mkdocs build --strict` 零警告；字体/主题/模式资源均打包。
+
 ## 2026-07-10 · 阅读模式：护眼 + 专注
 
 - 新增 `wiki/extra/modes.css` 与 `wiki/extra/modes.js`，经 `mkdocs.yml` 的 `extra_css` / `extra_javascript` 接入。

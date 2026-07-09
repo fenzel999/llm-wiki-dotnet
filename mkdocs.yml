@@ -66,7 +66,8 @@ extra:
   generator: false
 
 extra_css:
-  - extra/readable.css
+  - extra/fonts.css
+  - extra/theme.css
   - extra/modes.css
 
 extra_javascript:

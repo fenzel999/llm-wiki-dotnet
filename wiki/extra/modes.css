@@ -50,7 +50,8 @@ body.focus-mode .md-content__feedback { display: none !important; }
 /* header 隐藏后补回顶部留白 */
 body.focus-mode .md-main { margin-top: 0; }
 body.focus-mode .md-content__inner {
-  max-width: 720px;
+  max-width: 960px;
+  margin: 0 auto;
   padding-top: 2.4rem;
 }
 body.focus-mode .md-typeset {

@@ -1,8 +1,8 @@
 /* ============================================================
    阅读模式增强（modes.css）
-   - 护眼模式：暖色纸张配色（sepia），减轻白底刺眼
+   - 白天/黑夜：均为护眼暖色调（护眼是默认底色，无需单独选择）
    - 专注模式：隐藏侧栏/目录/页脚，正文居中收窄，专心阅读
-   两个按钮固定在右下角，选择记入 localStorage。
+   按钮固定在右下角，选择记入 localStorage。
    ============================================================ */
 
 /* ---------- 右下角切换按钮 ---------- */
@@ -37,28 +37,8 @@
   color: #fff;
   border-color: var(--md-accent-fg-color);
 }
-/* 专注按钮与上方三个主题按钮做一点分组间隔 */
-.mode-bar button:nth-child(4) { margin-top: 8px; }
-
-/* ---------- 护眼模式：暖色纸张配色 ---------- */
-html.eye-care {
-  --md-default-bg-color: #f7f0de;
-  --md-default-bg-color--light: #fcf7ea;
-  --md-default-bg-color--dark: #efe5cd;
-  --md-default-fg-color: #463a2c;
-  --md-default-fg-color--light: #5d4d3a;
-  --md-default-fg-color--dark: #2f261b;
-  --md-code-bg-color: #efe6d2;
-  --md-code-fg-color: #463a2c;
-  --md-typeset-a-color: #9c5b27;
-  --md-accent-fg-color: #9c5b27;
-  --md-default-icon-color: #6b5a45;
-  --md-divider-color: #e2d6ba;
-}
-html.eye-care,
-html.eye-care body,
-html.eye-care .md-main,
-html.eye-care .md-content { background: #f7f0de !important; }
+/* 专注按钮与上方两个主题按钮做一点分组间隔 */
+.mode-bar button:nth-child(3) { margin-top: 8px; }
 
 /* ---------- 专注模式：只留正文，收窄居中 ---------- */
 body.focus-mode .md-sidebar,

@@ -40,18 +40,20 @@
 /* 专注按钮与上方两个主题按钮做一点分组间隔 */
 .mode-bar button:nth-child(3) { margin-top: 8px; }
 
-/* ---------- 专注模式：只留正文，收窄居中 ---------- */
+/* ---------- 专注模式：只留正文，收窄居中，隐藏顶部 header ---------- */
+body.focus-mode .md-header,
 body.focus-mode .md-sidebar,
 body.focus-mode .md-tabs,
 body.focus-mode .md-footer,
 body.focus-mode .md-content__feedback { display: none !important; }
 
+/* header 隐藏后补回顶部留白 */
+body.focus-mode .md-main { margin-top: 0; }
 body.focus-mode .md-content__inner {
   max-width: 720px;
+  padding-top: 2.4rem;
 }
 body.focus-mode .md-typeset {
   font-size: 1.04rem;
   line-height: 1.9;
 }
-body.focus-mode .md-header { opacity: .55; transition: opacity .2s; }
-body.focus-mode .md-header:hover { opacity: 1; }

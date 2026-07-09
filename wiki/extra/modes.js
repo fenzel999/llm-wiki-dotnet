@@ -3,8 +3,6 @@
 //   专注：隐藏侧栏与目录，正文居中收窄（默认开启，可切换）
 // 偏好记入 localStorage。
 (function () {
-  var root = document.documentElement;
-
   function makeButton(label, title) {
     var b = document.createElement("button");
     b.textContent = label;
@@ -21,11 +19,9 @@
   var focus = makeButton("📖", "专注阅读模式（隐藏侧栏与目录）");
 
   function applyTheme(t) {
-    if (t === "dark") {
-      root.setAttribute("data-md-color-scheme", "slate");
-    } else {
-      root.setAttribute("data-md-color-scheme", "default");
-    }
+    var scheme = t === "dark" ? "slate" : "default";
+    document.body.setAttribute("data-md-color-scheme", scheme);
+    document.documentElement.setAttribute("data-md-color-scheme", scheme);
   }
 
   function getTheme() {

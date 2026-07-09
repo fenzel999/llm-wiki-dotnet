@@ -11,14 +11,7 @@ theme:
   name: material
   language: zh
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: indigo
-      accent: indigo
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: indigo
-      accent: indigo
+    - scheme: default
   features:
     - navigation.instant
     - navigation.tracking

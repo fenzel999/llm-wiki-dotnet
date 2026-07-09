@@ -37,6 +37,8 @@
   color: #fff;
   border-color: var(--md-accent-fg-color);
 }
+/* 专注按钮与上方三个主题按钮做一点分组间隔 */
+.mode-bar button:nth-child(4) { margin-top: 8px; }
 
 /* ---------- 护眼模式：暖色纸张配色 ---------- */
 html.eye-care {

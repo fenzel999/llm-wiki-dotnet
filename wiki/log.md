@@ -15,6 +15,10 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-09 · 纠正：验证改用 .NET 10 内置（不用 FluentValidation）
+- `minimal-api-validation.md` 改为 .NET 10 最小 API 内置验证（`AddValidation()` + `WithValidation()`，数据注解 + `IValidatableObject`），不再使用 FluentValidation。
+- 影响：dotnet/aspnet-core/minimal-api-validation.md。
+
 ## 2026-07-09 · 纠正：去 Swagger / 用 FluentValidation / EF 不用仓储+UoW / 不用 Controller
 - OpenAPI：移除 Swashbuckle/Swagger，统一 .NET 10 原生 `AddOpenApi()` + `MapOpenApi()`（openapi-3-1.md）。
 - 验证：最小 API 验证改为以 FluentValidation 为主（验证器 + 端点过滤器），.NET 10 内置验证作为备选（minimal-api-validation.md）。

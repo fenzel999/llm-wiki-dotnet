@@ -1,0 +1,36 @@
+name: 知识纠错 / 补充
+description: 报告某篇 wiki 内容错误，或补充最新知识
+title: "[反馈] "
+labels: ["feedback"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: 相关页面
+      description: 出错或被补充的 wiki 页面路径，例如 wiki/dotnet/csharp/field-keyword.md
+      placeholder: wiki/...
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: 类型
+      options:
+        - 内容错误（事实/语法/过时）
+        - 链接/导航错误
+        - 缺少页面或主题
+        - 补充最新知识（提供资料）
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 具体说明
+      description: 哪里错了 / 应如何改 / 资料来源链接
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 来源（可选）
+      description: 官方文档、博客、论文等链接，便于 Agent 溯源摄入

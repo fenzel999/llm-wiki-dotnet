@@ -1,0 +1,139 @@
+docs_dir: wiki
+
+site_name: .NET LLM Wiki
+site_description: .NET / C# 编程规范、最佳实践与语法演进的 LLM Wiki 知识库
+site_url: https://fenzel999.github.io/llm-wiki-dotnet/
+repo_url: https://github.com/fenzel999/llm-wiki-dotnet
+repo_name: llm-wiki-dotnet
+edit_uri: edit/main/wiki/
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换暗色
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 切换亮色
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+
+extra:
+  generator: false
+
+nav:
+  - 首页: index.md
+  - 全景: overview.md
+  - 思维导图: 思维导图.md
+  - 知识图谱 3D: 知识图谱3D.md
+  - 操作日志: log.md
+  - .NET:
+      - dotnet/overview.md
+      - 文件型应用: dotnet/file-based-apps.md
+      - 原生 AOT: dotnet/native-aot.md
+      - C#:
+          - 扩展成员: dotnet/csharp/extension-members.md
+          - field 关键字: dotnet/csharp/field-keyword.md
+          - 空条件赋值: dotnet/csharp/null-conditional-assignment.md
+          - nameof 非绑定泛型: dotnet/csharp/nameof-unbound-generics.md
+          - 隐式 Span 转换: dotnet/csharp/implicit-span-conversions.md
+          - lambda 参数修饰符: dotnet/csharp/lambda-parameter-modifiers.md
+      - ASP.NET Core:
+          - 最小 API 验证: dotnet/aspnet-core/minimal-api-validation.md
+          - OpenAPI 3.1: dotnet/aspnet-core/openapi-3-1.md
+      - EF Core:
+          - 复杂类型与 JSON: dotnet/ef-core/complex-types-json.md
+          - 命名查询筛选: dotnet/ef-core/named-query-filters.md
+      - 运行时: dotnet/runtime/jit-optimizations.md
+      - Blazor: dotnet/blazor/javascript-improvements.md
+  - 概念:
+      - 可空引用类型: concepts/nullable-reference-types.md
+      - 记录(record): concepts/records.md
+      - 模式匹配: concepts/pattern-matching.md
+      - Span 与 Memory: concepts/span-memory.md
+      - 依赖注入: concepts/dependency-injection.md
+      - 异步编程: concepts/async-await.md
+      - 泛型: concepts/generics.md
+      - ValueTask: concepts/value-task.md
+      - 源生成器: concepts/source-generators.md
+  - 规范:
+      - 命名: standards/naming.md
+      - 异常处理: standards/exception-handling.md
+      - 日志: standards/logging.md
+      - 配置: standards/configuration.md
+      - 单元测试: standards/unit-testing.md
+      - API 设计: standards/api-design.md
+      - 异步最佳实践: standards/async-best-practices.md
+      - 空处理: standards/null-handling.md
+  - 模式:
+      - Result 类型: patterns/result-type.md
+      - 仓储: patterns/repository.md
+      - Options 模式: patterns/options-pattern.md
+      - 管道行为: patterns/pipeline-behavior.md
+      - 泛型主机: patterns/generic-host.md
+      - 最小 API 组织: patterns/minimal-api-organization.md
+      - 释放与 using: patterns/disposable-using.md
+  - 反模式:
+      - 吞掉异常: anti-patterns/swallowing-exceptions.md
+      - async void: anti-patterns/async-void.md
+      - 魔法数字: anti-patterns/magic-numbers.md
+      - 上帝方法: anti-patterns/god-methods.md
+      - 服务定位器: anti-patterns/service-locator.md
+      - 过度可变: anti-patterns/excessive-mutability.md
+      - 阻塞异步: anti-patterns/blocking-async.md
+      - 过早优化: anti-patterns/premature-optimization.md
+  - 对比:
+      - record vs class: comparisons/record-vs-class.md
+      - List vs ImmutableArray: comparisons/list-vs-immutablearray.md
+      - RAG vs LLM Wiki: comparisons/rag-vs-llm-wiki.md
+      - .NET 版本演进: comparisons/net-evolution.md
+  - 治理:
+      - 质量准则 QA: QA.md
+      - 持久约定 POLICY: POLICY.md
+      - 质量报告: QA-REPORT.md
+      - 如何反馈: 如何反馈.md
+      - 资料索引: sources/README.md

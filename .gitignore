@@ -1,0 +1,19 @@
+# Build artifacts
+site/
+*.pyc
+__pycache__/
+.DS_Store
+
+# Python venv
+.venv/
+venv/
+
+# OpenCode / editor
+.opencode/
+.vscode/
+
+# Local raw drops not yet ingested
+raw/local-inbox/
+
+# Node
+node_modules/

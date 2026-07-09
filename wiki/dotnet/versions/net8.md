@@ -11,42 +11,39 @@ updated: 2026-07-09
 
 # .NET 8 / C# 12 关键知识
 
-.NET 8 于 2023-11 发布（**LTS**，支持到 2026-11）。对应 **C# 12**。本页汇总其在 C# 语言、
-ASP.NET Core、EF Core 方面的关键能力；与 .NET 10 的差异见 [.NET 版本演进](../../comparisons/net-evolution.md)。
+.NET 8 于 2023-11 发布（**LTS，到 2026-11 止**），对应 **C# 12**。本页汇总 **v8 独有或 LTS 标志性特性**，强调稳定基础；请查阅 [.NET 版本演进](../comparisons/net-evolution.md) 了解 net10 对它的扩展与替代品。
 
 ## C# 12 语言特性
 
-- **集合表达式（Collection Expressions）**：用 `[1, 2, 3]` 统一初始化数组/`List`/`Span`/`ImmutableArray` 等，
-  支持 spread `..other` 展开。
-- **主构造函数（Primary Constructors）**：`class` / `struct` 也可写主构造函数（record 早已有）。
-- **内联数组（Inline Arrays）**：`[InlineArray(10)] struct Buf { private int _e; }` 固定大小缓冲区，零分配高性能。
-- **文件本地类型（File-local types）**：`file class Foo` 仅当前文件可见。
-- **ref 改进**：`ref readonly` 参数、`ref` 字段更完善；`params` 暂不支持集合（C# 13 才有）。
+- **集合表达式**：`List<int> a = [1, 2, 3]; var b = [.. a, 0];`，支持 immutable array、Span 等，并辅以主构造函数。
+- **主构造函数** (`class Point(int X, int Y);`) - 语言级默认值。
+- **内联数组**：`[InlineArray(10)] struct Buf { private int _e; }` - 零分配高性能缓冲区。
+- **文件本地类型**：`file class Foo` - 仅当前文件可见。
+- **ref 改进**：`ref readonly` 参数、`ref` 字段细化。
 
 ```csharp
-// 集合表达式 + 主构造函数
-public class Point(int X, int Y)
-{
-    public int[] Coords => [X, Y];          // 集合表达式
-    public int[] WithOffset => [.. Coords, 0]; // spread
-}
+public class Point(int X, int Y) { public int[] Coords => [X, Y]; }
 ```
 
 ## ASP.NET Core 8
 
-- `MapGroup` 路由分组成熟可用；原生 AOT 支持起步（net8 起 ASP.NET Core 可发布为 AOT，但限制较多）。
-- **无内建 OpenAPI 生成器**：net8 需第三方库才能出文档；自 .NET 9 起提供 `AddOpenApi()`，.NET 10 升级到 3.1（见 [原生 OpenAPI 3.1](../aspnet-core/openapi-3-1.md)）。本库统一采用 .NET 10 原生方案，不再用 Swashbuckle。
-- 最小 API 验证：**net8 无内建**。.NET 10 起提供内置验证（见 [最小 API 验证](../aspnet-core/minimal-api-validation.md)），本库以该方案为准，不引入 FluentValidation。
+- **无内建 OpenAPI 生成器**：需第三方库（Swashbuckle）才能出 OpenAPI 文档。**自 .NET 9 起提供原生 `AddOpenApi()`，.NET 10 则进一步升级为 3.1。**本库统一采用 .NET 10 方案，不再用 Swashbuckle（见 [原生 OpenAPI 3.1](../aspnet-core/openapi-3-1.md)）。
+- **无内置最小 API 验证**。需第三方（如 FluentValidation）或手写过滤器。**自 .NET 10 起提供自动验证**（见 [最小 API 验证](../aspnet-core/minimal-api-validation.md)），本库以该方案为准。
 
 ## EF Core 8
 
-- **复杂类型（Complex Types）** 正式支持（值对象映射）。
-- **基元集合（Primitive Collections）** 映射（`List<int>` 等存为 JSON/值）。
-- `ExecuteUpdate` / `ExecuteDelete` 批量命令（无需先查再改）。
+- **复杂类型** 正式支持（值对象映射于宿主主键），不需 UoW/Repository 包装。
+- **基元集合** 映射（`List<int>` 等存为 JSON/原生值类型）。
+- **ExecuteUpdate / ExecuteDelete** 批量编辑命令 - 无须先查再改。
 
 ## 适用版本
 
 === "net8"
-    上述 C# 12 / EF Core 8 / ASP.NET Core 8 特性可用。
+    .NET 8 LTS 独有或 LTS 标志性特性。相较 LTS，.NET 9 / .NET 10 不仅向下兼容，还叠加更多新功能（See [.NET 版本演进](../comparisons/net-evolution.md)）。
 === "net9 / net10"
     全部向下兼容；并叠加 [.NET 9](net9.md) / [.NET 10](../overview.md) 新特性。
+
+## 参考资料
+
+- [.NET 版本演进](../comparisons/net-evolution.md) - 时间线与特征矩阵
+- [Sources README](../sources/README.md)

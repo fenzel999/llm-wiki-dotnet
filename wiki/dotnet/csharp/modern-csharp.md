@@ -268,7 +268,7 @@ public class HelloGenerator : IIncrementalGenerator
 }
 ```
 
-示例在编译期注入了一个常量类，整个过程不会在每次保存时都全量重跑。它与 [依赖注入](dependency-injection.md) 也常常是搭档——很多 DI 框架正是靠源生成器在编译期把注册代码准备好，既快又能在 AOT 下工作。
+示例在编译期注入了一个常量类，整个过程不会在每次保存时都全量重跑。它与 [依赖注入](../fundamentals/dependency-injection.md) 也常常是搭档——很多 DI 框架正是靠源生成器在编译期把注册代码准备好，既快又能在 AOT 下工作。
 
 ❌ 仍使用旧的 `ISourceGenerator` 接口，每次重编译都会全量执行 `Execute`，在大型项目里明显拖慢构建：
 
@@ -290,10 +290,10 @@ public class Old : ISourceGenerator
 
 ---
 
-把上面七块串起来看，它们其实是现代 C# 的一条主线：用 [`record`](#records) 和[可空引用类型](#nullable)把数据描述得既准确又安全，用[泛型](#generics)和[模式匹配](#pattern-matching)把逻辑写得既通用又清晰，再用[Span 与 Memory](#span)、[ValueTask](#value-task)和[源生成器](#source-generators)把性能与样板消灭在编译期。理解了这条线，再去读[异步编程](async-await.md)与[依赖注入](dependency-injection.md)那两篇，会顺理成章得多。
+把上面七块串起来看，它们其实是现代 C# 的一条主线：用 [`record`](#records) 和[可空引用类型](#nullable)把数据描述得既准确又安全，用[泛型](#generics)和[模式匹配](#pattern-matching)把逻辑写得既通用又清晰，再用[Span 与 Memory](#span)、[ValueTask](#value-task)和[源生成器](#source-generators)把性能与样板消灭在编译期。理解了这条线，再去读[异步编程](async-await.md)与[依赖注入](../fundamentals/dependency-injection.md)那两篇，会顺理成章得多。
 
 ## 参考资料
 
 - 官方文档：[C# 语言指南](https://learn.microsoft.com/dotnet/csharp/)
 - [异步编程](async-await.md)
-- [依赖注入](dependency-injection.md)
+- [依赖注入](../fundamentals/dependency-injection.md)

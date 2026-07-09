@@ -68,6 +68,6 @@ ImmutableArray<int> frozen = builder.MoveToImmutable();
 ## 参考资料
 
 - 相关：[record 与 class 对比](record-vs-class.md)
-- 相关：[Span 与内存安全](../concepts/modern-csharp.md#span)
+- 相关：[Span 与内存安全](../dotnet/csharp/modern-csharp.md#span)
 - 相关：[.NET 版本演进](net-evolution.md)
 - 官方文档：[ImmutableArray&lt;T&gt;](https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1)

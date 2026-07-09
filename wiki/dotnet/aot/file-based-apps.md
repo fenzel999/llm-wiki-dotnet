@@ -68,5 +68,5 @@ static void Main() { }   // ❌ 与顶层语句的隐式入口冲突
 
 ## 参考资料
 
-- 相关：[.NET 10 主题地图](overview.md)
+- 相关：[.NET 10 主题地图](../overview.md)
 - 官方文档：[File-based apps (.NET)](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps)

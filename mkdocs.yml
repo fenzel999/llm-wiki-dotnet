@@ -65,27 +65,34 @@ nav:
   - 全景: overview.md
   - 思维导图: 思维导图.md
   - 操作日志: log.md
-  - .NET 10:
+  - .NET:
       - dotnet/overview.md
-      - 文件型应用: dotnet/file-based-apps.md
-      - 原生 AOT: dotnet/native-aot.md
-      - C# 14 新特性: dotnet/csharp/csharp-14.md
-      - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
-      - EF Core 10: dotnet/ef-core/ef-core-10.md
-      - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
-      - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md
-      - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
+      - C# 语言:
+          - C# 现代语言特性: dotnet/csharp/modern-csharp.md
+          - C# 14 新特性: dotnet/csharp/csharp-14.md
+          - 异步编程: dotnet/csharp/async-await.md
+      - 框架基础:
+          - 依赖注入: dotnet/fundamentals/dependency-injection.md
+      - Web / Minimal API:
+          - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
+      - 数据访问 EF Core:
+          - EF Core 10: dotnet/ef-core/ef-core-10.md
+          - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
+      - AOT 与部署:
+          - 原生 AOT: dotnet/aot/native-aot.md
+          - 文件型应用: dotnet/aot/file-based-apps.md
+      - 运行时:
+          - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md
+      - Blazor:
+          - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
       - 版本对照:
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
-  - 语言与规范:
-      - 语言概念:
-          - C# 现代语言特性: concepts/modern-csharp.md
-          - 异步编程: concepts/async-await.md
-          - 依赖注入: concepts/dependency-injection.md
-      - 工程规范:
-          - 命名与 API 约定: standards/coding-conventions.md
-          - 健壮性与工程质量: standards/quality-engineering.md
+  - 架构:
+      - 模块化单体架构: architecture/modular-monolith.md
+  - 工程规范:
+      - 命名与 API 约定: standards/coding-conventions.md
+      - 健壮性与工程质量: standards/quality-engineering.md
   - 实践:
       - 模式:
           - 组合与架构模式: patterns/composition.md

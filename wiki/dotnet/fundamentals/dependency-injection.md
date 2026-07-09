@@ -62,7 +62,7 @@ public class OrderService
 
 ## 参考资料
 
-- [异步编程](async-await.md)
-- [泛型与约束](modern-csharp.md#generics)
-- [服务定位器反模式](../anti-patterns/design-antipatterns.md#service-locator)
+- [异步编程](../csharp/async-await.md)
+- [泛型与约束](../csharp/modern-csharp.md#generics)
+- [服务定位器反模式](../../anti-patterns/design-antipatterns.md#service-locator)
 - 官方文档：[.NET 中的依赖注入](https://learn.microsoft.com/dotnet/core/extensions/dependency-injection)

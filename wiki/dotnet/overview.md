@@ -16,8 +16,8 @@ updated: 2026-07-10
 ## 主题地图
 
 - **运行时与部署**
-  - [文件型应用（file-based apps）](file-based-apps.md)：无需项目文件即可运行单文件程序。
-  - [原生 AOT（Native AOT）](native-aot.md)：提前编译（ahead-of-time compilation）与 trimming（裁剪）。
+  - [文件型应用（file-based apps）](aot/file-based-apps.md)：无需项目文件即可运行单文件程序。
+  - [原生 AOT（Native AOT）](aot/native-aot.md)：提前编译（ahead-of-time compilation）与 trimming（裁剪）。
   - [JIT 性能优化](runtime/jit-optimizations.md)：PGO 与循环优化等运行时改进。
 
 - **C# 14 语言特性**

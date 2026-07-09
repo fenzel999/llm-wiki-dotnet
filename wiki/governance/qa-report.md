@@ -49,7 +49,7 @@ updated: 2026-07-09
 | 页面 | 官方文档 |
 |------|----------|
 | dotnet/csharp/csharp-14.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
-| dotnet/file-based-apps.md | [File-based apps (.NET)](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps) |
+| dotnet/aot/file-based-apps.md | [File-based apps (.NET)](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps) |
 | dotnet/aspnet-core/aspnet-core-10.md | [What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0) |
 | dotnet/ef-core/ef-core-10.md | [What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew) |
 | dotnet/runtime/jit-optimizations.md | [.NET runtime compilation config (PGO)](https://learn.microsoft.com/dotnet/core/runtime-config/compilation) |

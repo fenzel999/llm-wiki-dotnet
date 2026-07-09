@@ -69,5 +69,5 @@ var json = JsonSerializer.Serialize(obj);
 
 ## 参考资料
 
-- 相关：[JIT 性能优化](runtime/jit-optimizations.md)
+- 相关：[JIT 性能优化](../runtime/jit-optimizations.md)
 - 官方文档：[Native AOT deployment](https://learn.microsoft.com/dotnet/core/deploying/native-aot)

@@ -18,7 +18,7 @@ updated: 2026-07-10
 如果你是**从头建立体系**，按下面顺序读最顺：
 
 1. **[.NET 总览](dotnet/overview.md)** —— 先建立全局地图，知道有哪些主题。
-2. **[C# 现代语言特性](concepts/modern-csharp.md)** —— record、可空引用、模式匹配、Span、泛型等串成一篇。
+2. **[C# 现代语言特性](dotnet/csharp/modern-csharp.md)** —— record、可空引用、模式匹配、Span、泛型等串成一篇。
 3. **工程规范**：[命名与 API 约定](standards/coding-conventions.md) → [健壮性与工程质量](standards/quality-engineering.md)。
 4. **实践**：[组合与架构模式](patterns/composition.md) 与 [释放与 using](patterns/disposable-using.md)；同时对照 [反模式](anti-patterns/design-antipatterns.md)。
 5. **.NET 10 落地**：[C# 14 新特性](dotnet/csharp/csharp-14.md)、[ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md)、[EF Core 10](dotnet/ef-core/ef-core-10.md)。
@@ -28,27 +28,38 @@ updated: 2026-07-10
 
 ## 全库目录
 
-### .NET 8 / 9 / 10
+### .NET 平台
 
 - [.NET 总览](dotnet/overview.md) — .NET 10 / C# 14 关键主题地图
-- [文件型应用](dotnet/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
-- [原生 AOT](dotnet/native-aot.md) — 提前编译、 trimming 与受限反射
-- [C# 14 新特性](dotnet/csharp/csharp-14.md) — extension 成员、field 关键字、空条件赋值、nameof 非绑定泛型、隐式 Span 转换、lambda 参数修饰符
-- [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
-- [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
-- [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
-- [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进
-- [Blazor JS 改进](dotnet/blazor/javascript-improvements.md) — Blazor 与 JS 互操作增强
-- 版本对照：
+- **C# 语言**：
+    - [C# 现代语言特性](dotnet/csharp/modern-csharp.md) — record、可空引用、泛型、模式匹配、Span/Memory、ValueTask、源生成器
+    - [C# 14 新特性](dotnet/csharp/csharp-14.md) — extension 成员、field 关键字、空条件赋值、nameof 非绑定泛型、隐式 Span 转换、lambda 参数修饰符
+    - [异步编程](dotnet/csharp/async-await.md) — Task 模型与同步上下文
+- **框架基础**：
+    - [依赖注入](dotnet/fundamentals/dependency-injection.md) — DI 容器与生命周期
+- **Web / Minimal API**：
+    - [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
+- **数据访问（EF Core）**：
+    - [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
+    - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
+- **AOT 与部署**：
+    - [原生 AOT](dotnet/aot/native-aot.md) — 提前编译、 trimming 与受限反射
+    - [文件型应用](dotnet/aot/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
+- **运行时**：
+    - [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进
+- **Blazor**：
+    - [Blazor JS 改进](dotnet/blazor/javascript-improvements.md) — Blazor 与 JS 互操作增强
+- **版本对照**：
     - [.NET 8 / C# 12 关键知识](dotnet/versions/net8.md) — LTS；集合表达式、主构造函数、EF Core 8
     - [.NET 9 / C# 13 关键知识](dotnet/versions/net9.md) — STS；params 集合、内建 OpenAPI 3.0、Microsoft.Extensions.AI
     - [.NET 版本演进](comparisons/net-evolution.md) — 时间线、LTS/STS 与特性矩阵
 
-### 语言与规范
+### 架构
 
-- [C# 现代语言特性](concepts/modern-csharp.md) — record、可空引用、泛型、模式匹配、Span/Memory、ValueTask、源生成器
-- [依赖注入](concepts/dependency-injection.md) — DI 容器与生命周期
-- [异步编程](concepts/async-await.md) — Task 模型与同步上下文
+- [模块化单体架构](architecture/modular-monolith.md) — 单进程内按模块解耦，兼顾单体的简单与微服务的边界
+
+### 工程规范
+
 - [命名与 API 约定](standards/coding-conventions.md) — 命名、API 设计、空处理
 - [健壮性与工程质量](standards/quality-engineering.md) — 异常、日志、配置、测试、异步
 
@@ -75,8 +86,16 @@ updated: 2026-07-10
   `title` / `summary` / `tags` / `introduced-in` / `applies-to` / `status` / `source`，
   可直接用于判断与检索，**不必通读全文**。
 - **分类（目录即主题）**：
-    - `dotnet/` —— .NET 10 / C# 14 及 ASP.NET Core、EF Core、运行时、Blazor 特性
-    - `concepts/` —— 语言概念（NRT、record、模式匹配、Span、DI、异步、泛型…）
+    - `dotnet/` —— .NET 平台知识树，按技术子域分文件夹：
+        - `dotnet/csharp/` —— C# 语言（现代特性、C# 14、异步编程）
+        - `dotnet/fundamentals/` —— 框架基础（依赖注入…）
+        - `dotnet/aspnet-core/` —— Web / Minimal API
+        - `dotnet/ef-core/` —— 数据访问（EF Core）
+        - `dotnet/aot/` —— AOT 与部署（Native AOT、文件型应用）
+        - `dotnet/runtime/` —— 运行时（JIT…）
+        - `dotnet/blazor/` —— Blazor
+        - `dotnet/versions/` —— 各版本关键知识（net8 / net9…）
+    - `architecture/` —— 架构方向（模块化单体架构…）
     - `standards/` —— 工程规范（命名、异常、日志、配置、测试、API 设计…）
     - `patterns/` —— 推荐做法（Options、管道、泛型主机、最小 API 组织、释放）
     - `anti-patterns/` —— 反模式（含 ❌ 错误 / ✅ 正确 对比）

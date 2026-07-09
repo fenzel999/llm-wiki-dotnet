@@ -15,7 +15,7 @@ updated: 2026-07-10
 
 这一句话可以展开成两个关键差异。其一是**相等性**：`record` 默认按内容比较，两个 `record` 只要每个字段都一样，它们就相等；`class` 默认按"是不是同一个对象"比较，两个字段一模一样的 `class` 实例，只要不是同一个引用，就不相等。其二是**可变性**：`record` 主构造器里的属性默认是不可变的（`init` 访问器），配合 `with` 表达式可以做"不改原对象、只换个字段返回新副本"的非破坏性拷贝；`class` 默认可变，你爱怎么改就怎么改，改完原对象也跟着变。
 
-所以选型的核心矛盾其实很清晰：**你关心的是"内容是否相同、能不能安全地当数据传来传去"，还是"它作为唯一一个实体、有自己的身份和状态"？** 前者用 `record`，后者用 `class`。如果连堆分配都不想要，还可以用 `record struct` 拿到值语义的同时避免引用类型的开销——这一点我们在 [record 值语义](../concepts/modern-csharp.md#records) 里还会展开。
+所以选型的核心矛盾其实很清晰：**你关心的是"内容是否相同、能不能安全地当数据传来传去"，还是"它作为唯一一个实体、有自己的身份和状态"？** 前者用 `record`，后者用 `class`。如果连堆分配都不想要，还可以用 `record struct` 拿到值语义的同时避免引用类型的开销——这一点我们在 [record 值语义](../dotnet/csharp/modern-csharp.md#records) 里还会展开。
 
 ## 取舍对比
 
@@ -65,7 +65,7 @@ Console.WriteLine(acc1 == acc2); // True：引用相等
 
 把选择标准压成一句话：**你要建模的是"数据"还是"实体"？**
 
-如果它是数据——只携带信息、比较时看内容、建好之后基本不再变——那就用 `record`。它自动生成的相等与哈希能帮你省掉一大堆样板，尤其是当你要把对象当字典键、或者要频繁比较"两个东西装的是不是一样"的时候。如果同时还想要值语义又不想进堆，记得考虑 `record struct`（细节见 [record](../concepts/modern-csharp.md#records)）。
+如果它是数据——只携带信息、比较时看内容、建好之后基本不再变——那就用 `record`。它自动生成的相等与哈希能帮你省掉一大堆样板，尤其是当你要把对象当字典键、或者要频繁比较"两个东西装的是不是一样"的时候。如果同时还想要值语义又不想进堆，记得考虑 `record struct`（细节见 [record](../dotnet/csharp/modern-csharp.md#records)）。
 
 如果它是有身份、有状态、会被反复修改的实体——"同一笔账户就是同一个对象"这种——那就用 `class`。它让你原地改状态、用引用标识唯一性，复杂的继承体系也更好表达。
 
@@ -73,7 +73,7 @@ Console.WriteLine(acc1 == acc2); // True：引用相等
 
 ## 参考资料
 
-- 相关：[record 值语义与不可变建模](../concepts/modern-csharp.md#records)
-- 相关：[Span 与内存安全](../concepts/modern-csharp.md#span)
+- 相关：[record 值语义与不可变建模](../dotnet/csharp/modern-csharp.md#records)
+- 相关：[Span 与内存安全](../dotnet/csharp/modern-csharp.md#span)
 - 相关：[List 与 ImmutableArray 对比](list-vs-immutablearray.md)
 - 官方文档：[record（C# 参考）](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record)

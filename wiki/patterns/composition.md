@@ -88,11 +88,11 @@ var port = int.Parse(Configuration["Notification:Port"]); // 无校验、易崩�
 - **把机密写进 `appsettings.json`**：应走 Secret Manager / 环境变量。
 - **忽略 `ValidateOnStart`**：错误配置要等到运行时才暴露，而非启动即失败。
 
-Options 模式几乎总是和[依赖注入](../concepts/dependency-injection.md)一起出现，也常被[泛型主机](#generic-host)在启动阶段顺手绑定好。它对所有受支持的 .NET 版本通用，没有版本差异。
+Options 模式几乎总是和[依赖注入](../dotnet/fundamentals/dependency-injection.md)一起出现，也常被[泛型主机](#generic-host)在启动阶段顺手绑定好。它对所有受支持的 .NET 版本通用，没有版本差异。
 
 ## 泛型主机 {#generic-host}
 
-配置有了，下一个问题是：谁来读它、谁来跑长时间运行的逻辑？当你写一个控制台程序、消息消费者、定时作业或守护进程，希望复用和 ASP.NET Core 一致的配置 / 日志 / DI 体系时，泛型主机（Generic Host）就是为此而生的。它把配置、日志与[依赖注入](../concepts/dependency-injection.md)统一托管起来，并对外暴露一套应用生命周期（lifetime）钩子，让你能优雅地响应关闭信号。
+配置有了，下一个问题是：谁来读它、谁来跑长时间运行的逻辑？当你写一个控制台程序、消息消费者、定时作业或守护进程，希望复用和 ASP.NET Core 一致的配置 / 日志 / DI 体系时，泛型主机（Generic Host）就是为此而生的。它把配置、日志与[依赖注入](../dotnet/fundamentals/dependency-injection.md)统一托管起来，并对外暴露一套应用生命周期（lifetime）钩子，让你能优雅地响应关闭信号。
 
 反过来，如果一个工具只是「跑一次就退出的短命令」，既不需要 DI 也不需要后台循环，那直接用 `Main` 写完就行了，没必要为了用而引入整个宿主——那只会徒增复杂度。
 
@@ -234,7 +234,7 @@ builder.Services.AddMediatR(cfg =>
 });
 ```
 
-如果你没用 MediatR，同样的效果也能通过[依赖注入](../concepts/dependency-injection.md)的装饰器（decorator）实现——把横切逻辑包在真实 handler 的外层即可，思路完全一致。
+如果你没用 MediatR，同样的效果也能通过[依赖注入](../dotnet/fundamentals/dependency-injection.md)的装饰器（decorator）实现——把横切逻辑包在真实 handler 的外层即可，思路完全一致。
 
 ❌ 顺序错了就很要命：下面把验证行为排在事务之后，意味着哪怕请求根本不合法，也会先开一个数据库事务，白白占用连接：
 
@@ -337,7 +337,7 @@ public record Result<T>(bool IsSuccess, T? Value, string? Error); // 重复造�
 - [.NET 通用宿主官方文档](https://learn.microsoft.com/dotnet/core/extensions/generic-host)
 - [MediatR](https://github.com/jbogard/MediatR)
 - [ASP.NET Core Minimal API](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
-- 相关：[依赖注入](../concepts/dependency-injection.md)
+- 相关：[依赖注入](../dotnet/fundamentals/dependency-injection.md)
 - 相关：[释放与 using](disposable-using.md)
 - 相关：[EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)
 - 相关：[OpenAPI 3.1（aspnet-core）](../dotnet/aspnet-core/aspnet-core-10.md#openapi-3-1)

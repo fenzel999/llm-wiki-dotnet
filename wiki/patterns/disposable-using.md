@@ -62,7 +62,7 @@ public sealed class DbConnectionHolder : IAsyncDisposable
 await using var holder = new DbConnectionHolder(conn);
 ```
 
-`using` 声明（不带花括号）会在方法返回时自动释放；`await using` 则配合[异步（async-await）](../concepts/async-await.md)，确保异步清理在离开作用域之前真的完成，而不是把未完成的释放甩在背后。一个很典型的落点是数据库事务：这样写可以保证无论提交成功还是中途异常，连接都正确关闭：
+`using` 声明（不带花括号）会在方法返回时自动释放；`await using` 则配合[异步（async-await）](../dotnet/csharp/async-await.md)，确保异步清理在离开作用域之前真的完成，而不是把未完成的释放甩在背后。一个很典型的落点是数据库事务：这样写可以保证无论提交成功还是中途异常，连接都正确关闭：
 
 ```csharp
 await using var tx = await _db.Database.BeginTransactionAsync(ct);
@@ -95,8 +95,8 @@ public void Dispose()
 
 ## 参考资料
 
-- 相关：[异步（async-await）](../concepts/async-await.md)
-- 相关：[依赖注入](../concepts/dependency-injection.md)
+- 相关：[异步（async-await）](../dotnet/csharp/async-await.md)
+- 相关：[依赖注入](../dotnet/fundamentals/dependency-injection.md)
 - 相关：[EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)
 - 相关：[组合与架构模式（泛型主机 / 管道行为）](composition.md)
 - 官方文档：[using 语句（C#）](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/using)

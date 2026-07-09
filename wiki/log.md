@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **重构（reorg）**：按技术子域重排 .NET 知识树，并新增架构方向。
+    - `concepts/` 全部并入 `dotnet/`：`modern-csharp`、`async-await` → `dotnet/csharp/`；`dependency-injection` → `dotnet/fundamentals/`。`concepts/` 目录移除。
+    - `dotnet/` 根下 `native-aot`、`file-based-apps` → `dotnet/aot/`。
+    - 新建 `architecture/` 与首篇 `architecture/modular-monolith.md`（模块化单体架构；来源 Microsoft Learn .NET 架构指南 + eShop 示例，含 C# 示例与好/坏对比）。
+    - 全量修正跨页相对链接（composition / disposable-using / design-antipatterns / record-vs-class / list-vs-immutablearray / rag-vs-llm-wiki / ef-data-access / jit-optimizations / overview / index / 思维导图 / qa-report）。
+    - 同步 `mkdocs.yml` nav（.NET 分：C# 语言 / 框架基础 / Web·Minimal API / 数据访问 EF Core / AOT 与部署 / 运行时 / Blazor / 版本对照；新增「架构」「工程规范」顶级组）、`index.md`、`思维导图.md`（新增青色「架构」分组）。`mkdocs build --strict` 通过。
+
 - 2026-07-10 **Correct（阅读模式）**：护眼改为默认底色（不再单列按钮），主题按钮精简为 `☀️白天`（护眼暖色·浅）/ `🌙黑夜`（护眼暖色·深），保留 `📖专注` 开关（默认开）。影响：`extra/theme.css`（default/slate 均改暖色调）、`extra/modes.js`（移除 eye-care 按钮与逻辑，快捷键 d/n/f）、`extra/modes.css`（删 `.eye-care` 块）。`mkdocs build --strict` 通过。
 
 - 2026-07-10 **合并（compose）**：新建 `patterns/composition.md`（组合与架构模式，合并 options-pattern / generic-host / pipeline-behavior / minimal-api-organization 四页），重写 `patterns/disposable-using.md` 正文；删除上述 4 个旧文件；同步更新 `index.md` 与 `思维导图.md` 的模式节点。其它目录指向旧文件的链接（standards/、dotnet/、anti-patterns/）未改动。

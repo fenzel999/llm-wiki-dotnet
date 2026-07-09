@@ -24,7 +24,7 @@ updated: 2026-07-10
 
 - :material-lightbulb: **核心概念**
   record、可空引用、泛型、模式匹配、Span、依赖注入、异步、源生成器
-  [进入](concepts/modern-csharp.md)
+  [进入](dotnet/csharp/modern-csharp.md)
 
 - :material-checkbox-multiple-marked: **规范与模式**
   命名、异常、日志、配置、测试；Result、Options、管道、EF Core 直接数据访问

@@ -5,7 +5,7 @@ tags: [comparison, list, immutablearray, 集合, 性能, 线程安全]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1
 updated: 2026-07-09
 ---
 

@@ -42,8 +42,8 @@ updated: 2026-07-09
 
 ## 主题地图
 
-- **语言层**：[C# 扩展成员](dotnet/csharp/extension-members.md) · [field 关键字](dotnet/csharp/field-keyword.md) · [空条件赋值](dotnet/csharp/null-conditional-assignment.md) · [nameof 非绑定泛型](dotnet/csharp/nameof-unbound-generics.md) · [隐式 Span 转换](dotnet/csharp/implicit-span-conversions.md) · [lambda 参数修饰符](dotnet/csharp/lambda-parameter-modifiers.md)
-- **平台层**：[ASP.NET Core](dotnet/aspnet-core/minimal-api-validation.md) · [EF Core](dotnet/ef-core/complex-types-json.md) · [运行时](dotnet/runtime/jit-optimizations.md) · [Blazor](dotnet/blazor/javascript-improvements.md)
+- **语言层**：[C# 14 新特性](dotnet/csharp/csharp-14.md)
+- **平台层**：[ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) · [EF Core 10](dotnet/ef-core/ef-core-10.md) · [运行时](dotnet/runtime/jit-optimizations.md) · [Blazor](dotnet/blazor/javascript-improvements.md)
 - **工程层**：[规范](standards/naming.md) · [反模式](anti-patterns/swallowing-exceptions.md) · [对比](comparisons/record-vs-class.md)
 
 ## 怎么用

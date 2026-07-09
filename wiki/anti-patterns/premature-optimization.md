@@ -5,7 +5,7 @@ tags: [anti-pattern, performance, readability]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/standard/performance/
 updated: 2026-07-09
 ---
 

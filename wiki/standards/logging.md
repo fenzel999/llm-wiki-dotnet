@@ -5,7 +5,7 @@ tags: [standard, logging]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/core/extensions/logging
 updated: 2026-07-09
 ---
 

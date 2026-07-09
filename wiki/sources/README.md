@@ -27,8 +27,6 @@ updated: 2026-07-09
 
 ## 本地原始资料
 
-- `raw/articles/` — 用户提供的文章
-- `raw/papers/` — 论文/规范
-- `raw/assets/` — 图片/图表
+- `raw/` — 用户投放的不可变原始资料（文章 / 论文 / 素材）统一放此处，由 Agent 执行 Ingest 编译进 `wiki/`。
 
 > 新增来源时在此登记，并在对应 wiki 页 `source` 字段引用，保证可溯源（POLICY P3）。

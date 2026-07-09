@@ -74,26 +74,15 @@ nav:
       - dotnet/overview.md
       - 文件型应用: dotnet/file-based-apps.md
       - 原生 AOT: dotnet/native-aot.md
-      - C#:
-          - 扩展成员: dotnet/csharp/extension-members.md
-          - field 关键字: dotnet/csharp/field-keyword.md
-          - 空条件赋值: dotnet/csharp/null-conditional-assignment.md
-          - nameof 非绑定泛型: dotnet/csharp/nameof-unbound-generics.md
-          - 隐式 Span 转换: dotnet/csharp/implicit-span-conversions.md
-          - lambda 参数修饰符: dotnet/csharp/lambda-parameter-modifiers.md
-      - ASP.NET Core:
-          - 最小 API 验证: dotnet/aspnet-core/minimal-api-validation.md
-          - OpenAPI 3.1: dotnet/aspnet-core/openapi-3-1.md
-      - EF Core:
-          - 复杂类型与 JSON: dotnet/ef-core/complex-types-json.md
-          - 命名查询筛选: dotnet/ef-core/named-query-filters.md
-          - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
+      - C# 14 新特性: dotnet/csharp/csharp-14.md
+      - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
+      - EF Core 10: dotnet/ef-core/ef-core-10.md
+      - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
       - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md
       - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
       - 版本对照:
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
-          - .NET 版本演进: comparisons/net-evolution.md
   - 语言与规范:
       - 语言概念:
           - 可空引用类型: concepts/nullable-reference-types.md

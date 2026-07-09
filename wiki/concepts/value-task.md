@@ -5,7 +5,7 @@ tags: [valuetask, 异步, 零分配, 性能]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
 updated: 2026-07-09
 ---
 

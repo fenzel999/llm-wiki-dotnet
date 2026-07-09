@@ -5,7 +5,7 @@ tags: [generics, 泛型, 约束, 协变]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/fundamentals/types/generics
 updated: 2026-07-09
 ---
 

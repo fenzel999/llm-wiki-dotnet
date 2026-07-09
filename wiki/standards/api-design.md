@@ -5,7 +5,7 @@ tags: [standard, api-design]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/standard/design-guidelines/
 updated: 2026-07-09
 ---
 

@@ -5,7 +5,7 @@ tags: [record, csharp, 值语义, 不可变]
 introduced-in: net10
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record
 updated: 2026-07-09
 ---
 

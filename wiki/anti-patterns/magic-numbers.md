@@ -5,7 +5,7 @@ tags: [anti-pattern, readability, naming]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/fundamentals/coding-style
 updated: 2026-07-09
 ---
 

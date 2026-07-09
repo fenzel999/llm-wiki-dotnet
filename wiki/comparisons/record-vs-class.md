@@ -5,7 +5,7 @@ tags: [comparison, record, class, 值语义, 引用语义]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record
 updated: 2026-07-09
 ---
 

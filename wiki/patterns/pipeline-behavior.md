@@ -5,7 +5,7 @@ tags: [pattern, cross-cutting, mediatr]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://github.com/jbogard/MediatR
 updated: 2026-07-09
 ---
 

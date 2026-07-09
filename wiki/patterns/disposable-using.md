@@ -5,7 +5,7 @@ tags: [pattern, resource-management, async]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/language-reference/statements/using
 updated: 2026-07-09
 ---
 

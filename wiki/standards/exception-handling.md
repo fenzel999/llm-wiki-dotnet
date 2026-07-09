@@ -5,7 +5,7 @@ tags: [standard, exception]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/fundamentals/exceptions/
 updated: 2026-07-09
 ---
 

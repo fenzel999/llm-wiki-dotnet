@@ -1,38 +1,31 @@
 ---
-title: 最小 API 组织模式（Minimal API Organization）
-summary: 用 MapGroup 对最小 API 进行分组与模块化，直接注入 DbContext，不用 Controller。
-tags: [pattern, aspnet-core, minimal-api]
+title: 鏈€灏?API 缁勭粐妯″紡锛圡inimal API Organization锛?summary: 鐢?MapGroup 瀵规渶灏?API 杩涜鍒嗙粍涓庢ā鍧楀寲锛岀洿鎺ユ敞鍏?DbContext锛屼笉鐢?Controller銆?tags: [pattern, aspnet-core, minimal-api]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis
 updated: 2026-07-09
 ---
 
-## 意图
+## 鎰忓浘
 
-本项目 **统一使用最小 API（Minimal API）组织 HTTP 端点，不使用 Controller**。借助 `MapGroup`
-做路由分组、统一前缀与中间件（如鉴权），按业务模块拆分到多个 `MapXXX` 扩展方法；数据访问
-**直接注入 `DbContext`**（EF Core 已是仓储 + 工作单元，不另加抽象），并接入
-[原生 OpenAPI 3.1](../dotnet/aspnet-core/openapi-3-1.md)。
+鏈」鐩?**缁熶竴浣跨敤鏈€灏?API锛圡inimal API锛夌粍缁?HTTP 绔偣锛屼笉浣跨敤 Controller**銆傚€熷姪 `MapGroup`
+鍋氳矾鐢卞垎缁勩€佺粺涓€鍓嶇紑涓庝腑闂翠欢锛堝閴存潈锛夛紝鎸変笟鍔℃ā鍧楁媶鍒嗗埌澶氫釜 `MapXXX` 鎵╁睍鏂规硶锛涙暟鎹闂?**鐩存帴娉ㄥ叆 `DbContext`**锛圗F Core 宸叉槸浠撳偍 + 宸ヤ綔鍗曞厓锛屼笉鍙﹀姞鎶借薄锛夛紝骞舵帴鍏?[鍘熺敓 OpenAPI 3.1](../dotnet/aspnet-core/aspnet-core-10.md#openapi-3-1)銆?
+> 绾﹀畾锛?*涓嶈嚜宸遍€?`Result<T>` 绫诲瀷**銆傛渶灏?API 宸叉湁鍐呭缓鐨?**`Results<TResult1, ...>` /
+> `TypedResults`** 浣滀负绫诲瀷鍖栬繑鍥炶仈鍚堬紝鎵挎媴銆屾垚鍔?澶辫触澶氱鍝嶅簲銆嶇殑琛ㄨ揪锛屾棤闇€閲嶅瀹炵幇涓€涓?> `Result<T>`銆?
+## 姝ｇ‘鍋氭硶
 
-> 约定：**不自己造 `Result<T>` 类型**。最小 API 已有内建的 **`Results<TResult1, ...>` /
-> `TypedResults`** 作为类型化返回联合，承担「成功/失败多种响应」的表达，无需重复实现一个
-> `Result<T>`。
-
-## 正确做法
-
-在 `Program.cs` 中注册服务与文档端点（**无 Swagger**）：
+鍦?`Program.cs` 涓敞鍐屾湇鍔′笌鏂囨。绔偣锛?*鏃?Swagger**锛夛細
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
-builder.Services.AddOpenApi();   // .NET 10 原生 OpenAPI 3.1，不使用 Swashbuckle
+builder.Services.AddOpenApi();   // .NET 10 鍘熺敓 OpenAPI 3.1锛屼笉浣跨敤 Swashbuckle
 
 var app = builder.Build();
-app.MapOpenApi();                // 暴露 /openapi/v1.json
+app.MapOpenApi();                // 鏆撮湶 /openapi/v1.json
 
 app.MapOrderEndpoints();
 app.MapHealthEndpoints();
@@ -40,8 +33,7 @@ app.MapHealthEndpoints();
 app.Run();
 ```
 
-把端点逻辑抽到独立模块，保持 `Program` 精简；直接消费 `AppDbContext`：
-
+鎶婄鐐归€昏緫鎶藉埌鐙珛妯″潡锛屼繚鎸?`Program` 绮剧畝锛涚洿鎺ユ秷璐?`AppDbContext`锛?
 ```csharp
 public static class OrderEndpoints
 {
@@ -49,7 +41,7 @@ public static class OrderEndpoints
     {
         var group = app.MapGroup("/api/orders")
                        .WithTags("Orders")
-                       .WithOpenApi();   // 纳入 OpenAPI 文档
+                       .WithOpenApi();   // 绾冲叆 OpenAPI 鏂囨。
 
         group.MapGet("/", async (AppDbContext db, CancellationToken ct) =>
             Results.Ok(await db.Orders.ToListAsync(ct)));
@@ -57,12 +49,11 @@ public static class OrderEndpoints
         group.MapPost("/", async (CreateOrderRequest req, AppDbContext db, CancellationToken ct) =>
         {
             if (string.IsNullOrWhiteSpace(req.CustomerId))
-                return Results.BadRequest("客户标识不能为空");
+                return Results.BadRequest("瀹㈡埛鏍囪瘑涓嶈兘涓虹┖");
 
             var order = new Order(req.CustomerId, req.Items);
             db.Orders.Add(order);
-            await db.SaveChangesAsync(ct);   // EF Core 的单元-of-work：一次提交
-            return Results.Created($"/api/orders/{order.Id}", order);
+            await db.SaveChangesAsync(ct);   // EF Core 鐨勫崟鍏?of-work锛氫竴娆℃彁浜?            return Results.Created($"/api/orders/{order.Id}", order);
         });
 
         return app;
@@ -70,8 +61,7 @@ public static class OrderEndpoints
 }
 ```
 
-若端点需要**多种可能的响应类型**，用内建类型化联合明确声明（这也是 OpenAPI 生成多状态码的依据）：
-
+鑻ョ鐐归渶瑕?*澶氱鍙兘鐨勫搷搴旂被鍨?*锛岀敤鍐呭缓绫诲瀷鍖栬仈鍚堟槑纭０鏄庯紙杩欎篃鏄?OpenAPI 鐢熸垚澶氱姸鎬佺爜鐨勪緷鎹級锛?
 ```csharp
 group.MapGet("/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct) =>
     await db.Orders.FindAsync(new object[] { id }, ct) is { } order
@@ -81,14 +71,13 @@ group.MapGet("/{id:guid}", async (Guid id, AppDbContext db, CancellationToken ct
     .ProducesProblem(StatusCodes.Status404NotFound);
 ```
 
-## 类型化返回：Results<T> / TypedResults
+## 绫诲瀷鍖栬繑鍥烇細Results<T> / TypedResults
 
-`Results<...>` 是 .NET 为最小 API 提供的**内建返回类型联合**，等价于「一个端点可能返回 Ok / NotFound /
-BadRequest / Created 等多种带类型的响应」：
+`Results<...>` 鏄?.NET 涓烘渶灏?API 鎻愪緵鐨?*鍐呭缓杩斿洖绫诲瀷鑱斿悎**锛岀瓑浠蜂簬銆屼竴涓鐐瑰彲鑳借繑鍥?Ok / NotFound /
+BadRequest / Created 绛夊绉嶅甫绫诲瀷鐨勫搷搴斻€嶏細
 
 ```csharp
-// 返回类型写成联合，调用方与 OpenAPI 都能看到所有可能结果
-static Results<Ok<Order>, NotFound, BadRequest<ProblemDetails>> Get(Guid id, AppDbContext db)
+// 杩斿洖绫诲瀷鍐欐垚鑱斿悎锛岃皟鐢ㄦ柟涓?OpenAPI 閮借兘鐪嬪埌鎵€鏈夊彲鑳界粨鏋?static Results<Ok<Order>, NotFound, BadRequest<ProblemDetails>> Get(Guid id, AppDbContext db)
 {
     var order = db.Orders.Find(id);
     return order is null
@@ -97,24 +86,13 @@ static Results<Ok<Order>, NotFound, BadRequest<ProblemDetails>> Get(Guid id, App
 }
 ```
 
-- 用 `Results.Ok/TypedResults.Ok`、`NotFound`、`BadRequest`、`Created` 等静态工厂构造具体响应。
-- 需要校验失败的结构化错误时，返回 `BadRequest<ProblemDetails>`（与 .NET 10 内置验证的错误格式一致，见
-  [最小 API 验证](../dotnet/aspnet-core/minimal-api-validation.md)）。
-- **不要**再定义 `Result<T>`/`Either<T>` 之类的自定义联合类型——它与 `Results<T>` 语义重复、徒增概念负担。
+- 鐢?`Results.Ok/TypedResults.Ok`銆乣NotFound`銆乣BadRequest`銆乣Created` 绛夐潤鎬佸伐鍘傛瀯閫犲叿浣撳搷搴斻€?- 闇€瑕佹牎楠屽け璐ョ殑缁撴瀯鍖栭敊璇椂锛岃繑鍥?`BadRequest<ProblemDetails>`锛堜笌 .NET 10 鍐呯疆楠岃瘉鐨勯敊璇牸寮忎竴鑷达紝瑙?  [鏈€灏?API 楠岃瘉](../dotnet/aspnet-core/aspnet-core-10.md#minimal-api-validation)锛夈€?- **涓嶈**鍐嶅畾涔?`Result<T>`/`Either<T>` 涔嬬被鐨勮嚜瀹氫箟鑱斿悎绫诲瀷鈥斺€斿畠涓?`Results<T>` 璇箟閲嶅銆佸緬澧炴蹇佃礋鎷呫€?
+## 浣曟椂浣跨敤 / 浣曟椂涓嶇敤
 
-## 何时使用 / 何时不用
+- 浣跨敤锛氬井鏈嶅姟銆佽交閲?API銆佸揩閫熷師鍨嬶紝绔偣鏁伴噺閫備腑銆?- 浣跨敤锛氶渶鎸夋ā鍧楀垎缁勩€佺粺涓€鍓嶇紑/閴存潈/鐗堟湰鏃讹紝`MapGroup` 鏈€鍚堥€傘€?- 浣跨敤锛氭暟鎹闂洿鎺ユ敞鍏?`AppDbContext`锛岀敱 EF Core 璐熻矗鎸佷箙鍖栦笌浜嬪姟銆?- 涓嶇敤锛?*涓嶈寮曞叆 Controller**鈥斺€旀湰椤圭洰绾﹀畾鍏ㄩ儴绔偣璧版渶灏?API銆?- 涓嶇敤锛氫笉瑕佸彟鍐欎粨鍌紙Repository锛?宸ヤ綔鍗曞厓锛圲nit of Work锛夊寘瑁?`DbContext`锛岄偅鏄噸澶嶆娊璞°€?- 涓嶇敤锛氫笉瑕佽嚜閫?`Result<T>` 绫诲瀷鈥斺€旂敤 `Results<T>`/`TypedResults` 琛ㄨ揪澶氬搷搴斻€?- 涓嶇敤锛氫笉瑕佸湪涓€涓法鏂囦欢閲屽爢鎵€鏈夌鐐癸紝鎸夋ā鍧楁媶鍒嗘墿灞曟柟娉曘€?
+## 鍙傝€冭祫鏂?
+- [OpenAPI 3.1锛坅spnet-core锛塢(../dotnet/aspnet-core/aspnet-core-10.md#openapi-3-1)
+- [EF Core 鏁版嵁璁块棶锛堜笉鐢ㄤ粨鍌?宸ヤ綔鍗曞厓锛塢(../dotnet/ef-core/ef-data-access.md)
+- [鏈€灏?API 楠岃瘉](../dotnet/aspnet-core/aspnet-core-10.md#minimal-api-validation)
+- [渚濊禆娉ㄥ叆](../concepts/dependency-injection.md)
 
-- 使用：微服务、轻量 API、快速原型，端点数量适中。
-- 使用：需按模块分组、统一前缀/鉴权/版本时，`MapGroup` 最合适。
-- 使用：数据访问直接注入 `AppDbContext`，由 EF Core 负责持久化与事务。
-- 不用：**不要引入 Controller**——本项目约定全部端点走最小 API。
-- 不用：不要另写仓储（Repository）/工作单元（Unit of Work）包装 `DbContext`，那是重复抽象。
-- 不用：不要自造 `Result<T>` 类型——用 `Results<T>`/`TypedResults` 表达多响应。
-- 不用：不要在一个巨文件里堆所有端点，按模块拆分扩展方法。
-
-## 参考资料
-
-- [OpenAPI 3.1（aspnet-core）](../dotnet/aspnet-core/openapi-3-1.md)
-- [EF Core 数据访问（不用仓储/工作单元）](../dotnet/ef-core/ef-data-access.md)
-- [最小 API 验证](../dotnet/aspnet-core/minimal-api-validation.md)
-- [依赖注入](../concepts/dependency-injection.md)

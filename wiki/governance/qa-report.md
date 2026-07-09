@@ -34,7 +34,7 @@ updated: 2026-07-09
 | 日期 | 页面 | 改了什么 | 依据 |
 |------|------|----------|------|
 | 2026-07-09 | dotnet/* 与 patterns/* | 修正子代理写错的相对链接深度（`../sources` ↔ `../../sources`、`../../dotnet` ↔ `../dotnet`） | Lint 死链扫描 |
-| 2026-07-09 | dotnet/aspnet-core/minimal-api-validation.md | 删除不存在的 `.WithValidation()`；改为 `AddValidation()` 自动启用 + `.DisableValidation()` 关闭 | Microsoft Learn / 社区资料核实 |
+| 2026-07-09 | dotnet/aspnet-core/aspnet-core-10.md | 删除不存在的 `.WithValidation()`；改为 `AddValidation()` 自动启用 + `.DisableValidation()` 关闭 | Microsoft Learn / 社区资料核实 |
 | 2026-07-09 | dotnet/blazor/javascript-improvements.md | 补全 .NET 10 新增 JS 互操作 API：`InvokeConstructorAsync`、JS 对象属性读写 | ASP.NET Core 10 发行说明 |
 | 2026-07-09 | 11 个 .NET 10 页 | 移除全部 `⚠️ needs-your-call` 标记（语法/API 均已确认） | 官方文档联网核实 |
 
@@ -48,16 +48,11 @@ updated: 2026-07-09
 
 | 页面 | 官方文档 |
 |------|----------|
-| dotnet/csharp/extension-members.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
+| dotnet/csharp/csharp-14.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
 | dotnet/file-based-apps.md | [File-based apps (.NET)](https://learn.microsoft.com/dotnet/core/sdk/file-based-apps) |
-| dotnet/aspnet-core/minimal-api-validation.md | [What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0) |
-| dotnet/ef-core/named-query-filters.md | [What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew) |
-| dotnet/csharp/null-conditional-assignment.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
-| dotnet/csharp/nameof-unbound-generics.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
-| dotnet/aspnet-core/openapi-3-1.md | [What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0) |
-| dotnet/ef-core/complex-types-json.md | [What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew) |
+| dotnet/aspnet-core/aspnet-core-10.md | [What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0) |
+| dotnet/ef-core/ef-core-10.md | [What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew) |
 | dotnet/runtime/jit-optimizations.md | [.NET runtime compilation config (PGO)](https://learn.microsoft.com/dotnet/core/runtime-config/compilation) |
-| dotnet/csharp/lambda-parameter-modifiers.md | [What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14) |
 | dotnet/blazor/javascript-improvements.md | [What's new in ASP.NET Core 10 (Blazor)](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0) |
 
 ## 待办（Lint 发现）

@@ -5,7 +5,7 @@ tags: [dotnet, native-aot, trimming, deployment, net10]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/core/deploying/native-aot
 updated: 2026-07-09
 ---
 

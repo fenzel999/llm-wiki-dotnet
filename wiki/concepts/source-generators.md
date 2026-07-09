@@ -5,7 +5,7 @@ tags: [source-generators, 编译期, aot, 代码生成]
 introduced-in: net10
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/roslyn-sdk/source-generators-overview
 updated: 2026-07-09
 ---
 

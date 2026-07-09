@@ -5,7 +5,7 @@ tags: [pattern-matching, csharp, switch, 语法糖]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/fundamentals/functional/pattern-matching
 updated: 2026-07-09
 ---
 

@@ -5,7 +5,7 @@ tags: [async, await, task, 异步]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/asynchronous-programming
 updated: 2026-07-09
 ---
 

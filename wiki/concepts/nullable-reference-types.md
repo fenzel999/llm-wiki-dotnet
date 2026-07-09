@@ -5,7 +5,7 @@ tags: [nullable, nrt, csharp, 类型系统]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/csharp/nullable-references
 updated: 2026-07-09
 ---
 

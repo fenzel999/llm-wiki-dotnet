@@ -37,16 +37,9 @@ updated: 2026-07-09
 - [.NET 总览](dotnet/overview.md) — .NET 10 / C# 14 关键主题地图
 - [文件型应用](dotnet/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
 - [原生 AOT](dotnet/native-aot.md) — 提前编译、 trimming 与受限反射
-- [C# 扩展成员](dotnet/csharp/extension-members.md) — `extension` 块统一扩展方法/属性/运算符
-- [field 关键字](dotnet/csharp/field-keyword.md) — 自动属性中引用支持字段
-- [空条件赋值](dotnet/csharp/null-conditional-assignment.md) — `?.=` 简化空守卫
-- [nameof 非绑定泛型](dotnet/csharp/nameof-unbound-generics.md) — `nameof(List<>)` 新写法
-- [隐式 Span 转换](dotnet/csharp/implicit-span-conversions.md) — 数组/字符串到 Span 的隐式转换
-- [lambda 参数修饰符](dotnet/csharp/lambda-parameter-modifiers.md) — lambda 参数上的 `ref`/`in`/`out`
-- [最小 API 验证](dotnet/aspnet-core/minimal-api-validation.md) — .NET 10 内置验证与自动 400
-- [OpenAPI 3.1](dotnet/aspnet-core/openapi-3-1.md) — ASP.NET Core 原生 OpenAPI 3.1 文档
-- [EF Core 复杂类型与 JSON](dotnet/ef-core/complex-types-json.md) — 值对象映射与 JSON 列
-- [EF Core 命名查询筛选](dotnet/ef-core/named-query-filters.md) — 命名查询与全局筛选
+- [C# 14 新特性](dotnet/csharp/csharp-14.md) — extension 成员、field 关键字、空条件赋值、nameof 非绑定泛型、隐式 Span 转换、lambda 参数修饰符
+- [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
+- [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
 - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
 - [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进
 - [Blazor JS 改进](dotnet/blazor/javascript-improvements.md) — Blazor 与 JS 互操作增强

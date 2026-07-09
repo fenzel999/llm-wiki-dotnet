@@ -5,7 +5,7 @@ tags: [dotnet, file-based-apps, net10, tooling]
 introduced-in: net10
 applies-to: [net10]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/core/sdk/file-based-apps
 updated: 2026-07-09
 ---
 

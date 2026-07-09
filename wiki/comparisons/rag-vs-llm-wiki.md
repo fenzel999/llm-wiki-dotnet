@@ -5,7 +5,7 @@ tags: [comparison, rag, llm-wiki, retrieval, 知识库]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://github.com/karpathy
 updated: 2026-07-09
 ---
 

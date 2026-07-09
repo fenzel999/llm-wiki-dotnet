@@ -15,6 +15,31 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-10 · 整洁/优雅重构（四方向）
+
+### 1. 清理结构冗余
+- `mkdocs.yml` 导航移除重复的 `comparisons/net-evolution.md` 条目（原在 .NET 10 版本对照与实践/对比两处重复）。
+- 删除空占位目录：`raw/articles`、`raw/papers`、`raw/assets`、`wiki/assets`（均无文件）；同步更新 `wiki/sources/README.md` 的本地资料说明。
+
+### 2. 修正 source 溯源
+- 42 个知识页的 `source` 由占位的 `sources/README.md` 改为真实官方一手来源（Microsoft Learn / 官方博客 / 上游仓库），内部治理与索引页保持 `AGENTS.md`；彻底消除「假来源」。
+
+### 3. 精简合并页面
+- C# 14 六页（extension 成员 / field 关键字 / 空条件赋值 / nameof 非绑定泛型 / 隐式 Span 转换 / lambda 参数修饰符）→ `dotnet/csharp/csharp-14.md`（用显式锚点 `#id` 保链接稳定）。
+- EF Core 两页（复杂类型与 JSON、命名查询筛选器）→ `dotnet/ef-core/ef-core-10.md`；保留 `ef-data-access.md`（属模式，非特性）。
+- ASP.NET Core 两页（最小 API 验证、OpenAPI 3.1）→ `dotnet/aspnet-core/aspnet-core-10.md`。
+- 全库引用（index / overview / dotnet/overview / 思维导图 / mkdocs nav / 各版本页 / qa-report 等）同步折叠更新，无死链。
+
+### 4. 改善渲染观感
+- 思维导图 `.mm` 增加折叠箭头平滑动画与行 hover 高亮。
+
+- 校验：`mkdocs build --strict` 通过（无死链、无缺失、无重复 nav）。页面数 61 → 54。
+
+## 2026-07-10 · 清理无用构建产物
+- 删除本地 `site/`（189 个文件）：MkDocs 生成产物，已被 `.gitignore` 忽略且未纳入 git；GitHub Actions 每次 push 自动重建部署，本地留存属冗余。
+- `raw/articles`、`raw/assets`、`raw/papers` 为空占位目录，属 schema 规定结构，保留。
+- 项目已符合 LLM Wiki 三层架构（`raw/` 源头、`wiki/` 知识层、`AGENTS.md`/`CLAUDE.md` Schema），无需额外改造。
+
 ## 2026-07-09 · 内容整理（AI 友好）
 - 治理页归入 `wiki/governance/`：`QA.md→governance/qa.md`、`POLICY.md→governance/policy.md`、`QA-REPORT.md→governance/qa-report.md`、`如何反馈.md→governance/feedback.md`；更新全库链接与导航。
 - `index.md` 增加「给 AI 的使用说明」：目录即主题（dotnet/concepts/standards/patterns/anti-patterns/comparisons/governance/sources），说明 frontmatter（tags/summary/source）用法。

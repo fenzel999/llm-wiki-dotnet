@@ -5,7 +5,7 @@ tags: [blazor, javascript, interop, net10]
 introduced-in: net10
 applies-to: [net10]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0
 updated: 2026-07-09
 ---
 

@@ -5,7 +5,7 @@ tags: [comparison, dotnet, version, lts, csharp]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: sources/README.md
+source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-10
 updated: 2026-07-09
 ---
 

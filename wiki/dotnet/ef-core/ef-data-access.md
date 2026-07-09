@@ -15,7 +15,7 @@ updated: 2026-07-10
 
 ## 正确做法
 
-直接注入 `DbContext` 使用（例如在最小 API 端点中，见 [最小 API 组织](../../patterns/minimal-api-organization.md)）：
+直接注入 `DbContext` 使用（例如在最小 API 端点中，见 [最小 API 组织](../../patterns/composition.md#minimal-api-organization)）：
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -78,7 +78,7 @@ public interface IOrderRepository { Task<Order?> GetAsync(OrderId id); }
 
 ## 参考资料
 
-- 相关：[最小 API 组织](../../patterns/minimal-api-organization.md)
+- 相关：[最小 API 组织](../../patterns/composition.md#minimal-api-organization)
 - 相关：[依赖注入](../../concepts/dependency-injection.md)
 - 相关：[释放与 using](../../patterns/disposable-using.md)
 - 官方文档：[EF Core 文档](https://learn.microsoft.com/ef/core/)

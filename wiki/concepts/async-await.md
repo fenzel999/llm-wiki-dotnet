@@ -11,11 +11,13 @@ updated: 2026-07-10
 
 ## 概述
 
-C# 通过 `Task` 与 `Task<T>` 表示异步操作，编译器会把带有 `async` 修饰符的方法改写为一个状态机，在 `await` 处挂起、并在操作完成后续延续（continuation）。是否把延续调度回原始线程，由当前的 `SynchronizationContext` 决定；在 UI 或旧版 ASP.NET 这类“单一上下文”环境中，错误地阻塞异步调用正是经典死锁的根源。当你编写库代码或无需回到原上下文时，应使用 `ConfigureAwait(false)` 来摆脱上下文约束，提升并发能力；而在追求热路径零分配异步时，可进一步参考 [ValueTask](../concepts/value-task.md)。
+写异步代码，本质上是在回答一个问题：当一段操作（网络请求、文件读写、延时等待）需要时间，程序凭什么不卡在那里干等？C# 给出的答案是 `Task` 与 `Task<T>`——它们代表“一个将来会完成的操作”。当你在一个方法上写下 `async`，编译器并不会真的让线程空转，而是悄悄把这个方法改写成一个状态机：遇到 `await` 时，方法在此挂起并把控制权交还调用方，等被等待的操作完成后再从挂起点继续（这一步叫“延续”，continuation）。
+
+这里有个关键细节：延续默认会被调度回“原始的同步上下文”（`SynchronizationContext`）。在桌面 UI 或旧版 ASP.NET 这类“只有一个上下文线程”的环境里，这本来是为了方便你安全地更新界面；但也正是它，制造了 .NET 世界里最经典的死锁——当你在某个上下文线程上用 `.Result` 或 `.Wait()` 去等一个异步方法时，那个方法的延续却在等你腾出上下文。要打破这个循环，库代码（或任何不需要回到原上下文的场景）应当用 `ConfigureAwait(false)` 显式说“我不在乎回到哪个线程”。而当你追求热路径上的零分配异步时，还可以进一步去看 [ValueTask](modern-csharp.md#value-task) 的思路。
 
 ## 正确做法
 
-在库代码或不需要回到 UI 线程的场景中，对每个 `await` 调用 `ConfigureAwait(false)`，避免把延续强制调度回原始同步上下文。下面这个示例在 `HttpClient` 调用链上全程使用 `ConfigureAwait(false)`，并展示了如何用并行 `await` 组合两个独立任务：
+把思路落到实处：在库代码、或不需要回到 UI 线程的调用链上，对每个 `await` 都加上 `ConfigureAwait(false)`，避免把延续强行塞回原始上下文，从而释放并发能力。下面这个例子在 `HttpClient` 的整条调用链上保持一致，同时展示了如何用并行 `await` 把两个互不依赖的任务组合起来一起等：
 
 ```csharp
 public async Task<string> FetchAsync(HttpClient client, string url)
@@ -28,17 +30,21 @@ public async Task<string> FetchAsync(HttpClient client, string url)
 var (a, b) = (await GetA(), await GetB());
 ```
 
-## 反例（常见错误）
+注意第二段的写法：`(await GetA(), await GetB())` 两个 `await` 并列，二者其实是并发发起、一起等待的，比写成“先等 A 再等 B”的顺序要快得多。这是异步代码里最常用、也最容易被忽略的优化点。
 
-❌ 在单一同步上下文（UI / 旧版 ASP.NET）中，用 `.Result` 或 `.Wait()` 阻塞异步调用，会导致延续等待被占用的上下文，从而引发死锁：
+## 常见误区
+
+❌ 在单一同步上下文（UI / 旧版 ASP.NET）里，用 `.Result` 或 `.Wait()` 去阻塞一个异步调用，会让延续死等被占用的上下文，从而死锁：
 
 ```csharp
-❌ var html = FetchAsync(client, url).Result; // 可能死锁
+var html = FetchAsync(client, url).Result; // 可能死锁
 ```
 
-- `async void` 仅应用于事件处理程序；用于普通方法时异常无法被捕获，且难以组合。
-- 忘记 `await` 会让任务悄悄被丢弃（fire-and-forget），往往造成资源泄漏与竞态。
-- 在库代码中保留 `ConfigureAwait(true)`，会不必要地限制调用方的并发度。
+除了死锁，还有几个常被忽略的坑：
+
+- `async void` 只能用于事件处理程序。一旦用在普通方法上，方法里抛出的异常无法被 `catch`，也很难和别的操作组合。
+- 忘了 `await` 时，任务会被悄悄“点火就忘”（fire-and-forget），常常引发资源泄漏和竞态，而且你连出错了都无从知晓。
+- 在库代码里保留 `ConfigureAwait(true)`（即不带 `false`），会不必要地限制调用方的并发度——库通常没有“必须回原线程”的理由。
 
 ## 适用版本
 
@@ -46,6 +52,6 @@ var (a, b) = (await GetA(), await GetB());
 
 ## 参考资料
 
-- [ValueTask](../concepts/value-task.md)
-- [Span 内存](../concepts/span-memory.md)
+- [ValueTask 与零分配异步](modern-csharp.md#value-task)
+- [Span 与 Memory 零拷贝](modern-csharp.md#span)
 - 官方文档：[异步编程（C#）](https://learn.microsoft.com/dotnet/csharp/asynchronous-programming)

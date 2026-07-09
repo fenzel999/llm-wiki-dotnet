@@ -30,7 +30,7 @@ updated: 2026-07-10
 
 - DTO、配置、消息、事件、不可变领域模型。
 - 需要值相等、`with` 拷贝、清晰 `ToString` 时。
-- 需要零堆分配的值语义时，用 `record struct`（见 [record](../concepts/records.md)）。
+- 需要零堆分配的值语义时，用 `record struct`（见 [record](../concepts/modern-csharp.md#records)）。
 
 **何时用 class**
 
@@ -66,7 +66,7 @@ Console.WriteLine(acc1 == acc2); // True：引用相等
 
 ## 参考资料
 
-- 相关：[record 值语义与不可变建模](../concepts/records.md)
-- 相关：[Span 与内存安全](../concepts/span-memory.md)
+- 相关：[record 值语义与不可变建模](../concepts/modern-csharp.md#records)
+- 相关：[Span 与内存安全](../concepts/modern-csharp.md#span)
 - 相关：[List 与 ImmutableArray 对比](list-vs-immutablearray.md)
 - 官方文档：[record（C# 参考）](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record)

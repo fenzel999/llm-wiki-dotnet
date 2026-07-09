@@ -51,45 +51,30 @@ updated: 2026-07-09
 ## 语言与规范
 
 ### 语言概念
-- [可空引用类型](concepts/nullable-reference-types.md) — NRT 与静态流分析
-- [记录 record](concepts/records.md) — 值语义与不可变数据
-- [模式匹配](concepts/pattern-matching.md) — 现代 C# 解构与匹配
-- [Span 与 Memory](concepts/span-memory.md) — 栈上/堆上连续内存零拷贝
+- [C# 现代语言特性](concepts/modern-csharp.md) — record、可空引用、泛型、模式匹配、Span/Memory、ValueTask、源生成器
 - [依赖注入](concepts/dependency-injection.md) — DI 容器与生命周期
 - [异步编程](concepts/async-await.md) — Task 模型与同步上下文
-- [泛型](concepts/generics.md) — 类型参数与约束
-- [ValueTask](concepts/value-task.md) — 热路径异步零分配
-  - [源生成器](concepts/source-generators.md) — 编译期代码生成
 
 
 ### 工程规范
-- [命名](standards/naming.md) — 类型/成员/变量命名约定
-- [异常处理](standards/exception-handling.md) — 抛/捕/包装的正确姿势
-- [日志](standards/logging.md) — 结构化日志与级别
-- [配置](standards/configuration.md) — Options 绑定与校验
-- [单元测试](standards/unit-testing.md) — 可维护测试结构
-- [API 设计](standards/api-design.md) — 公共 API 的健壮与演进
-- [异步最佳实践](standards/async-best-practices.md) — 避免常见异步陷阱
-- [空处理](standards/null-handling.md) — null 与 NRT 的防御
+- [命名与 API 约定](standards/coding-conventions.md) — 命名、API 设计、空处理
+- [健壮性与工程质量](standards/quality-engineering.md) — 异常、日志、配置、测试、异步
 
 ## 实践
 
 ### 模式
-- [Options 模式](patterns/options-pattern.md) — 强类型配置
-- [管道行为](patterns/pipeline-behavior.md) — 横切关注点（MediatR 风格）
-- [泛型主机](patterns/generic-host.md) — 后台服务宿主
-- [最小 API 组织](patterns/minimal-api-organization.md) — 分组/模块化 endpoint
+- [组合与架构模式](patterns/composition.md) — Options / 泛型主机 / 管道行为 / 最小 API 组织
 - [释放与 using](patterns/disposable-using.md) — IDisposable 与 using 声明
 
 ### 反模式
-- [吞掉异常](anti-patterns/swallowing-exceptions.md) — 空 catch 吞错
-- [async void](anti-patterns/async-void.md) — 无法等待的火灾
-- [魔法数字](anti-patterns/magic-numbers.md) — 无含义字面量
-- [上帝方法](anti-patterns/god-methods.md) — 过长过胖的函数
-- [服务定位器](anti-patterns/service-locator.md) — 隐藏依赖
-- [过度可变](anti-patterns/excessive-mutability.md) — 默认可变带来的 bug
-- [阻塞异步](anti-patterns/blocking-async.md) — `.Result`/`.Wait()` 死锁
-- [过早优化](anti-patterns/premature-optimization.md) — 未度量先优化
+- [吞掉异常](anti-patterns/design-antipatterns.md#swallowing-exceptions) — 空 catch 吞错
+- [async void](anti-patterns/async-antipatterns.md#async-void) — 无法等待的火灾
+- [魔法数字](anti-patterns/design-antipatterns.md#magic-numbers) — 无含义字面量
+- [上帝方法](anti-patterns/design-antipatterns.md#god-methods) — 过长过胖的函数
+- [服务定位器](anti-patterns/design-antipatterns.md#service-locator) — 隐藏依赖
+- [过度可变](anti-patterns/design-antipatterns.md#excessive-mutability) — 默认可变带来的 bug
+- [阻塞异步](anti-patterns/async-antipatterns.md#blocking-async) — `.Result`/`.Wait()` 死锁
+- [过早优化](anti-patterns/design-antipatterns.md#premature-optimization) — 未度量先优化
 
 ### 对比
 - [record vs class](comparisons/record-vs-class.md) — 值语义与引用语义取舍

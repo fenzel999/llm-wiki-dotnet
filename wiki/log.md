@@ -13,6 +13,8 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **合并（compose）**：新建 `patterns/composition.md`（组合与架构模式，合并 options-pattern / generic-host / pipeline-behavior / minimal-api-organization 四页），重写 `patterns/disposable-using.md` 正文；删除上述 4 个旧文件；同步更新 `index.md` 与 `思维导图.md` 的模式节点。其它目录指向旧文件的链接（standards/、dotnet/、anti-patterns/）未改动。
+
 ---
 
 ## 2026-07-10 · 重写 16 个 comparisons / dotnet 页面（结构统一）
@@ -23,9 +25,21 @@ updated: 2026-07-09
 - frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
 - 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
 
+## 2026-07-10 · 页面可读性与密度重构（第二轮）
+
+- **排版主题**：新增 `wiki/extra/readable.css` 并经 `mkdocs.yml` 的 `extra_css` 接入——放大正文字号(16px)、行距 1.75、内容限宽 860px、代码块圆角/阴影、更柔和链接与引用块、中英文混排字体栈。治「排版累眼」。
+- **合并零散小页为长篇连贯文档**（治「页面太多太散 / 单页太碎 / 中文生硬」）：
+  - concepts 9→3：`modern-csharp.md`（合并 records/nullable/generics/pattern-matching/span-memory/value-task/source-generators，保留 async-await、dependency-injection）
+  - standards 8→2：`coding-conventions.md`、`quality-engineering.md`
+  - anti-patterns 8→2：`async-antipatterns.md`、`design-antipatterns.md`
+  - patterns 5→2：`composition.md`（合并 options/generic-host/pipeline/minimal-api）、保留 `disposable-using.md`
+  - 每篇用自然流畅中文重写，小节带 `{#anchor}`，保留全部代码示例。
+- 全库失效链接用脚本统一改写为「合并页#锚点」（10 个文件），`mkdocs.yml` nav 与 `思维导图.md` 节点同步折叠；`mkdocs build --strict` 零警告通过。
+- 页面数 54 → 36。
+
 ## 2026-07-10 · 页面可读性重构（统一模板）
 
-- 发现并修复 4 个磁盘编码损坏、中文全乱码的文件：`patterns/minimal-api-organization.md`、`dotnet/runtime/jit-optimizations.md`、`dotnet/versions/net8.md`、`dotnet/versions/net9.md`（重建为干净 UTF-8）。
+- 发现并修复 4 个磁盘编码损坏、中文全乱码的文件：`patterns/composition.md#minimal-api-organization`、`dotnet/runtime/jit-optimizations.md`、`dotnet/versions/net8.md`、`dotnet/versions/net9.md`（重建为干净 UTF-8）。
 - 为全库内容页制定统一、连贯的阅读模板（概述 → 正确做法 → 反例（常见错误）→ 适用版本 → 参考资料；反模式用 为什么/❌/✅/如何避免；对比用 概述/取舍/结论）。
 - 重写全部 46 个内容页（concepts 9、standards 8、patterns 5、anti-patterns 8、comparisons 4 + dotnet 12），统一结构、修正前后矛盾的 frontmatter（`introduced-in`/`applies-to` 据实，如 record 改 `csharp9`），文字改为连贯段落而非清单堆砌。
 - 校验：`mkdocs build --strict` 通过；全库扫描无 U+FFFD / 乱码文件；合并页锚点（`#csharp-14` 等）保留、跨页链接完好、`source` 未被回退为占位。
@@ -72,7 +86,7 @@ updated: 2026-07-09
 - 删除 `concepts/result-type.md`：自造 `Result<T>` 与最小 API 内建 `Results<T>`/`TypedResults` 语义重复。
 - `minimal-api-organization.md` 新增「类型化返回」小节，统一改用 `Results<T>`/`TypedResults` 表达多响应；示例中去除对自定义 Result 的依赖。
 - 同步清理引用：`index.md`、`思维导图.md`、`overview.md`、`swallowing-exceptions.md`（`标准/null-handling.md`、`api-design.md` 改为推荐 `Results<T>`/`TypedResults`）。
-- 影响：concepts/result-type.md（删除）、patterns/minimal-api-organization.md、index.md、思维导图.md、overview.md、anti-patterns/swallowing-exceptions.md、standards/*。
+- 影响：concepts/result-type.md（删除）、patterns/composition.md#minimal-api-organization、index.md、思维导图.md、overview.md、anti-patterns/design-antipatterns.md#swallowing-exceptions、standards/*。
 
 ## 2026-07-09 · 整理：去 3D 图谱、合并分类、移出 Result/仓储
 - 删除 3D 关系图：移除 `知识图谱3D.md`、`graph.json`、`gen_graph.py`；导航与首页不再含 3D 入口，仅保留可导航思维导图。

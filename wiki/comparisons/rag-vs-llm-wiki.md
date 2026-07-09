@@ -45,7 +45,7 @@ var answer = await llm.Complete($"上下文:\n{context}\n\n问题:{query}");
 
 // LLM Wiki：摄入时编译为结构化页，运行期直接定位
 // 页面本身即知识，Agent 通过相对链接读取：
-//   [record 值语义](../concepts/records.md)
+//   [record 值语义](../concepts/modern-csharp.md#records)
 //   [RAG vs LLM Wiki](comparisons/rag-vs-llm-wiki.md)
 // 无运行期检索成本，一致性由 POLICY 审核保证。
 ```

@@ -11,7 +11,7 @@ updated: 2026-07-10
 
 ## 概述
 
-ASP.NET Core 10 在最小 API 的验证与 API 文档上做了“去第三方依赖”的增强：一是最小 API 内置模型验证，无需 FluentValidation 等库即可对绑定参数自动校验并返回 `400`；二是原生 `AddOpenApi()` 直接生成 OpenAPI 3.1 文档，不再需要 Swashbuckle。本页汇总这两个约定级特性，端点组织方式见 [最小 API 组织](../../patterns/minimal-api-organization.md)。
+ASP.NET Core 10 在最小 API 的验证与 API 文档上做了“去第三方依赖”的增强：一是最小 API 内置模型验证，无需 FluentValidation 等库即可对绑定参数自动校验并返回 `400`；二是原生 `AddOpenApi()` 直接生成 OpenAPI 3.1 文档，不再需要 Swashbuckle。本页汇总这两个约定级特性，端点组织方式见 [最小 API 组织](../../patterns/composition.md#minimal-api-organization)。
 
 ## 正确做法
 
@@ -84,5 +84,5 @@ app.Run();
 
 ## 参考资料
 
-- 相关：[最小 API 组织](../../patterns/minimal-api-organization.md)
+- 相关：[最小 API 组织](../../patterns/composition.md#minimal-api-organization)
 - 官方文档：[What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0)

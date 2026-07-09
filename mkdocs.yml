@@ -88,40 +88,19 @@ nav:
           - .NET 9 / C# 13: dotnet/versions/net9.md
   - 语言与规范:
       - 语言概念:
-          - 可空引用类型: concepts/nullable-reference-types.md
-          - 记录(record): concepts/records.md
-          - 模式匹配: concepts/pattern-matching.md
-          - Span 与 Memory: concepts/span-memory.md
-          - 依赖注入: concepts/dependency-injection.md
+          - C# 现代语言特性: concepts/modern-csharp.md
           - 异步编程: concepts/async-await.md
-          - 泛型: concepts/generics.md
-          - ValueTask: concepts/value-task.md
-          - 源生成器: concepts/source-generators.md
+          - 依赖注入: concepts/dependency-injection.md
       - 工程规范:
-          - 命名: standards/naming.md
-          - 异常处理: standards/exception-handling.md
-          - 日志: standards/logging.md
-          - 配置: standards/configuration.md
-          - 单元测试: standards/unit-testing.md
-          - API 设计: standards/api-design.md
-          - 异步最佳实践: standards/async-best-practices.md
-          - 空处理: standards/null-handling.md
+          - 命名与 API 约定: standards/coding-conventions.md
+          - 健壮性与工程质量: standards/quality-engineering.md
   - 实践:
       - 模式:
-          - Options 模式: patterns/options-pattern.md
-          - 管道行为: patterns/pipeline-behavior.md
-          - 泛型主机: patterns/generic-host.md
-          - 最小 API 组织: patterns/minimal-api-organization.md
+          - 组合与架构模式: patterns/composition.md
           - 释放与 using: patterns/disposable-using.md
       - 反模式:
-          - 吞掉异常: anti-patterns/swallowing-exceptions.md
-          - async void: anti-patterns/async-void.md
-          - 魔法数字: anti-patterns/magic-numbers.md
-          - 上帝方法: anti-patterns/god-methods.md
-          - 服务定位器: anti-patterns/service-locator.md
-          - 过度可变: anti-patterns/excessive-mutability.md
-          - 阻塞异步: anti-patterns/blocking-async.md
-          - 过早优化: anti-patterns/premature-optimization.md
+          - 异步反模式: anti-patterns/async-antipatterns.md
+          - 设计与可维护性反模式: anti-patterns/design-antipatterns.md
       - 对比:
           - record vs class: comparisons/record-vs-class.md
           - List vs ImmutableArray: comparisons/list-vs-immutablearray.md

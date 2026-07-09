@@ -13,6 +13,8 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Correct（阅读模式）**：护眼改为默认底色（不再单列按钮），主题按钮精简为 `☀️白天`（护眼暖色·浅）/ `🌙黑夜`（护眼暖色·深），保留 `📖专注` 开关（默认开）。影响：`extra/theme.css`（default/slate 均改暖色调）、`extra/modes.js`（移除 eye-care 按钮与逻辑，快捷键 d/n/f）、`extra/modes.css`（删 `.eye-care` 块）。`mkdocs build --strict` 通过。
+
 - 2026-07-10 **合并（compose）**：新建 `patterns/composition.md`（组合与架构模式，合并 options-pattern / generic-host / pipeline-behavior / minimal-api-organization 四页），重写 `patterns/disposable-using.md` 正文；删除上述 4 个旧文件；同步更新 `index.md` 与 `思维导图.md` 的模式节点。其它目录指向旧文件的链接（standards/、dotnet/、anti-patterns/）未改动。
 
 ---

@@ -6,12 +6,12 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: https://learn.microsoft.com/dotnet/core/extensions/dependency-injection
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
 ## 为什么是反模式
 
-服务定位器（Service Locator）让组件在内部通过 `ServiceLocator.Get<T>()` 主动拉取依赖，而不是由外部注入。这带来若干问题：依赖关系被隐藏，阅读代码时无法从构造函数看出它真正需要什么；难以测试（必须预先配置全局定位器）；造成隐式全局状态与生命周期混乱；与依赖注入容器耦合。依赖注入（DI）的“构造函数注入”才是正确的显式依赖方式。
+服务定位器（Service Locator）让组件在内部通过 `ServiceLocator.Get<T>()` 主动拉取依赖，而不是由外部注入。这带来若干问题：依赖关系被隐藏，阅读代码时无法从构造函数看出它真正需要什么；难以测试，因为必须预先配置一个全局定位器；会造成隐式全局状态与生命周期混乱，并与具体的依赖注入容器耦合。这种写法看似“解耦”，实则把依赖隐藏进了运行时，比显式的构造函数注入更脆弱。依赖注入（DI）的“构造函数注入”才是正确的显式依赖方式。
 
 ## ❌ 错误写法
 
@@ -29,7 +29,11 @@ public class OrderService
 }
 ```
 
+`OrderService` 在方法内部偷偷拉取依赖，构造函数看不出它需要哪些服务；要测试时只能去配置全局定位器，且依赖的真实来源对调用方完全不可见，生命周期也难以控制。
+
 ## ✅ 正确写法
+
+通过构造函数显式声明依赖，由外部注入：
 
 ```csharp
 public class OrderService
@@ -58,7 +62,13 @@ var service = new OrderService(new FakeOrderService(), new FakeEmailService());
 service.Place(order);
 ```
 
-## 相关
+构造函数注入让依赖关系一目了然，测试时可直接传入替身（fake/stub），容器也只需负责装配，组件不再与具体的定位器或容器耦合。
 
-- [依赖注入](../concepts/dependency-injection.md)
-- [命名规范](../standards/naming.md)
+## 如何避免
+
+- 用构造函数注入声明依赖，不要在任何方法内部调用服务定位器。
+- 把“通过全局定位器取依赖”列为代码评审的禁止项。
+- 仅在真正的组合根（composition root）处接触 DI 容器，业务代码保持无感知。
+
+- 相关：[依赖注入](../concepts/dependency-injection.md)、[命名规范](../standards/naming.md)
+- 官方文档：[Dependency injection in .NET](https://learn.microsoft.com/dotnet/core/extensions/dependency-injection)

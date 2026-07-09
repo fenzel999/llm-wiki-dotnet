@@ -9,14 +9,15 @@ source: https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14
 updated: 2026-07-10
 ---
 
-# C# 14 新特性
+## 概述
 
-C# 14（随 .NET 10 发布）围绕「更少的样板、更强的表达能力」引入了一批语言特性。
-本页汇总 6 个最常用的新特性；每个特性均含**正确做法**、**常见错误**与版本对照。
+C# 14（随 .NET 10 发布）围绕“更少的样板、更强的表达能力”引入了一批语言特性。本页汇总 6 个最常用的新特性：extension 成员（扩展块）、`field` 关键字、空条件赋值（`?.=`）、`nameof` 非绑定泛型、隐式 Span 转换，以及 lambda 参数修饰符。每个特性都先给出正确写法，再列出常见错误，最后用选项卡对照 .NET 10 与 .NET 8 的差异。涉及旧写法时，按 [POLICY](../../governance/policy.md) 的 P1 优先展示最新惯用法，旧写法仅作背景。
 
-## extension 成员（extension 块） {#extension-members}
+## 正确做法
 
-`extension` 块（extension members，扩展成员）将某个接收者类型的扩展方法、扩展属性甚至扩展运算符集中在一个块中声明，替代以往「静态类 + `this` 参数」的写法，可读性更好，并首次支持扩展属性与静态扩展成员。
+### extension 成员（extension 块） {#extension-members}
+
+`extension` 块（extension members，扩展成员）将某个接收者类型的扩展方法、扩展属性甚至扩展运算符集中在一个块中声明，替代以往“静态类 + `this` 参数”的写法，可读性更好，并首次支持扩展属性与静态扩展成员。
 
 ```csharp
 public static class StringExtensions
@@ -43,11 +44,12 @@ public static class StringEx
 ```
 
 **常见错误**
+
 - 期望扩展成员能访问接收者的私有成员：扩展仍只能访问可见的公共/内部 API。
 - 扩展属性中缓存状态：扩展不能为对象添加实例字段，属性应是纯计算。
 - 与同名实例成员冲突时忘记实例成员优先于扩展成员被解析。
 
-## field 关键字 {#field-keyword}
+### field 关键字 {#field-keyword}
 
 `field` 关键字（上下文关键字）允许在属性访问器内直接引用编译器生成的 backing field（支持字段），无需再显式声明私有字段即可在 `get`/`set` 中加入逻辑（校验、归一化、惰性计算等），减少样板代码。
 
@@ -76,11 +78,12 @@ public class Temperature
 ```
 
 **常见错误**
+
 - 把 `field` 当普通标识符：若类型中已有名为 `field` 的成员会产生歧义，建议改名或用 `@field` 消歧。
 - 在自动实现属性（无访问器体）中期望访问 `field`：需至少一个访问器带方法体。
 - 误以为 `field` 能在方法或构造函数中直接引用；它只在该属性访问器内有效。
 
-## 空条件赋值（?.=） {#null-conditional-assignment}
+### 空条件赋值（?.=） {#null-conditional-assignment}
 
 C# 14 将空条件运算符（`?.`）扩展到赋值左侧：`x?.Y = z;` 表示仅当 `x` 不为 null 时才把 `z` 赋给 `x.Y`；若 `x` 为 null 则整条赋值被跳过，`z` 也不会被求值。以往需要 `if (x != null) x.Y = z;`。
 
@@ -100,11 +103,12 @@ list?[0] = 42;   // list 非 null 才赋值
 ```
 
 **常见错误**
+
 - 误以为右侧 `z` 总会被求值：当左侧接收者为 null 时，右侧表达式不会被求值。
 - 与复合赋值混淆：`x?.Y += z;` 也遵循同样的短路规则，但要注意 `Y` 需可读写。
-- 把 `?.=` 用于值类型字段访问期望「无操作」——接收者必须是可为 null 的引用/可空类型。
+- 把 `?.=` 用于值类型字段访问期望“无操作”——接收者必须是可为 null 的引用/可空类型。
 
-## nameof 非绑定泛型 {#nameof-unbound-generics}
+### nameof 非绑定泛型 {#nameof-unbound-generics}
 
 C# 14 起，`nameof` 可作用于 unbound generic（非绑定泛型，即不指定类型实参的泛型）。例如 `nameof(List<>)` 现在合法并返回 `"List"`。以往必须提供占位类型实参（如 `nameof(List<int>)`）。
 
@@ -117,11 +121,12 @@ Console.WriteLine($"{a}, {b}");     // List, Dictionary
 ```
 
 **常见错误**
+
 - 期望结果包含泛型元数（arity）或尖括号：`nameof(List<>)` 只返回 `"List"`，不含 `` `1 ``。
 - 在旧语言版本（LangVersion < 14）使用会编译报错。
 - 混淆 `nameof(List<>)` 与 `typeof(List<>)`：后者返回开放泛型的 `Type` 对象。
 
-## 隐式 Span 转换 {#implicit-span-conversions}
+### 隐式 Span 转换 {#implicit-span-conversions}
 
 .NET 10 / C# 14 改进了隐式 Span 转换：`string` 可隐式转换为 `ReadOnlySpan<char>`，数组 `T[]` 可隐式转换为 `Span<T>` / `ReadOnlySpan<T>`。这让接受 Span 参数的高性能 API 可直接传入字符串或数组，无需显式 `.AsSpan()`，减少分配并统一重载。
 
@@ -151,11 +156,12 @@ Fill(arr);   // arr => 0,1,2,3
 ```
 
 **常见错误**
+
 - 期望 `ReadOnlySpan<char>` 能改写字符串内容：字符串不可变，得到的是只读视图。
 - 把栈上或临时 Span 存入字段/异步状态机：`Span<T>` 是 `ref struct`，不能跨 `await` 或装箱。
 - 依赖旧代码里手动的 `.AsSpan()` 与新隐式转换产生二义重载解析问题。
 
-## lambda 参数修饰符 {#lambda-parameter-modifiers}
+### lambda 参数修饰符 {#lambda-parameter-modifiers}
 
 C# 14 允许在 lambda 参数上直接使用 `ref`、`in`、`out` 修饰符，且无需再显式写出参数类型即可推断。以往要匹配含 `ref`/`out` 的委托签名，必须写出完整类型。
 
@@ -180,6 +186,7 @@ if (parse("10", out int r))
 ```
 
 **常见错误**
+
 - 对同时省略类型又用 `out` 的参数期望自动确定类型：编译器需能从委托目标推断，否则须写明类型。
 - 忘记 `ref`/`out` lambda 无法转换为不带修饰符的 `Func<>`/`Action<>`，必须使用匹配的自定义委托。
 - 在 `out` 分支未赋值即返回：与普通方法一样必须确保 `out` 参数被赋值。
@@ -194,5 +201,6 @@ if (parse("10", out int r))
 
 ## 参考资料
 
+- 相关：[.NET 10 主题地图](../overview.md)
+- 相关：[隐式 Span 与 JIT 优化](../runtime/jit-optimizations.md)
 - 官方文档：[What's new in C# 14](https://learn.microsoft.com/dotnet/csharp/whats-new/csharp-14)
-- 相关：[.NET 10 主题地图](../overview.md) · [隐式 Span 与 JIT 优化](../runtime/jit-optimizations.md)

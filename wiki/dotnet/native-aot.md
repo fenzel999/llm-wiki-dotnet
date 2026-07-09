@@ -6,16 +6,16 @@ introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
 source: https://learn.microsoft.com/dotnet/core/deploying/native-aot
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
 ## 概述
 
-原生 AOT（Native AOT，ahead-of-time compilation，提前编译）在发布时将应用直接编译为独立的原生可执行文件，无需在目标机安装 .NET 运行时。优点是启动快、内存占用低、体积可控；代价是构建期需 trimming（裁剪未使用代码），且对运行时反射（reflection）与动态代码生成有较强限制。
+原生 AOT（Native AOT，ahead-of-time compilation，提前编译）在发布时将应用直接编译为独立的原生可执行文件，无需在目标机安装 .NET 运行时。优点是启动快、内存占用低、体积可控；代价是构建期需 trimming（裁剪未使用代码），且对运行时反射（reflection）与动态代码生成有较强限制。它适合命令行工具、Serverless 函数、容器化微服务等对启动速度与部署体积敏感的场景。
 
 ## 正确做法
 
-在项目文件中启用：
+在项目文件中启用 AOT 与不变全球化（可减少依赖的数据表，进一步缩小体积）：
 
 ```csharp
 // MyApp.csproj
@@ -25,7 +25,7 @@ updated: 2026-07-09
 // </PropertyGroup>
 ```
 
-发布命令：
+发布命令指定运行时标识符（RID）：
 
 ```csharp
 // dotnet publish -c Release -r win-x64
@@ -43,9 +43,16 @@ static void ScanPlugins()
 }
 ```
 
-## 常见错误
+## 反例（常见错误）
 
-- 依赖运行时反射序列化（如未配置的 `System.Text.Json`）；应改用 source generator（`JsonSerializerContext`）。
+- ❌ 依赖运行时反射序列化（如未配置的 `System.Text.Json`）；应改用 source generator（`JsonSerializerContext`）。
+
+```csharp
+// ❌ AOT 下类型可能被裁剪，导致运行时失败
+var json = JsonSerializer.Serialize(obj);
+// ✅ 改用 [JsonSerializable] 标注的 JsonSerializerContext 源生成
+```
+
 - 使用 `Assembly.Load` / `Type.GetType(string)` 动态加载，在 trimming 后目标类型被裁掉。
 - 忽略 `IL2xxx` / `IL3xxx` 裁剪与 AOT 警告，导致运行时才崩溃。
 - 引入不兼容 AOT 的第三方库而未验证。
@@ -56,11 +63,9 @@ static void ScanPlugins()
     AOT 兼容库与诊断进一步完善，模板默认可选启用。
 
 === "net8"
-    控制台与部分 ASP.NET Core 场景已支持 Native AOT。
+    控制台与部分 ASP.NET Core 场景已支持 Native AOT，但限制较 net10 更多。
 
 ## 参考资料
 
-- [源汇总 sources/README.md](../sources/README.md)
 - 相关：[JIT 性能优化](runtime/jit-optimizations.md)
-
-
+- 官方文档：[Native AOT deployment](https://learn.microsoft.com/dotnet/core/deploying/native-aot)

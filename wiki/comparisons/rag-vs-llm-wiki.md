@@ -6,10 +6,14 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: https://github.com/karpathy
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
-## 对比维度
+## 概述
+
+RAG（检索增强生成，Retrieval-Augmented Generation）与 LLM Wiki（摄入时编译知识库）代表了两种“让模型获得外部知识”的路线。RAG 在**查询时**实时检索外部语料（向量召回 + 重排），把相关片段拼进提示再生成；LLM Wiki 则在**摄入时**把资料编译为带 `source` 引用的结构化 Markdown 页面，运行期直接用相对链接定位知识。前者适合海量、常变的动态语料；后者适合稳定、需要确定性与可维护性的工程知识库。本仓库（.NET / C# LLM Wiki）采用后者。
+
+## 取舍对比
 
 | 维度 | RAG（检索增强生成） | LLM Wiki（摄入时编译知识库） |
 |------|---------------------|------------------------------|
@@ -21,13 +25,17 @@ updated: 2026-07-09
 | 成本 | 运行时检索+嵌入推理持续开销 | 摄入期一次性整理，运行期零检索成本 |
 | 适用 | 海量/常变动态语料、开放问答 | 稳定领域知识、需要确定性与可维护性的工程库 |
 
-## 何时选哪个
+**何时选 RAG**
 
-- 选 **RAG**：语料规模巨大且持续变化、无法预先整理、需要覆盖长尾未知问题。
-- 选 **LLM Wiki**：知识相对稳定、要求一致性/可维护/可审计、希望零运行期检索开销，并能用相对链接形成知识图谱（符合 [POLICY](../governance/policy.md) 的 P8 相对路径约定）。
-- 本仓库（`.NET / C# LLM Wiki`）采用 **LLM Wiki**：把 .NET 惯用法、反模式、标准在摄入时编译为带 `source` 引用的 Markdown，既避免检索漂移，又可直接被工具链与 Agent 引用。
+- 语料规模巨大且持续变化、无法预先整理。
+- 需要覆盖长尾、未知问题，依赖运行时召回最相关内容。
 
-## 代码示例
+**何时选 LLM Wiki**
+
+- 知识相对稳定，要求一致性、可维护、可审计。
+- 希望零运行期检索开销，并能用相对链接形成知识图谱（符合 [POLICY](../governance/policy.md) 的 P8 相对路径约定）。
+
+两种路线在代码形态上差异明显：
 
 ```csharp
 // RAG：查询时检索（示意）
@@ -42,9 +50,14 @@ var answer = await llm.Complete($"上下文:\n{context}\n\n问题:{query}");
 // 无运行期检索成本，一致性由 POLICY 审核保证。
 ```
 
-## 相关
+## 结论与建议
 
-- [record 与 class 对比](record-vs-class.md)
-- [List 与 ImmutableArray 对比](list-vs-immutablearray.md)
-- [持久约定 POLICY](../governance/policy.md)
-- [.NET 版本演进](net-evolution.md)
+若知识域稳定、追求确定性、可维护与可审计（典型工程库场景），优先 LLM Wiki：把惯用法、反模式、标准在摄入时编译为带 `source` 引用的 Markdown，既避免检索漂移，又能直接被工具链与 Agent 引用。只有在语料巨大且持续变化、长尾问题无法预先整理时，才值得引入 RAG 的向量库与运行时开销。本仓库即采用 LLM Wiki 策略。
+
+## 参考资料
+
+- 相关：[record 与 class 对比](record-vs-class.md)
+- 相关：[List 与 ImmutableArray 对比](list-vs-immutablearray.md)
+- 相关：[持久约定 POLICY](../governance/policy.md)
+- 相关：[.NET 版本演进](net-evolution.md)
+- 官方文档：[Andrej Karpathy](https://github.com/karpathy)

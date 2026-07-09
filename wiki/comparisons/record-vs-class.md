@@ -6,10 +6,14 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
-## 对比维度
+## 概述
+
+`record` 与 `class` 都是引用类型，但语义取向不同：`record` 提供值语义（value semantics），按内容比较相等性，并默认不可变、支持 `with` 非破坏性拷贝，适合建模数据；`class` 提供引用语义（reference semantics），按对象标识比较，适合需要可变状态、长生命周期与唯一身份的实体。选型的核心矛盾是“值相等 / 不可变”与“引用身份 / 可变状态”。下面按维度展开，需要零堆分配的值语义时可用 `record struct`。
+
+## 取舍对比
 
 | 维度 | record（记录类型） | class（类） |
 |------|-------------------|-------------|
@@ -22,13 +26,16 @@ updated: 2026-07-09
 | 性能 | 引用类型（record class）仍有堆分配；record struct 为值类型 | 引用类型，堆分配；可变更新就地完成 |
 | 典型开销 | `with` 每次产生新对象分配 | 原地修改无额外分配 |
 
-## 何时选哪个
+**何时用 record**
 
-- 选 **record**：DTO、配置、消息、事件、不可变领域模型；需要值相等、`with` 拷贝、清晰 `ToString` 时。
-- 选 **class**：需要可变状态与长生命周期、身份唯一（同一对象即同一实体）、复杂继承层次、或需引用相等语义时。
+- DTO、配置、消息、事件、不可变领域模型。
+- 需要值相等、`with` 拷贝、清晰 `ToString` 时。
 - 需要零堆分配的值语义时，用 `record struct`（见 [record](../concepts/records.md)）。
 
-## 代码示例
+**何时用 class**
+
+- 需要可变状态与长生命周期、身份唯一（同一对象即同一实体）。
+- 复杂继承层次，或需引用相等语义时。
 
 ```csharp
 // record：值语义 + 不可变 + with 拷贝
@@ -53,8 +60,13 @@ Console.WriteLine(acc1.Balance); // 200：引用共享，变更可见
 Console.WriteLine(acc1 == acc2); // True：引用相等
 ```
 
-## 相关
+## 结论与建议
 
-- [record 值语义与不可变建模](../concepts/records.md)
-- [Span 与内存安全](../concepts/span-memory.md)
-- [List 与 ImmutableArray 对比](list-vs-immutablearray.md)
+默认按“是否关心相等性 / 是否不可变”来选：建模数据且要值相等与不可变，用 `record`；建模有身份、可变的实体，用 `class`。当对象需要作为字典键或频繁比较内容时，`record` 自动生成的相等与哈希能省去大量样板。若同时要值语义又不想堆分配，选 `record struct`。注意 `with` 每次产生新对象分配，高频原地更新场景用 `class` 反而更省。
+
+## 参考资料
+
+- 相关：[record 值语义与不可变建模](../concepts/records.md)
+- 相关：[Span 与内存安全](../concepts/span-memory.md)
+- 相关：[List 与 ImmutableArray 对比](list-vs-immutablearray.md)
+- 官方文档：[record（C# 参考）](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/record)

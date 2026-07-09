@@ -6,16 +6,16 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: https://github.com/jbogard/MediatR
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
-## 意图
+## 概述
 
-将日志（logging）、验证（validation）、事务（transaction）、性能度量等横切关注点（cross-cutting concern）从业务 handler 中剥离，以管道（pipeline）方式统一包裹请求处理，保持 handler 只关注核心逻辑。
+管道行为模式将日志（logging）、验证（validation）、事务（transaction）、性能度量等横切关注点（cross-cutting concern）从业务 handler 中剥离，以管道（pipeline）方式统一包裹请求处理，让 handler 只关注核心逻辑。当多条请求/handler 共享同一类横切逻辑、且希望 handler 保持精简时，应当使用它；而某个 handler 特有的逻辑强行塞进通用管道反而会增加理解成本，应直接写在 handler 内部。
 
 ## 正确做法
 
-MediatR 风格：实现 `IPipelineBehavior<TRequest, TResponse>`。
+以 MediatR 风格为例，实现 `IPipelineBehavior<TRequest, TResponse>` 即可定义一个行为。下面先定义一个日志行为，在请求处理前后各记一条日志：
 
 ```csharp
 using MediatR;
@@ -41,7 +41,11 @@ public sealed class LoggingBehavior<TRequest, TResponse>
         return response;
     }
 }
+```
 
+再定义一个事务行为，把整个 handler 包进一个数据库事务中，提交或异常回滚都交给 EF Core 管理：
+
+```csharp
 // 事务行为示例
 public sealed class TransactionBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
@@ -63,7 +67,7 @@ public sealed class TransactionBehavior<TRequest, TResponse>
 }
 ```
 
-注册（MediatR 自动按注册顺序串成管道）：
+注册时按声明顺序串成管道，MediatR 会依次包裹请求处理。下面的配置先记日志、再开事务：
 
 ```csharp
 builder.Services.AddMediatR(cfg =>
@@ -74,17 +78,28 @@ builder.Services.AddMediatR(cfg =>
 });
 ```
 
-不用 MediatR 时，可用 [依赖注入](../concepts/dependency-injection.md) 装饰器（decorator）实现同样效果。
+若不使用 MediatR，同样的效果也可通过 [依赖注入](../concepts/dependency-injection.md) 的装饰器（decorator）实现，把横切逻辑包在真实 handler 外层。
 
-## 何时使用 / 何时不用
+## 反例（常见错误）
 
-- 使用：多条请求/handler 共享的横切逻辑（日志、验证、缓存、事务、重试）。
-- 使用：希望 handler 保持精简、只写业务。
-- 不用：单一 handler 特有逻辑不要硬塞进通用管道；直接写在 handler 内更清晰。
-- 不用：管道顺序需谨慎，验证应在事务/业务之前。
+❌ 把验证行为排在事务之后，导致无效请求也开启了数据库事务：
+
+```csharp
+cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
+cfg.AddOpenBehavior(typeof(ValidationBehavior<,>)); // 顺序错误：应先验证
+```
+
+- 把单一 handler 特有的逻辑硬塞进通用管道：直接写在 handler 内更清晰。
+- 忽略管道顺序：验证、鉴权等前置逻辑应排在事务/业务之前。
+- 在行为中吞掉异常或返回错误响应却不记录，导致问题难以排查。
+
+## 适用版本
+
+所有受支持版本通用，无差异。
 
 ## 参考资料
 
-- [依赖注入](../concepts/dependency-injection.md)
-- [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)
-- [释放与 using](../patterns/disposable-using.md)
+- 相关：[依赖注入](../concepts/dependency-injection.md)
+- 相关：[EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)
+- 相关：[释放与 using](../patterns/disposable-using.md)
+- 官方文档：[MediatR](https://github.com/jbogard/MediatR)

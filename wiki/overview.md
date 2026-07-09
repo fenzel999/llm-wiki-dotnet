@@ -6,7 +6,7 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: AGENTS.md
-updated: 2026-07-09
+updated: 2026-07-10
 ---
 
 # .NET LLM Wiki · 全景
@@ -27,7 +27,7 @@ updated: 2026-07-09
   [进入](concepts/nullable-reference-types.md)
 
 - :material-checkbox-multiple-marked: **规范与模式**
-   命名、异常、日志、配置、测试；Result、Options、管道、EF Core 直接数据访问
+  命名、异常、日志、配置、测试；Result、Options、管道、EF Core 直接数据访问
   [进入](standards/naming.md)
 
 - :material-alert-octagon: **反模式**
@@ -35,8 +35,8 @@ updated: 2026-07-09
   [进入](anti-patterns/swallowing-exceptions.md)
 
 - :material-graph: **可视化**
-   可导航思维导图，点击节点直达页面
-   [思维导图](思维导图.md)
+  可导航思维导图，点击节点直达页面
+  [思维导图](思维导图.md)
 
 </div>
 

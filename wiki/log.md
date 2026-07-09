@@ -15,6 +15,21 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-10 · 重写 16 个 comparisons / dotnet 页面（结构统一）
+
+- comparisons（4）：list-vs-immutablearray、net-evolution、rag-vs-llm-wiki、record-vs-class —— 套用「概述/取舍对比/结论与建议/参考资料」模板，改为流畅中文段落。
+- dotnet 内容页（12）：overview、wiki/overview（地图页仅清理）、file-based-apps、native-aot、blazor/javascript-improvements、csharp/csharp-14、aspnet-core/aspnet-core-10、ef-core/ef-core-10、ef-core/ef-data-access、runtime/jit-optimizations、versions/net8、versions/net9 —— 套用「概述/正确做法/反例（常见错误）/适用版本/参考资料」模板。
+- 修复 `jit-optimizations.md`、`versions/net8.md`、`versions/net9.md` 三处乱码（编码损坏），重写为干净中文；保留全部代码示例与相对链接目标。
+- frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
+- 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
+
+## 2026-07-10 · 页面可读性重构（统一模板）
+
+- 发现并修复 4 个磁盘编码损坏、中文全乱码的文件：`patterns/minimal-api-organization.md`、`dotnet/runtime/jit-optimizations.md`、`dotnet/versions/net8.md`、`dotnet/versions/net9.md`（重建为干净 UTF-8）。
+- 为全库内容页制定统一、连贯的阅读模板（概述 → 正确做法 → 反例（常见错误）→ 适用版本 → 参考资料；反模式用 为什么/❌/✅/如何避免；对比用 概述/取舍/结论）。
+- 重写全部 46 个内容页（concepts 9、standards 8、patterns 5、anti-patterns 8、comparisons 4 + dotnet 12），统一结构、修正前后矛盾的 frontmatter（`introduced-in`/`applies-to` 据实，如 record 改 `csharp9`），文字改为连贯段落而非清单堆砌。
+- 校验：`mkdocs build --strict` 通过；全库扫描无 U+FFFD / 乱码文件；合并页锚点（`#csharp-14` 等）保留、跨页链接完好、`source` 未被回退为占位。
+
 ## 2026-07-10 · 整洁/优雅重构（四方向）
 
 ### 1. 清理结构冗余
@@ -34,6 +49,12 @@ updated: 2026-07-09
 - 思维导图 `.mm` 增加折叠箭头平滑动画与行 hover 高亮。
 
 - 校验：`mkdocs build --strict` 通过（无死链、无缺失、无重复 nav）。页面数 61 → 54。
+
+## 2026-07-10 · 重写 9 个 concepts 页（结构统一）
+- 重写 `wiki/concepts/` 下 9 个文件（async-await / dependency-injection / generics / nullable-reference-types / pattern-matching / records / source-generators / span-memory / value-task）。
+- 套用统一模板（概述 / 正确做法 / 反例（常见错误）/ 适用版本 / 参考资料），改为流畅中文段落，补 ❌ 反例代码块，参考资料增加官方文档链接。
+- 修正 frontmatter 版本：records→csharp9、nullable-reference-types→csharp8、pattern-matching→csharp7、generics→csharp2、async-await→csharp5、source-generators→net5、span-memory→netcore21、value-task→netcore20；全部 `updated: 2026-07-10`。source 链接均保留未改。
+- 影响：上述 9 个 concepts 页。无 ⚠️ 待判定点。
 
 ## 2026-07-10 · 清理无用构建产物
 - 删除本地 `site/`（189 个文件）：MkDocs 生成产物，已被 `.gitignore` 忽略且未纳入 git；GitHub Actions 每次 push 自动重建部署，本地留存属冗余。

@@ -1,7 +1,7 @@
 ﻿---
-title: 最小 API 内置验证
-summary: ASP.NET Core 最小 API 支持内置模型验证，无效请求自动返回 400。
-tags: [aspnetcore, minimal-api, validation, net10]
+title: 最小 API 验证（FluentValidation）
+summary: .NET 10 最小 API 用 FluentValidation 做请求验证，并以端点过滤器统一返回 400。
+tags: [aspnetcore, minimal-api, validation, fluentvalidation, net10]
 introduced-in: net10
 applies-to: [net10]
 status: stable
@@ -11,49 +11,90 @@ updated: 2026-07-09
 
 ## 概述
 
-.NET 10 的 ASP.NET Core 最小 API（Minimal API）内置了模型验证（validation）支持。绑定到参数的类型若带有 `System.ComponentModel.DataAnnotations` 特性（数据注解，如 `[Required]`、`[Range]`），框架会在处理程序执行前自动校验，验证失败时直接返回 `400 Bad Request` 与 problem details，无需手写校验分支。
+本项目在 .NET 10 最小 API（Minimal API）中使用 **FluentValidation** 做请求验证，而非数据注解手写分支。
+验证失败时由统一的端点过滤器返回 `400 Bad Request` + problem details，处理程序内不再写校验逻辑。
+
+> 替代方案：.NET 10 也内置了基于数据注解的 `AddValidation()` / `.WithValidation()` 轻量验证
+> （见下方「适用版本」）。本仓库约定优先用 FluentValidation，便于复杂规则与可测试性。
 
 ## 正确做法
 
-启用验证并声明校验规则：
+安装：`FluentValidation`、`FluentValidation.DependencyInjectionExtensions`。
+
+定义验证器：
 
 ```csharp
-using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddValidation();
-var app = builder.Build();
+public record CreateUser(string Name, int Age);
 
-app.MapPost("/users", (CreateUser input) => Results.Ok(input))
-   .WithValidation();
-
-app.Run();
-
-record CreateUser(
-    [param: Required] string Name,
-    [param: Range(0, 130)] int Age);
+public class CreateUserValidator : AbstractValidator<CreateUser>
+{
+    public CreateUserValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.Age).InclusiveBetween(0, 130);
+    }
+}
 ```
-<!-- ⚠️ needs-your-call: 确认 AddValidation()/WithValidation() 的确切 API 名称 -->
 
-发送 `Age = 200` 的请求会自动得到 400 及字段级错误，无需在处理程序内判断。
+注册（一次性扫描程序集内所有验证器）：
+
+```csharp
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+```
+
+统一的验证过滤器，把 FluentValidation 接入最小 API：
+
+```csharp
+using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+public sealed class ValidationFilter<T> : IEndpointFilter
+{
+    public async ValueTask<object?> InvokeAsync(
+        EndpointFilterInvocationContext ctx, EndpointFilterDelegate next)
+    {
+        var validator = ctx.HttpContext.RequestServices.GetService<IValidator<T>>();
+        if (validator is null) return await next(ctx);
+
+        var model = ctx.Arguments.OfType<T>().FirstOrDefault();
+        if (model is null) return await next(ctx);
+
+        var result = await validator.ValidateAsync(model);
+        if (!result.IsValid)
+            return Results.ValidationProblem(result.ToDictionary());
+
+        return await next(ctx);
+    }
+}
+```
+
+在端点上应用：
+
+```csharp
+app.MapPost("/users", (CreateUser input) => Results.Ok(input))
+   .AddEndpointFilter<ValidationFilter<CreateUser>>();
+```
+
+无效请求（如 `Age = 200`）自动得到 `400` 与字段级错误，处理程序只关心成功路径。
 
 ## 常见错误
 
-- 忘记注册验证服务（`AddValidation()`），导致注解被忽略。
-- 在 `record` 位置参数上未用 `[param: ...]` 目标，特性落到属性/构造函数错误位置。
-- 期望验证深层嵌套对象却未标注可递归验证的成员。
-- 手写校验与内置验证重复，返回两种不一致的错误格式。
+- 忘记注册验证器（`AddValidatorsFromAssemblyContaining`），导致无验证生效。
+- 把校验逻辑又写进处理程序，与过滤器重复、返回两种不一致的错误格式。
+- 验证器命名未与请求类型对应，难以定位。
+- 在 `record` 位置参数上误用目标特性（FluentValidation 直接对属性/成员写规则，无需 `[param: ...]`）。
 
 ## 适用版本
 
 === "net10"
-    最小 API 内置验证与自动 400。
+    推荐 FluentValidation（如上）。也可使用内置 `AddValidation()` + `.WithValidation()` 的轻量验证。
 
 === "net8"
-    需借助过滤器或第三方库（如 FluentValidation）手动校验。
+    无内置验证，使用 FluentValidation（同一套写法）或手写过滤器。
 
 ## 参考资料
 
 - [源汇总 sources/README.md](../../sources/README.md)
 - 相关：[原生 OpenAPI 3.1](openapi-3-1.md)
-

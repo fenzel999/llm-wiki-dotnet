@@ -200,7 +200,7 @@
     },
     {
       "id": "dotnet/aspnet-core/minimal-api-validation.md",
-      "label": "最小 API 内置验证",
+      "label": "最小 API 验证（FluentValidation）",
       "group": "dotnet",
       "link": "../dotnet/aspnet-core/minimal-api-validation/"
     },
@@ -302,7 +302,7 @@
     },
     {
       "id": "patterns/repository.md",
-      "label": "仓储模式（Repository）",
+      "label": "EF Core 数据访问（不引入仓储/工作单元）",
       "group": "patterns",
       "link": "../patterns/repository/"
     },
@@ -826,10 +826,6 @@
     },
     {
       "source": "思维导图.md",
-      "target": "patterns/result-type.md"
-    },
-    {
-      "source": "思维导图.md",
       "target": "patterns/repository.md"
     },
     {
@@ -1382,11 +1378,11 @@
     },
     {
       "source": "patterns/repository.md",
-      "target": "concepts/dependency-injection.md"
+      "target": "patterns/minimal-api-organization.md"
     },
     {
       "source": "patterns/repository.md",
-      "target": "patterns/result-type.md"
+      "target": "concepts/dependency-injection.md"
     },
     {
       "source": "patterns/repository.md",
@@ -1411,6 +1407,10 @@
     {
       "source": "standards/api-design.md",
       "target": "comparisons/net-evolution.md"
+    },
+    {
+      "source": "standards/api-design.md",
+      "target": "patterns/repository.md"
     },
     {
       "source": "standards/async-best-practices.md",

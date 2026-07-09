@@ -19,9 +19,10 @@ updated: 2026-07-09
 public T Max<T>(T a, T b) where T : IComparable<T>
     => a.CompareTo(b) >= 0 ? a : b;
 
-public class Repository<T> where T : class, new()
+public class Store<T> where T : class, new()
 {
-    public T Create() => new T();
+    private readonly List<T> _items = new();
+    public void Add(T item) => _items.Add(item);
 }
 
 // 协变：IEnumerable<out T>

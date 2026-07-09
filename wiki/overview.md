@@ -27,7 +27,7 @@ updated: 2026-07-09
   [进入](concepts/nullable-reference-types.md)
 
 - :material-checkbox-multiple-marked: **规范与模式**
-  命名、异常、日志、配置、测试；Result、仓储、Options、管道
+   命名、异常、日志、配置、测试；Result、Options、管道、EF Core 直接数据访问
   [进入](standards/naming.md)
 
 - :material-alert-octagon: **反模式**

@@ -37,10 +37,10 @@ builder.Services
     .ValidateOnStart();
 
 // 使用
-public class OrderRepository
+public class OrderSettings
 {
     private readonly DatabaseOptions _options;
-    public OrderRepository(IOptions<DatabaseOptions> options) => _options = options.Value;
+    public OrderSettings(IOptions<DatabaseOptions> options) => _options = options.Value;
 }
 ```
 

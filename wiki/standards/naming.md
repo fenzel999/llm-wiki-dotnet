@@ -14,7 +14,7 @@ updated: 2026-07-09
 - 类型（class/struct/interface/enum）、方法、属性、事件、公共字段使用 **PascalCase**（首字母大写）。
 - 局部变量、方法参数使用 **camelCase**（首字母小写）。
 - 私有实例字段使用 `_camelCase`（下划线前缀 + camelCase）。
-- 接口以 **I** 前缀开头，后接 PascalCase 名词（如 `IRepository`）。
+- 接口以 **I** 前缀开头，后接 PascalCase 名词（如 `IOrderService`）。
 - 常量（`const`）、`static readonly` 的编译期常量使用 **全大写下划线**（如 `MAX_RETRY_COUNT`）。
 - 避免使用匈牙利命名法（如 `strName`、`iCount`）和无意义的缩写（如 `Mgr`、`Calc` 视情况而定，优先写全 `Manager`、`Calculate`）。
 - 命名空间使用 `PascalCase`，通常为 `Company.Product.Feature` 形式。
@@ -24,19 +24,19 @@ updated: 2026-07-09
 ```csharp
 namespace Contoso.Ordering;
 
-public interface IOrderRepository
+public interface IOrderService
 {
     Task<Order?> GetByIdAsync(OrderId id, CancellationToken cancellationToken);
 }
 
-public class OrderService
+public class OrderProcessor
 {
-    private readonly IOrderRepository _orderRepository;
+    private readonly IOrderService _orderService;
     private const int MaxRetryCount = 3;
 
-    public OrderService(IOrderRepository orderRepository)
+    public OrderProcessor(IOrderService orderService)
     {
-        _orderRepository = orderRepository;
+        _orderService = orderService;
     }
 
     public async Task ProcessAsync(Order order, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ public static class Limits
 // 错误：匈牙利前缀、缩写、字段命名混乱
 public class clsOrder
 {
-    private IOrderRepository objRepo; // 应使用 _orderRepository
+    private IOrderService objService; // 应使用 _orderService
     private int iCount;               // 应使用 _count 或局部 camelCase
 
     public void Calc(Order o)         // Calc/O 难读

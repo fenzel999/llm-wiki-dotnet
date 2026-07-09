@@ -20,7 +20,7 @@ public class OrderService
 {
     public void Place(Order order)
     {
-        var repo = ServiceLocator.Get<IOrderRepository>();
+        var repo = ServiceLocator.Get<IOrderService>();
         var email = ServiceLocator.Get<IEmailService>();
 
         repo.Save(order);
@@ -34,18 +34,18 @@ public class OrderService
 ```csharp
 public class OrderService
 {
-    private readonly IOrderRepository _repo;
+    private readonly IOrderService _orderService;
     private readonly IEmailService _email;
 
-    public OrderService(IOrderRepository repo, IEmailService email)
+    public OrderService(IOrderService orderService, IEmailService email)
     {
-        _repo = repo;
+        _orderService = orderService;
         _email = email;
     }
 
     public void Place(Order order)
     {
-        _repo.Save(order);
+        _orderService.Save(order);
         _email.Send($"已下单 {order.Id}");
     }
 }
@@ -54,7 +54,7 @@ public class OrderService
 依赖在构造函数中显式声明，可测试性大幅提升：
 
 ```csharp
-var service = new OrderService(new FakeOrderRepository(), new FakeEmailService());
+var service = new OrderService(new FakeOrderService(), new FakeEmailService());
 service.Place(order);
 ```
 

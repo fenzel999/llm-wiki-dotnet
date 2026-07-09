@@ -17,17 +17,17 @@ updated: 2026-07-09
 
 ```csharp
 var services = new ServiceCollection();
-services.AddTransient<IRepository, Repository>();
+services.AddScoped<IOrderService, OrderService>();
 services.AddScoped<ISession, Session>();
 services.AddSingleton<ICache, Cache>();
 
 var provider = services.BuildServiceProvider();
-var repo = provider.GetRequiredService<IRepository>();
+var service = provider.GetRequiredService<IOrderService>();
 
 public class OrderService
 {
-    private readonly IRepository _repo;
-    public OrderService(IRepository repo) => _repo = repo; // 构造函数注入
+    private readonly AppDbContext _db;
+    public OrderService(AppDbContext db) => _db = db; // 构造函数注入
 }
 ```
 

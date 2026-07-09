@@ -1,7 +1,7 @@
 ---
-title: 仓储模式（Repository）
-summary: 用仓储聚合数据访问逻辑，隔离领域与持久化，配合依赖注入与 EF Core。
-tags: [pattern, data-access]
+title: EF Core 数据访问（不引入仓储/工作单元）
+summary: EF Core 的 DbContext 本身就是仓储+工作单元，不要再加 Repository / Unit of Work 抽象。
+tags: [pattern, data-access, ef-core]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -11,50 +11,39 @@ updated: 2026-07-09
 
 ## 意图
 
-将领域对象（domain）的存取逻辑集中到仓储（repository）中，让上层无需关心 EF Core / SQL 细节；通过接口注入实现解耦与可测试性，并避免把行为全部塞进实体的「贫血模型（anemic model）」。
+**在 EF Core 项目中不使用仓储（Repository）模式，也不使用工作单元（Unit of Work）模式。**
+`DbContext` 自身已经是一个工作单元（跟踪变更、一次性 `SaveChangesAsync` 提交），其 `DbSet<T>`
+已经是一个仓储（聚合根的集合查询）。再包一层只是重复抽象，徒增样板与间接性。
+
+> 约定：数据访问直接注入 `AppDbContext`，查询/写入都落在端点或应用服务里。
 
 ## 正确做法
 
-定义仓储接口，通过 [依赖注入](../concepts/dependency-injection.md) 注入：
+直接注入 `DbContext` 使用（例如在最小 API 端点中，见
+[最小 API 组织](../patterns/minimal-api-organization.md)）：
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Domain;
-
-public interface IOrderRepository
+public sealed class AppDbContext : DbContext
 {
-    Task<Order?> GetByIdAsync(OrderId id, CancellationToken ct = default);
-    Task<IReadOnlyList<Order>> GetByCustomerAsync(string customerId, CancellationToken ct = default);
-    Task AddAsync(Order order, CancellationToken ct = default);
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Product> Products => Set<Product>();
 }
 
-public sealed class OrderRepository : IOrderRepository
+// 端点/服务内
+public async Task<Order?> GetOrderAsync(OrderId id, AppDbContext db, CancellationToken ct)
+    => await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id, ct);
+
+public async Task AddOrderAsync(Order order, AppDbContext db, CancellationToken ct)
 {
-    private readonly AppDbContext _db;
-    public OrderRepository(AppDbContext db) => _db = db;
-
-    public Task<Order?> GetByIdAsync(OrderId id, CancellationToken ct = default)
-        => _db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id, ct);
-
-    public Task<IReadOnlyList<Order>> GetByCustomerAsync(string customerId, CancellationToken ct = default)
-        => _db.Orders.Where(o => o.CustomerId == customerId).ToListAsync(ct);
-
-    public async Task AddAsync(Order order, CancellationToken ct = default)
-    {
-        _db.Orders.Add(order);
-        await _db.SaveChangesAsync(ct);
-    }
+    db.Orders.Add(order);
+    await db.SaveChangesAsync(ct);   // DbContext 即工作单元：一次原子提交
 }
 ```
 
-注册：
-
-```csharp
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-```
-
-领域行为应放在实体或领域服务中，而非仓储里堆 CRUD，避免贫血：
+领域行为放在实体中，避免贫血模型：
 
 ```csharp
 public sealed class Order
@@ -73,13 +62,18 @@ public sealed class Order
 
 ## 何时使用 / 何时不用
 
-- 使用：需要隔离持久化细节、便于替换/模拟数据来源、统一查询边界。
-- 使用：搭配 [Result 类型](../patterns/result-type.md) 在仓储层返回找不到等可预期失败。
-- 不用：简单 CRUD 且无需抽象时，可直接用 `DbContext`，避免无意义的转发层。
-- 不用：不要把业务规则写进仓储，仓储只负责存取与聚合查询。
+- 使用：绝大多数 EF Core 场景——直接注入 `DbContext`，用 `DbSet<T>` 查询、用 `SaveChangesAsync` 提交。
+- 使用：需要跨聚合的一致性时，在同一个 `DbContext` 内一次性 `SaveChangesAsync`（工作单元语义天然具备）。
+- **不用：不要在 `DbContext` 之上再写 `IOrderRepository` / `IUnitOfWork` 包装层。** 这是重复抽象。
+- 不用：不要把业务规则塞进数据访问层；领域行为属于实体/领域服务。
+
+## 例外（极少数）
+
+- 需要彻底脱离 EF Core 的可测试性且不便用 `InMemory` 提供者时，可对**特定**用例抽象一个小接口；
+  但这是例外，不是默认做法。
 
 ## 参考资料
 
+- [最小 API 组织](../patterns/minimal-api-organization.md)
 - [依赖注入](../concepts/dependency-injection.md)
-- [Result 类型](../patterns/result-type.md)
 - [释放与 using](../patterns/disposable-using.md)

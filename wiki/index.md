@@ -53,7 +53,7 @@ updated: 2026-07-09
 
 ## 模式
 - [Result 类型](patterns/result-type.md) — 显式错误而非异常
-- [仓储](patterns/repository.md) — 聚合数据访问边界
+- [EF Core 数据访问](patterns/repository.md) — 直接用 DbContext，不引入仓储/工作单元
 - [Options 模式](patterns/options-pattern.md) — 强类型配置
 - [管道行为](patterns/pipeline-behavior.md) — 横切关注点（MediatR 风格）
 - [泛型主机](patterns/generic-host.md) — 后台服务宿主

@@ -19,18 +19,22 @@ updated: 2026-07-09
 
 ## 正确做法
 
-```csharp
-public sealed class OrderApi
-{
-    private readonly IOrderRepository _repo;
+> 示例以应用服务（被最小 API 端点调用）为例；Web 层统一走最小 API，不使用 Controller。
+> 数据访问直接注入 `DbContext`，不引入仓储/工作单元（见
+> [EF Core 数据访问](../patterns/repository.md)）。
 
-    public OrderApi(IOrderRepository repo) => _repo = repo;
+```csharp
+public sealed class OrderService
+{
+    private readonly AppDbContext _db;
+
+    public OrderService(AppDbContext db) => _db = db;
 
     public async Task<OrderView> GetAsync(OrderId id, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        var order = await _repo.GetAsync(id, ct)
+        var order = await _db.Orders.FirstOrDefaultAsync(o => o.Id == id, ct)
             ?? throw new OrderNotFoundException(id);
 
         return order.ToView(); // 返回不可变视图
@@ -46,7 +50,7 @@ public sealed record OrderView(Guid Id, IReadOnlyList<OrderLine> Lines);
 
 ```csharp
 // 错误1：缺少守卫，null 流入内部
-public Order Get(OrderId id) => _repo.Get(id); // id 为 null 时内部才崩
+public Order Get(OrderId id) => _db.Orders.Find(id); // id 为 null 时内部才崩
 
 // 错误2：暴露可变内部集合
 public List<OrderLine> Lines => _lines; // 调用方可改内部状态

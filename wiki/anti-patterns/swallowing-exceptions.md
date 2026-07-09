@@ -20,7 +20,7 @@ public User GetUser(int id)
 {
     try
     {
-        return _repository.FindById(id);
+        return _service.GetById(id);
     }
     catch
     {
@@ -37,7 +37,7 @@ public User GetUser(int id)
 {
     try
     {
-        return _repository.FindById(id);
+        return _service.GetById(id);
     }
     catch (Exception ex)
     {
@@ -54,7 +54,7 @@ public User GetUserOrDefault(int id)
 {
     try
     {
-        return _repository.FindById(id);
+        return _service.GetById(id);
     }
     catch (UserNotFoundException ex)
     {

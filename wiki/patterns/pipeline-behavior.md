@@ -86,5 +86,5 @@ builder.Services.AddMediatR(cfg =>
 ## 参考资料
 
 - [依赖注入](../concepts/dependency-injection.md)
-- [仓储](../patterns/repository.md)
+- [EF Core 数据访问](../patterns/repository.md)
 - [释放与 using](../patterns/disposable-using.md)

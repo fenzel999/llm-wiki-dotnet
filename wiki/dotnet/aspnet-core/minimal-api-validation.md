@@ -20,27 +20,33 @@ updated: 2026-07-09
 
 ## 正确做法
 
-注册内置验证，并在端点上开启：
+注册内置验证即可，所有带数据注解参数的端点会自动校验：
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddValidation();   // 启用最小 API 内置验证
+builder.Services.AddValidation();   // 为所有最小 API 自动启用内置验证
 var app = builder.Build();
 
-app.MapPost("/users", (CreateUser input) => Results.Ok(input))
-   .WithValidation();               // 对该端点启用自动校验
+app.MapPost("/users", (CreateUser input) => Results.Ok(input));
+// 带 [Required]/[Range] 等特性的参数会自动校验；失败返回 400 + Problem Details
 
 app.Run();
 
 record CreateUser(
     [Required, StringLength(50)] string Name,
-    [Range(0, 130)] int Age);
+     [Range(0, 130)] int Age);
 ```
-<!-- ⚠️ needs-your-call: 确认 .NET 10 内置验证的注册/启用 API 名称（AddValidation / WithValidation） -->
 
 发送 `Age = 200` 会自动得到 `400` 与字段级错误，处理程序只关心成功路径。
+
+个别端点需跳过自动校验时调用 `.DisableValidation()`：
+
+```csharp
+app.MapPost("/import", (CreateUser input) => Results.Ok(input))
+   .DisableValidation();
+```
 
 也支持实现 `IValidatableObject` 做跨属性校验：
 
@@ -69,6 +75,9 @@ public class CreateUser : IValidatableObject
 
 === "net10"
     最小 API 内置验证与自动 400（本仓库约定做法）。
+
+=== "net9"
+    无内置验证（net9 仅有内建 OpenAPI，未带验证），需手写过滤器或第三方库（如 FluentValidation）。
 
 === "net8"
     无内置验证，需手写过滤器或引入第三方库（如 FluentValidation）。

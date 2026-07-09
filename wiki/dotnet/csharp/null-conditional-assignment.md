@@ -32,7 +32,6 @@ static void ApplyTheme(Options? opt, string theme)
 ```csharp
 list?[0] = 42;            // list 非 null 才赋值
 ```
-<!-- ⚠️ needs-your-call: 确认索引器形式 list?[0] = 42; 的支持范围 -->
 
 ## 常见错误
 

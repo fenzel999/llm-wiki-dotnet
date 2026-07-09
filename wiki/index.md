@@ -32,7 +32,7 @@ updated: 2026-07-09
 - **链接**：全程相对 Markdown 链接，GitHub / MkDocs / 网页三处均可解析。
 - **质量**：内容需经 `governance/qa.md` 判定；不确定处标 `⚠️ needs-your-call`。
 
-## .NET 10
+## .NET 8 / 9 / 10
 
 - [.NET 总览](dotnet/overview.md) — .NET 10 / C# 14 关键主题地图
 - [文件型应用](dotnet/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
@@ -50,6 +50,10 @@ updated: 2026-07-09
 - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
 - [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进
 - [Blazor JS 改进](dotnet/blazor/javascript-improvements.md) — Blazor 与 JS 互操作增强
+- 版本对照:
+    - [.NET 8 / C# 12 关键知识](dotnet/versions/net8.md) — LTS；集合表达式、主构造函数、EF Core 8
+    - [.NET 9 / C# 13 关键知识](dotnet/versions/net9.md) — STS；params 集合、内建 OpenAPI 3.0、Microsoft.Extensions.AI
+    - [.NET 版本演进](comparisons/net-evolution.md) — 时间线、LTS/STS 与特性矩阵
 
 ## 语言与规范
 

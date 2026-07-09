@@ -42,7 +42,6 @@ foreach (var n in names.Where(x => x.Length <= 3))
 #:package Humanizer@2.*
 Console.WriteLine("done".Humanize());
 ```
-<!-- ⚠️ needs-your-call: 确认 file-based app 的包引用指令语法（#:package） -->
 
 ## 常见错误
 

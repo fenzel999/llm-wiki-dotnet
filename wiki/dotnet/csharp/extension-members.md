@@ -31,7 +31,6 @@ public static class StringExtensions
 int n = "hello world".WordCount;   // 2
 bool b = "  ".IsBlank();           // true
 ```
-<!-- ⚠️ needs-your-call: 确认 C# 14 extension 块的最终语法形式（extension(string s) { ... }） -->
 
 仍可与传统 `this` 扩展方法互操作：
 

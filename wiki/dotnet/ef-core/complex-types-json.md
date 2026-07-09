@@ -44,7 +44,6 @@ public class AppDbContext : DbContext
 b.Entity<Customer>()
  .ComplexProperty(c => c.ShippingAddress, cp => cp.ToJson());
 ```
-<!-- ⚠️ needs-your-call: 确认复杂类型 ToJson() 在 .NET 10 的可用性 -->
 
 ## 常见错误
 

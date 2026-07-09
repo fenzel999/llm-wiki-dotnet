@@ -41,7 +41,24 @@ updated: 2026-07-09
     }
 }
 ```
-<!-- ⚠️ needs-your-call: 确认 .NET 10 新增 JS 互操作 API 的确切名称 -->
+
+.NET 10 新增的 JS 互操作 API：
+
+- `IJSRuntime.InvokeConstructorAsync(...)` / `IJSObjectReference.InvokeConstructorAsync(...)`：通过 JS 构造函数创建对象实例，直接拿到 `IJSObjectReference` 句柄，免去 `eval` 与全局污染。
+
+```csharp
+// 旧：await JS.InvokeVoidAsync("eval", "window.chart = new Chart(canvas, cfg)");
+// 新：
+IJSObjectReference chart = await JS.InvokeConstructorAsync<IJSObjectReference>(
+    "Chart", canvas, config);
+```
+
+- 直接读写 JS 对象的属性值（数据属性与访问器属性均可），无需为每次读取包一层 `InvokeAsync`。
+
+```csharp
+object? title = await chart.GetValueAsync("title");   // 读取属性
+await chart.SetValueAsync("title", "新标题");          // 写入属性
+```
 
 ## 常见错误
 

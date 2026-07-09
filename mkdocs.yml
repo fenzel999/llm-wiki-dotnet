@@ -90,6 +90,10 @@ nav:
           - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
       - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md
       - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
+      - 版本对照:
+          - .NET 8 / C# 12: dotnet/versions/net8.md
+          - .NET 9 / C# 13: dotnet/versions/net9.md
+          - .NET 版本演进: comparisons/net-evolution.md
   - 语言与规范:
       - 语言概念:
           - 可空引用类型: concepts/nullable-reference-types.md

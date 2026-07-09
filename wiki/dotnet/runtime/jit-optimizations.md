@@ -36,7 +36,6 @@ static long SumEven(ReadOnlySpan<int> data)
 // 环境变量：DOTNET_TieredPGO=0 可关闭动态 PGO 以对照
 // 默认无需设置，PGO 已默认开启
 ```
-<!-- ⚠️ needs-your-call: 确认 .NET 10 中动态 PGO 相关开关名 -->
 
 ## 正确做法（补充）
 

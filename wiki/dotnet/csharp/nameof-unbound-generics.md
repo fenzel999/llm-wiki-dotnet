@@ -23,7 +23,6 @@ string b = nameof(Dictionary<,>);      // "Dictionary"
 
 Console.WriteLine($"{a}, {b}");        // List, Dictionary
 ```
-<!-- ⚠️ needs-your-call: 确认 nameof(Dictionary<,>) 多元非绑定写法 -->
 
 用于诊断消息时不再需要挑一个「无意义」的类型实参：
 

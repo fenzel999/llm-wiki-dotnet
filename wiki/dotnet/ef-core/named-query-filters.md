@@ -25,7 +25,6 @@ protected override void OnModelCreating(ModelBuilder b)
      .HasQueryFilter("Tenant", p => p.TenantId == _tenantId);
 }
 ```
-<!-- ⚠️ needs-your-call: 确认 HasQueryFilter(string name, ...) 命名重载签名 -->
 
 查询时按名禁用其中一个（例如管理后台需要看软删除数据）：
 

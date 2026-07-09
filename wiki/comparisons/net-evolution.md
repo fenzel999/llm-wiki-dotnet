@@ -29,6 +29,23 @@ C# 语言版本与运行时绑定（部分）：
 | C# 13 | `params` 集合、`ref` 改进、`\e` 转义 | .NET 9 |
 | C# 14 | `field` 关键字、扩展成员(`extension`)、更简 nameof | .NET 10 |
 
+## 特性矩阵（net8 / net9 / net10）
+
+| 能力 | .NET 8 (LTS) | .NET 9 (STS) | .NET 10 (LTS) |
+|------|--------------|--------------|---------------|
+| C# 版本 | 12 | 13 | 14 |
+| 集合表达式 / 主构造函数 | ✅ | ✅ | ✅ |
+| `params` 集合 (C# 13) | ❌ | ✅ | ✅ |
+| 内建 OpenAPI 生成 | ❌（需 Swashbuckle） | ✅ 3.0 | ✅ 3.1 |
+| 最小 API 内建验证 | ❌（需 FluentValidation/手写） | ❌ | ✅ |
+| `field` 关键字 / `extension` 块 | ❌ | ❌ | ✅ |
+| `Microsoft.Extensions.AI` | ❌ | ✅ | ✅ |
+| 原生 AOT（限制程度） | 多限制 | 较少 | 更少 |
+| EF Core 复杂类型 / 基元集合 | ✅（复杂类型） | ✅ | ✅ |
+
+> 更细的特性与示例见 [.NET 8 / C# 12](../dotnet/versions/net8.md) 与 [.NET 9 / C# 13](../dotnet/versions/net9.md)。
+> 所有主题页的 frontmatter 用 `introduced-in` / `applies-to` 标版本；跨版本差异用 `===` 选项卡表达。
+
 ## 何时选哪个
 
 - 新建生产项目：优先 **.NET 8 / .NET 10（LTS）**，避免 STS 的短支持窗口。
@@ -63,6 +80,8 @@ public class Order
 
 ## 相关
 
+- [.NET 8 / C# 12](../dotnet/versions/net8.md)
+- [.NET 9 / C# 13](../dotnet/versions/net9.md)
 - [持久约定 POLICY](../governance/policy.md)
 - [record 与 class 对比](record-vs-class.md)
 - [RAG 与 LLM Wiki 对比](rag-vs-llm-wiki.md)

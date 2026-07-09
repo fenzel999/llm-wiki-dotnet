@@ -31,7 +31,6 @@ app.MapGet("/ping", () => "pong")
 
 app.Run();
 ```
-<!-- ⚠️ needs-your-call: 确认 .NET 10 生成的默认 openapi 版本号即为 3.1 -->
 
 可通过文档转换器自定义信息：
 
@@ -56,10 +55,13 @@ builder.Services.AddOpenApi(options =>
 ## 适用版本
 
 === "net10"
-    原生生成 OpenAPI 3.1 文档。
+    原生 `AddOpenApi()` 生成 **OpenAPI 3.1** 文档（本库约定做法）。
+
+=== "net9"
+    原生 `AddOpenApi()` 已可用，生成 **OpenAPI 3.0**；升级到 net10 即得到 3.1。
 
 === "net8"
-    内置 `AddOpenApi` 生成 3.0，或使用第三方库。
+    无内建 OpenAPI 生成器，需第三方库（如 Swashbuckle）。如本库已统一到 net10，推荐直接升级。
 
 ## 参考资料
 

@@ -34,7 +34,6 @@ TryParse parse = (string s, out result) => int.TryParse(s, out result);
 if (parse("10", out int r))
     Console.WriteLine(r);   // 10
 ```
-<!-- ⚠️ needs-your-call: 确认 out 参数是否可完全省略类型（(s, out result) =>） -->
 
 ## 常见错误
 

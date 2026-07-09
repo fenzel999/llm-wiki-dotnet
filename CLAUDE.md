@@ -41,7 +41,7 @@ CLAUDE.md
 把 `raw/` 或用户给的新资料编译成 `wiki/` 页面。
 - 提炼要点、去重、归并到既有主题或建新页。
 - 产出 frontmatter 完整、含 `source` 引用、被索引链接的页面。
-- 更新 `wiki/index.md` 与 `wiki/思维导图.md`，并刷新 `wiki/graph.json`。
+- 更新 `wiki/index.md` 与 `wiki/思维导图.md`。
 
 ### Query（查询）
 回答人类问题时，优先在 `wiki/` 内检索并给出**带链接**的回答；知识缺失则提示可 Ingest。
@@ -51,7 +51,7 @@ CLAUDE.md
 - 所有 `wiki/` 页面都有合法 frontmatter 且 `source` 非空。
 - 所有内部链接可解析（无死链）。
 - 每个页面至少被一处链接（可被 `wiki/index.md` 或某页引用）。
-- 重新生成 `wiki/graph.json`（节点=页面，边=交叉引用）。
+- 校验 `wiki/思维导图.md` 的节点链接是否都指向真实页面。
 - 输出问题清单到 `QA-REPORT.md`。
 
 ### Audit（自审）
@@ -118,7 +118,7 @@ updated: 2026-07-09
 4. 新页面必须被至少一处链接（进 `wiki/index.md` 或某页正文）。
 5. 与其他页矛盾时，标 `⚠️` 并写入 `QA-REPORT.md`，不要静默覆盖。
 6. 每次操作后必须更新 `wiki/log.md`（时间、操作、影响页面）。
-7. `wiki/index.md` / `wiki/思维导图.md` / `wiki/graph.json` 必须随内容保持同步。
+7. `wiki/index.md` / `wiki/思维导图.md` 必须随内容保持同步。
 
 ---
 

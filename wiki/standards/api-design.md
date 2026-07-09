@@ -21,7 +21,7 @@ updated: 2026-07-09
 
 > 示例以应用服务（被最小 API 端点调用）为例；Web 层统一走最小 API，不使用 Controller。
 > 数据访问直接注入 `DbContext`，不引入仓储/工作单元（见
-> [EF Core 数据访问](../patterns/repository.md)）。
+> [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。
 
 ```csharp
 public sealed class OrderService

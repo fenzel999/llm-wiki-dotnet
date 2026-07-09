@@ -20,7 +20,7 @@ updated: 2026-07-09
 ## 正确做法
 
 直接注入 `DbContext` 使用（例如在最小 API 端点中，见
-[最小 API 组织](../patterns/minimal-api-organization.md)）：
+[最小 API 组织](../../patterns/minimal-api-organization.md)）：
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +74,6 @@ public sealed class Order
 
 ## 参考资料
 
-- [最小 API 组织](../patterns/minimal-api-organization.md)
-- [依赖注入](../concepts/dependency-injection.md)
-- [释放与 using](../patterns/disposable-using.md)
+- [最小 API 组织](../../patterns/minimal-api-organization.md)
+- [依赖注入](../../concepts/dependency-injection.md)
+- [释放与 using](../../patterns/disposable-using.md)

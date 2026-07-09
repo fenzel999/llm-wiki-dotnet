@@ -78,6 +78,6 @@ public static class OrderEndpoints
 ## 参考资料
 
 - [OpenAPI 3.1（aspnet-core）](../dotnet/aspnet-core/openapi-3-1.md)
-- [EF Core 数据访问（不用仓储/工作单元）](../patterns/repository.md)
+- [EF Core 数据访问（不用仓储/工作单元）](../dotnet/ef-core/ef-data-access.md)
 - [依赖注入](../concepts/dependency-injection.md)
-- [Result 类型](../patterns/result-type.md)
+- [Result 类型](../concepts/result-type.md)

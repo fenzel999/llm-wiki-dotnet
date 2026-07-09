@@ -43,7 +43,7 @@ updated: 2026-07-09
 内部链接一律相对 Markdown 链接，确保 GitHub / MkDocs / 网页三处都可解析。
 
 ## P9 索引与可视化随内容同步
-`index.md`、`思维导图.md`、`graph.json` 在每次 Ingest/Correct 后必须更新，禁止过期。
+`index.md`、`思维导图.md` 在每次 Ingest/Correct 后必须更新，禁止过期。
 
 ---
 

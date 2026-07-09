@@ -68,4 +68,4 @@ public User GetUserOrDefault(int id)
 
 - [异常处理规范](../standards/exception-handling.md)
 - [空处理](../standards/null-handling.md)
-- [Result 类型](../patterns/result-type.md)
+- [Result 类型](../concepts/result-type.md)

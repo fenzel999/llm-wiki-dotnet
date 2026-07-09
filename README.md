@@ -8,7 +8,7 @@
 ## 这是什么
 
 - **人类视图**：通过 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) + GitHub Pages 渲染的网页，
-  含中文界面、暗色主题、**可导航思维导图** 与 **3D 关系图**。
+  含中文界面、暗色主题、**可导航思维导图**。
 - **Agent 视图**：仓库根的 `AGENTS.md`（opencode）/ `CLAUDE.md`（Claude Code）是同一份 Schema，
   告诉 LLM 如何 Ingest / Query / Lint / Audit / Correct 知识。
 - **质量自校正**：内置 `QA.md` 质量准则与 `POLICY.md` 持久约定，Agent 会主动判对错、自修并报告。
@@ -32,7 +32,7 @@ llm-wiki-dotnet/
 └── wiki/                        # LLM 全权维护的知识层
     ├── index.md log.md overview.md
     ├── POLICY.md  QA.md  QA-REPORT.md
-    ├── 思维导图.md  知识图谱3D.md  如何反馈.md
+    ├── 思维导图.md  如何反馈.md
     ├── dotnet/ concepts/ standards/ patterns/ anti-patterns/ comparisons/ sources/
 ```
 

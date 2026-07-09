@@ -72,11 +72,11 @@ await tx.CommitAsync(ct);
 - 使用：async 路径上的资源清理用 `IAsyncDisposable` + `await using`。
 - 不用：不要在 `Dispose` 中抛异常；已释放时应为 no-op（见上面的 `_disposed` 守卫）。
 - 不用：不要把业务逻辑放进 `Dispose`；释放只做清理。
-- 注意：直接注入 `DbContext`（`AppDbContext` 本身即 `IDisposable`）时，由 DI 容器按作用域自动释放，无需手动 `using`（见 [EF Core 数据访问](../patterns/repository.md)）。
+- 注意：直接注入 `DbContext`（`AppDbContext` 本身即 `IDisposable`）时，由 DI 容器按作用域自动释放，无需手动 `using`（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。
 
 ## 参考资料
 
 - [异步（async-await）](../concepts/async-await.md)
 - [依赖注入](../concepts/dependency-injection.md)
-- [EF Core 数据访问](../patterns/repository.md)
+- [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)
 - [Generic Host](../patterns/generic-host.md)

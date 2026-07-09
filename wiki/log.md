@@ -15,6 +15,14 @@ updated: 2026-07-09
 
 ---
 
+## 2026-07-09 · 整理：去 3D 图谱、合并分类、移出 Result/仓储
+- 删除 3D 关系图：移除 `知识图谱3D.md`、`graph.json`、`gen_graph.py`；导航与首页不再含 3D 入口，仅保留可导航思维导图。
+- 合并分类为 4 个顶层：`.NET 10` / `语言与规范`（概念+规范）/ `实践`（模式+反模式+对比）/ `治理`，思维导图与索引同步重构。
+- `Result 类型` 移出「模式」→ 归入 `语言与规范 / 语言概念`（`concepts/result-type.md`）。
+- `仓储模式` 改写为的「EF Core 数据访问」移出「模式」→ 归入 `.NET 10 / EF Core`（`dotnet/ef-core/ef-data-access.md`）。
+- 同步更新 AGENTS.md/CLAUDE.md/POLICY 中关于 `graph.json`/3D 的描述与 Lint 步骤。
+- 影响：mkdocs.yml、index.md、overview.md、思维导图.md、AGENTS.md、CLAUDE.md、POLICY.md、README.md 及上述两个页面链接。
+
 ## 2026-07-09 · 纠正：验证改用 .NET 10 内置（不用 FluentValidation）
 - `minimal-api-validation.md` 改为 .NET 10 最小 API 内置验证（`AddValidation()` + `WithValidation()`，数据注解 + `IValidatableObject`），不再使用 FluentValidation。
 - 影响：dotnet/aspnet-core/minimal-api-validation.md。

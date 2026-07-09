@@ -77,10 +77,10 @@ public class CreateUser : IValidatableObject
     最小 API 内置验证与自动 400（本仓库约定做法）。
 
 === "net9"
-    无内置验证（net9 仅有内建 OpenAPI，未带验证），需手写过滤器或第三方库（如 FluentValidation）。
+     无内置验证（net9 仅有内建 OpenAPI，未带验证），需手写过滤器或引入第三方验证库。
 
 === "net8"
-    无内置验证，需手写过滤器或引入第三方库（如 FluentValidation）。
+     无内置验证，需手写过滤器或引入第三方验证库。
 
 ## 参考资料
 

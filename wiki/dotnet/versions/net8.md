@@ -35,8 +35,8 @@ public class Point(int X, int Y)
 ## ASP.NET Core 8
 
 - `MapGroup` 路由分组成熟可用；原生 AOT 支持起步（net8 起 ASP.NET Core 可发布为 AOT，但限制较多）。
-- **无内建 OpenAPI 生成器**：net8 生成 API 文档仍依赖 Swashbuckle 等第三方（[原生 OpenAPI 3.1](../aspnet-core/openapi-3-1.md) 从 .NET 9 起内建）。
-- 最小 API 验证：**无内建**；需用 FluentValidation 或手写过滤器（.NET 10 才内建，见 [最小 API 验证](../aspnet-core/minimal-api-validation.md)）。
+- **无内建 OpenAPI 生成器**：net8 需第三方库才能出文档；自 .NET 9 起提供 `AddOpenApi()`，.NET 10 升级到 3.1（见 [原生 OpenAPI 3.1](../aspnet-core/openapi-3-1.md)）。本库统一采用 .NET 10 原生方案，不再用 Swashbuckle。
+- 最小 API 验证：**net8 无内建**。.NET 10 起提供内置验证（见 [最小 API 验证](../aspnet-core/minimal-api-validation.md)），本库以该方案为准，不引入 FluentValidation。
 
 ## EF Core 8
 

@@ -61,7 +61,7 @@ builder.Services.AddOpenApi(options =>
     原生 `AddOpenApi()` 已可用，生成 **OpenAPI 3.0**；升级到 net10 即得到 3.1。
 
 === "net8"
-    无内建 OpenAPI 生成器，需第三方库（如 Swashbuckle）。如本库已统一到 net10，推荐直接升级。
+     无内建 OpenAPI 生成器，需第三方库；如本库已统一到 net10，推荐直接升级到原生 `AddOpenApi()`。
 
 ## 参考资料
 

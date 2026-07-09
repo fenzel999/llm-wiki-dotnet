@@ -25,6 +25,14 @@ updated: 2026-07-09
 - frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
 - 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
 
+## 2026-07-10 · 阅读模式：护眼 + 专注
+
+- 新增 `wiki/extra/modes.css` 与 `wiki/extra/modes.js`，经 `mkdocs.yml` 的 `extra_css` / `extra_javascript` 接入。
+- **护眼模式**（👁 / 快捷键 `e`）：暖色纸张配色（sepia），覆盖 Material 主色变量，减轻白底刺眼；与原生浅色/深色主题独立。
+- **专注模式**（📖 / 快捷键 `f`）：隐藏左侧栏、目录(TOC)、标签页与页脚，正文收窄居中(720px)、字号略增、行距加大，鼠标移开时顶栏半透明，适合专心通读。
+- 两个开关选择记入 `localStorage`，刷新/重访后保留。右下角固定两个圆形按钮切换。
+- `mkdocs build --strict` 零警告通过。
+
 ## 2026-07-10 · 可读性收尾（第三轮）
 
 - 将上一轮未覆盖的 **dotnet 内容页（10 篇）与 comparisons（4 篇）** 同样改写为流畅中文长文（csharp-14 / aspnet-core-10 / ef-core-10 / ef-data-access / file-based-apps / native-aot / blazor / jit-optimizations / net8 / net9；以及 4 个对比页），保留合并页锚点与跨页链接。

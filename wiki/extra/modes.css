@@ -1,0 +1,75 @@
+/* ============================================================
+   阅读模式增强（modes.css）
+   - 护眼模式：暖色纸张配色（sepia），减轻白底刺眼
+   - 专注模式：隐藏侧栏/目录/页脚，正文居中收窄，专心阅读
+   两个按钮固定在右下角，选择记入 localStorage。
+   ============================================================ */
+
+/* ---------- 右下角切换按钮 ---------- */
+.mode-bar {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mode-bar button {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--md-divider-color);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+.mode-bar button:hover { transform: scale(1.08); }
+.mode-bar button.active {
+  background: var(--md-accent-fg-color);
+  color: #fff;
+  border-color: var(--md-accent-fg-color);
+}
+
+/* ---------- 护眼模式：暖色纸张配色 ---------- */
+html.eye-care {
+  --md-default-bg-color: #f7f0de;
+  --md-default-bg-color--light: #fcf7ea;
+  --md-default-bg-color--dark: #efe5cd;
+  --md-default-fg-color: #463a2c;
+  --md-default-fg-color--light: #5d4d3a;
+  --md-default-fg-color--dark: #2f261b;
+  --md-code-bg-color: #efe6d2;
+  --md-code-fg-color: #463a2c;
+  --md-typeset-a-color: #9c5b27;
+  --md-accent-fg-color: #9c5b27;
+  --md-default-icon-color: #6b5a45;
+  --md-divider-color: #e2d6ba;
+}
+html.eye-care,
+html.eye-care body,
+html.eye-care .md-main,
+html.eye-care .md-content { background: #f7f0de !important; }
+
+/* ---------- 专注模式：只留正文，收窄居中 ---------- */
+body.focus-mode .md-sidebar,
+body.focus-mode .md-tabs,
+body.focus-mode .md-footer,
+body.focus-mode .md-content__feedback { display: none !important; }
+
+body.focus-mode .md-content__inner {
+  max-width: 720px;
+}
+body.focus-mode .md-typeset {
+  font-size: 1.04rem;
+  line-height: 1.9;
+}
+body.focus-mode .md-header { opacity: .55; transition: opacity .2s; }
+body.focus-mode .md-header:hover { opacity: 1; }

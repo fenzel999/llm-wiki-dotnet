@@ -3532,8 +3532,8 @@ ASP.NET Core、EF Core 方面的关键能力；与 .NET 10 的差异见 <a href=
 <h2 id="aspnet-core-8">ASP.NET Core 8<a class="headerlink" href="#aspnet-core-8" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>MapGroup</code> 路由分组成熟可用；原生 AOT 支持起步（net8 起 ASP.NET Core 可发布为 AOT，但限制较多）。</li>
-<li><strong>无内建 OpenAPI 生成器</strong>：net8 生成 API 文档仍依赖 Swashbuckle 等第三方（<a href="../../aspnet-core/openapi-3-1/">原生 OpenAPI 3.1</a> 从 .NET 9 起内建）。</li>
-<li>最小 API 验证：<strong>无内建</strong>；需用 FluentValidation 或手写过滤器（.NET 10 才内建，见 <a href="../../aspnet-core/minimal-api-validation/">最小 API 验证</a>）。</li>
+<li><strong>无内建 OpenAPI 生成器</strong>：net8 需第三方库才能出文档；自 .NET 9 起提供 <code>AddOpenApi()</code>，.NET 10 升级到 3.1（见 <a href="../../aspnet-core/openapi-3-1/">原生 OpenAPI 3.1</a>）。本库统一采用 .NET 10 原生方案，不再用 Swashbuckle。</li>
+<li>最小 API 验证：<strong>net8 无内建</strong>。.NET 10 起提供内置验证（见 <a href="../../aspnet-core/minimal-api-validation/">最小 API 验证</a>），本库以该方案为准，不引入 FluentValidation。</li>
 </ul>
 <h2 id="ef-core-8">EF Core 8<a class="headerlink" href="#ef-core-8" title="Permanent link">&para;</a></h2>
 <ul>

@@ -1407,6 +1407,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3485,6 +3496,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3511,47 +3533,44 @@
 
 
 <h1 id="net-8-c-12">.NET 8 / C# 12 关键知识<a class="headerlink" href="#net-8-c-12" title="Permanent link">&para;</a></h1>
-<p>.NET 8 于 2023-11 发布（<strong>LTS</strong>，支持到 2026-11）。对应 <strong>C# 12</strong>。本页汇总其在 C# 语言、
-ASP.NET Core、EF Core 方面的关键能力；与 .NET 10 的差异见 <a href="../../../comparisons/net-evolution/">.NET 版本演进</a>。</p>
+<p>.NET 8 于 2023-11 发布（<strong>LTS，到 2026-11 止</strong>），对应 <strong>C# 12</strong>。本页汇总 <strong>v8 独有或 LTS 标志性特性</strong>，强调稳定基础；请查阅 <a href="../../../comparisons/net-evolution/">.NET 版本演进</a> 了解 net10 对它的扩展与替代品。</p>
 <h2 id="c-12">C# 12 语言特性<a class="headerlink" href="#c-12" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>集合表达式（Collection Expressions）</strong>：用 <code>[1, 2, 3]</code> 统一初始化数组/<code>List</code>/<code>Span</code>/<code>ImmutableArray</code> 等，
-  支持 spread <code>..other</code> 展开。</li>
-<li><strong>主构造函数（Primary Constructors）</strong>：<code>class</code> / <code>struct</code> 也可写主构造函数（record 早已有）。</li>
-<li><strong>内联数组（Inline Arrays）</strong>：<code>[InlineArray(10)] struct Buf { private int _e; }</code> 固定大小缓冲区，零分配高性能。</li>
-<li><strong>文件本地类型（File-local types）</strong>：<code>file class Foo</code> 仅当前文件可见。</li>
-<li><strong>ref 改进</strong>：<code>ref readonly</code> 参数、<code>ref</code> 字段更完善；<code>params</code> 暂不支持集合（C# 13 才有）。</li>
+<li><strong>集合表达式</strong>：<code>List&lt;int&gt; a = [1, 2, 3]; var b = [.. a, 0];</code>，支持 immutable array、Span 等，并辅以主构造函数。</li>
+<li><strong>主构造函数</strong> (<code>class Point(int X, int Y);</code>) - 语言级默认值。</li>
+<li><strong>内联数组</strong>：<code>[InlineArray(10)] struct Buf { private int _e; }</code> - 零分配高性能缓冲区。</li>
+<li><strong>文件本地类型</strong>：<code>file class Foo</code> - 仅当前文件可见。</li>
+<li><strong>ref 改进</strong>：<code>ref readonly</code> 参数、<code>ref</code> 字段细化。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// 集合表达式 + 主构造函数</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Y</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">{</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="p">[]</span><span class="w"> </span><span class="n">Coords</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">];</span><span class="w">          </span><span class="c1">// 集合表达式</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="p">[]</span><span class="w"> </span><span class="n">WithOffset</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[..</span><span class="w"> </span><span class="n">Coords</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="c1">// spread</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="p">[]</span><span class="w"> </span><span class="n">Coords</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <h2 id="aspnet-core-8">ASP.NET Core 8<a class="headerlink" href="#aspnet-core-8" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>MapGroup</code> 路由分组成熟可用；原生 AOT 支持起步（net8 起 ASP.NET Core 可发布为 AOT，但限制较多）。</li>
-<li><strong>无内建 OpenAPI 生成器</strong>：net8 需第三方库才能出文档；自 .NET 9 起提供 <code>AddOpenApi()</code>，.NET 10 升级到 3.1（见 <a href="../../aspnet-core/openapi-3-1/">原生 OpenAPI 3.1</a>）。本库统一采用 .NET 10 原生方案，不再用 Swashbuckle。</li>
-<li>最小 API 验证：<strong>net8 无内建</strong>。.NET 10 起提供内置验证（见 <a href="../../aspnet-core/minimal-api-validation/">最小 API 验证</a>），本库以该方案为准，不引入 FluentValidation。</li>
+<li><strong>无内建 OpenAPI 生成器</strong>：需第三方库（Swashbuckle）才能出 OpenAPI 文档。<strong>自 .NET 9 起提供原生 <code>AddOpenApi()</code>，.NET 10 则进一步升级为 3.1。</strong>本库统一采用 .NET 10 方案，不再用 Swashbuckle（见 <a href="../../aspnet-core/openapi-3-1/">原生 OpenAPI 3.1</a>）。</li>
+<li><strong>无内置最小 API 验证</strong>。需第三方（如 FluentValidation）或手写过滤器。<strong>自 .NET 10 起提供自动验证</strong>（见 <a href="../../aspnet-core/minimal-api-validation/">最小 API 验证</a>），本库以该方案为准。</li>
 </ul>
 <h2 id="ef-core-8">EF Core 8<a class="headerlink" href="#ef-core-8" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>复杂类型（Complex Types）</strong> 正式支持（值对象映射）。</li>
-<li><strong>基元集合（Primitive Collections）</strong> 映射（<code>List&lt;int&gt;</code> 等存为 JSON/值）。</li>
-<li><code>ExecuteUpdate</code> / <code>ExecuteDelete</code> 批量命令（无需先查再改）。</li>
+<li><strong>复杂类型</strong> 正式支持（值对象映射于宿主主键），不需 UoW/Repository 包装。</li>
+<li><strong>基元集合</strong> 映射（<code>List&lt;int&gt;</code> 等存为 JSON/原生值类型）。</li>
+<li><strong>ExecuteUpdate / ExecuteDelete</strong> 批量编辑命令 - 无须先查再改。</li>
 </ul>
 <h2 id="_1">适用版本<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">net8</label><label for="__tabbed_1_2">net9 / net10</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>上述 C# 12 / EF Core 8 / ASP.NET Core 8 特性可用。</p>
+<p>.NET 8 LTS 独有或 LTS 标志性特性。相较 LTS，.NET 9 / .NET 10 不仅向下兼容，还叠加更多新功能（See <a href="../../../comparisons/net-evolution/">.NET 版本演进</a>）。</p>
 </div>
 <div class="tabbed-block">
 <p>全部向下兼容；并叠加 <a href="../net9/">.NET 9</a> / <a href="../../overview/">.NET 10</a> 新特性。</p>
 </div>
 </div>
 </div>
+<h2 id="_2">参考资料<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../../comparisons/net-evolution/">.NET 版本演进</a> - 时间线与特征矩阵</li>
+<li><a href="../../../sources/">Sources README</a></li>
+</ul>
 
 
 

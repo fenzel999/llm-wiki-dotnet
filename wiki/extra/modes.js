@@ -35,11 +35,15 @@
   bar.appendChild(focus);
   document.body.appendChild(bar);
 
-  // 恢复上次的偏好
-  try {
-    if (localStorage.getItem("eye-care") === "true") document.documentElement.classList.add("eye-care");
-    if (localStorage.getItem("focus-mode") === "true") document.body.classList.add("focus-mode");
-  } catch (e) {}
+  // 恢复偏好；默认即开启护眼 + 专注（首次访问也直接生效）
+  function getPref(key, def) {
+    try {
+      var v = localStorage.getItem(key);
+      return v === null ? def : v === "true";
+    } catch (e) { return def; }
+  }
+  if (getPref("eye-care", true)) document.documentElement.classList.add("eye-care");
+  if (getPref("focus-mode", true)) document.body.classList.add("focus-mode");
   sync();
 
   // 快捷键：e 护眼，f 专注（输入框中不触发）

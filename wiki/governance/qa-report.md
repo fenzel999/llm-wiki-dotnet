@@ -18,6 +18,11 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（全库 Audit + Correct：对照官方文档、删旧换新）
+- 范围：20 个内容页 + 治理页；对照 Microsoft 官方 .NET 文档常识逐页判 Q1–Q7。
+- 结论：**发现 2 处事实错误、2 个编码损坏文件，均已自修；其余 18 内容页通过**。
+- 方法：内容审计由子代理逐页读取判定；编码损坏经全库扫描定位。修复后 `mkdocs build --strict` 通过（零死链）。
+
 - 日期：2026-07-09（建库初始化 + 种子 + 构建验证）
 - 范围：全库骨架、~51 种子页、MkDocs 构建（零死链）、graph.json（61 节点/274 边）
 - 结论：结构、链接、可视化通过；.NET 10 / C# 14 新语法由子代理撰写，部分处标注了 `⚠️ needs-your-call`。
@@ -33,6 +38,9 @@ updated: 2026-07-09
 
 | 日期 | 页面 | 改了什么 | 依据 |
 |------|------|----------|------|
+| 2026-07-10 | dotnet/csharp/async-await.md | 修正「并行组合」错误：`(await GetA(), await GetB())` 实为**串行**（从左到右求值）。改为先发起任务再统一 await，并提示 `Task.WhenAll` | C# 语言规范（表达式求值顺序） |
+| 2026-07-10 | comparisons/list-vs-immutablearray.md | 修正对比表「空值」行：`List<T>` 变量可为 null；`default(ImmutableArray<T>)` 是未初始化态（访问抛异常），空集合须用 `ImmutableArray<T>.Empty` | .NET API 文档（ImmutableArray） |
+| 2026-07-10 | governance/qa.md、governance/feedback.md | 两文件磁盘编码损坏（UTF-8 被按 GBK 双重编码，恢复有丢字）；按 AGENTS.md 与原结构用干净 UTF-8 重写 | 全库乱码扫描 |
 | 2026-07-09 | dotnet/* 与 patterns/* | 修正子代理写错的相对链接深度（`../sources` ↔ `../../sources`、`../../dotnet` ↔ `../dotnet`） | Lint 死链扫描 |
 | 2026-07-09 | dotnet/aspnet-core/aspnet-core-10.md | 删除不存在的 `.WithValidation()`；改为 `AddValidation()` 自动启用 + `.DisableValidation()` 关闭 | Microsoft Learn / 社区资料核实 |
 | 2026-07-09 | dotnet/blazor/javascript-improvements.md | 补全 .NET 10 新增 JS 互操作 API：`InvokeConstructorAsync`、JS 对象属性读写 | ASP.NET Core 10 发行说明 |

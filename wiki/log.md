@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Audit + Correct（全库）**：对照官方文档做一次全库自审，删旧换新。
+    - 事实订正：`dotnet/csharp/async-await.md`「并行组合」原称 `(await GetA(), await GetB())` 为并发——实为串行（表达式从左到右求值），改为先发起 Task 再统一 await，并提示 `Task.WhenAll`。
+    - 事实订正：`comparisons/list-vs-immutablearray.md` 对比表「空值」行：`List<T>` 变量可为 null；`default(ImmutableArray<T>)` 为未初始化态（访问抛异常），空集合须用 `ImmutableArray<T>.Empty`。
+    - 编码修复：`governance/qa.md`、`governance/feedback.md` 磁盘编码损坏（双重编码乱码），用干净 UTF-8 依原结构重写。
+    - 其余 18 个内容页经子代理审计判定通过（frontmatter/source/新惯用法均无问题）。
+    - 更新 `governance/qa-report.md`（本轮结论与已自修表）。`mkdocs build --strict` 通过。
+
 - 2026-07-10 **Ingest（历史版本）**：按微软官方 "What's new" 文档补齐 .NET Core 3.0/3.1、.NET 5/6/7 知识，遵循 POLICY P1「新写法为首选，旧写法一句话标为已被取代」。
     - 新建 `dotnet/versions/netcore3.md`（C# 8：NRT/异步流/范围索引、内置 System.Text.Json 取代 Newtonsoft、单文件/裁剪/R2R、Windows 桌面）、`net5.md`（C# 9：records/顶层语句/模式匹配、统一 net5.0 TFM）、`net6.md`（C# 10 + 最小托管取代 Startup.cs、DateOnly/TimeOnly、日志源生成器）、`net7.md`（C# 11：泛型数学/原始字符串/required、Native AOT 控制台、限流、发布到容器、EF Core 7 批量更新、LibraryImport 取代 DllImport）。均标 `status: deprecated`（EOL），仅保留至今仍有效的知识并链到当前 .NET 10 推荐。
     - 更新 `comparisons/net-evolution.md`：时间线表补 Core 3.0/3.1/5 并标 EOL；新增 C# 8–11 行；参考资料增 4 页链接。

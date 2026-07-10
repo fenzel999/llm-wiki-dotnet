@@ -26,11 +26,13 @@ public async Task<string> FetchAsync(HttpClient client, string url)
     return await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
 }
 
-// 并行组合
-var (a, b) = (await GetA(), await GetB());
+// 并行组合：先发起，再一起等
+var tA = GetA();               // 立即发起，不 await
+var tB = GetB();               // 立即发起，不 await
+var (a, b) = (await tA, await tB);
 ```
 
-注意第二段的写法：`(await GetA(), await GetB())` 两个 `await` 并列，二者其实是并发发起、一起等待的，比写成“先等 A 再等 B”的顺序要快得多。这是异步代码里最常用、也最容易被忽略的优化点。
+注意第二段的写法：想让两个异步操作**真正并发**，必须先各自发起任务（`GetA()` / `GetB()` 拿到 `Task`），再统一 `await`。常见的坑是写成 `var (a, b) = (await GetA(), await GetB());`——由于表达式从左到右求值，它会先完整 `await` 完 `GetA()` 再去调用 `GetB()`，实际上是**串行**执行，只是看起来像并行。需要等待一组任务时也可以用 `await Task.WhenAll(tA, tB)`。这是异步代码里最常被误写的地方。
 
 ## 常见误区
 

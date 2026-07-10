@@ -72,6 +72,42 @@ var json = JsonSerializer.Serialize(obj);
 === "net8"
     控制台与部分 ASP.NET Core 场景已支持 Native AOT，但限制较 net10 更多。
 
+## AOT 调试实战
+
+AOT 编译后**无法使用托管调试器**（Visual Studio 托管调试引擎、即时窗口、模块窗口均失效），因为没有运行时来托管调试会话。
+
+### 可用工具
+
+| 平台 | 调试器 | 说明 |
+|------|--------|------|
+| Windows | **WinDbg** / **Visual Studio C++ 调试器** | 需加载 `sos.dll` 扩展解析托管对象；PDB 含 C# 方法名，调用栈可读，但变量检视能力远弱于托管调试 |
+| Linux / macOS | **lldb** / **gdb** | 需配合微软提供的 `sos` 插件（`dotnet-sos`）解析托管堆/线程；体验仍较硬核 |
+
+### 关键限制
+
+- **无托管即时窗口**：无法在断点处执行任意 C# 表达式
+- **变量检视受限**：只能看基础类型字段；复杂对象需手动解析内存布局
+- **无堆分析**：`dotnet-gcdump` / `dotnet-dump` 在 AOT 下**不支持堆分析**，内存泄漏排查极难
+
+### 实战工作流
+
+```bash
+# 1. 发布时保留 PDB（默认已含）
+dotnet publish -c Release -r linux-x64 -p:PublishAot=true
+
+# 2. 容器/K8s 挂载调试器 sidecar
+# Linux: kubectl debug -it <pod> --image=mcr.microsoft.com/dotnet/sdk:10.0 --target=<container>
+# 进入后用 lldb 附着：
+lldb -p <PID> -o "plugin load libsosplugin.so" -o "sos Threads"
+
+# 3. Windows: WinDbg 附着进程
+# .load sos.dll
+# !Threads
+# !ClrStack
+```
+
+> ⚠️ AOT 下**首选防御式编程**：大量结构化日志 + 指标 + 链路追踪，减少对生产调试的依赖。
+
 ## 参考资料
 
 - 相关：[JIT 性能优化](../runtime/jit-optimizations.md)

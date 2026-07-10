@@ -18,6 +18,10 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**Correct** — solution-structure 改为模块化单体布局）
+- 触发：人工指正——上一版顶层用横切分层（整个应用一套 Domain/Application/Infrastructure），是传统分层单体，与本库 modular-monolith 偏好矛盾。
+- 修正：`solution-structure.md` 顶层改为**按业务模块切**，模块内部再分层；跨模块只经 `*.Contracts`，Host 唯一组合根。与 `modular-monolith.md` 互补对齐（概念 vs .csproj 布局），消除矛盾（Q3）。`mkdocs build --strict` 通过。
+
 - 日期：2026-07-10（**巡检 Patrol #3** — 吸收"解决方案分层与项目引用"设计思想）
 - 范围：架构分层缺口补齐 + 一致性修复。
 - Ingest：新增 `architecture/solution-structure.md`——项目分层（Domain/Application/Infrastructure/Web）与**单向无环引用规则**、契约轻依赖、组合根唯一绑定实现、架构测试守边界；厂商中立不提 ABP，对齐 Minimal API + DbContext-direct 约定，对照微软"常见 Web 应用体系结构"与"中央包管理"文档。

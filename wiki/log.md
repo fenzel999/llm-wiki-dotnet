@@ -13,6 +13,12 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Correct（人工纠错）**：`solution-structure.md` 改为**模块化单体**布局。
+    - 问题：上一版把顶层设成横切分层（MyApp.Domain/Application/Infrastructure 覆盖整个应用），即传统分层单体，与本库 [modular-monolith](architecture/modular-monolith.md) 偏好矛盾（用户指正）。
+    - 修正：顶层改为**按业务模块切**（Modules/Orders、Modules/Billing…），每个模块内部再分 `Contracts/Domain/Application/Infrastructure`；**模块内依赖只向内**、**跨模块只引对方 `*.Contracts`**、Host 为唯一组合根、SharedKernel 放共享基元。补充退化情形说明（单一上下文小应用=单模块=横向分层，可接受）。
+    - 与 modular-monolith.md 互补对齐（后者讲概念/通信/边界，本页讲 .csproj 布局与引用图），无重复矛盾。`mkdocs build --strict` 通过。
+    - 影响：architecture/solution-structure.md。
+
 - 2026-07-10 **巡检（Patrol #3）**：吸收"解决方案分层与项目引用"设计思想。
     - **Ingest**：新增 `architecture/solution-structure.md`，吸收"项目按 Domain/Application/Infrastructure/Web 分层、**依赖只向内单向无环**、契约项目轻依赖、仅组合根引用实现"这一设计思想（用户点名的"文件夹层级之间如何引用"）。厂商中立、不提 ABP；对齐本库约定（Minimal API 不用控制器、DbContext 直用不套仓储）；含标准目录树、引用箭头图、`Directory.Packages.props` 中央包管理、架构测试守边界。
     - **一致性修复（Q3/P5）**：`clean-architecture.md` 的 `IOrderRepository` 与 `ef-data-access.md`"不用仓储"存在张力——补一句说明：那是依赖倒置的**窄接口**（非通用 `Repository<T>`），默认仍直用 `DbContext`。

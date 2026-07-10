@@ -13,6 +13,12 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **巡检（Patrol #2）**：合规复扫 + 吸收新设计思想。
+    - **合规复扫（P10/P12/P14）**：全库扫描第三方/付费/云绑定/ABP 字样——知识页**零违规**；剩余命中均为治理/日志记录、P14 规则本身、或"不用 X"教学提示（Newtonsoft/Dapper/Moq/Swashbuckle 等，均正确拒绝）。
+    - **Ingest 新设计思想（厂商中立）**：补齐 DDD 拼图缺口——新增 `architecture/domain-events.md`（**聚合收集领域事件 + 在 SaveChanges 提交前用手写分发器派发，副作用与业务变更同一事务**）。对照微软官方 eShop「领域事件：设计与实现」文档；官方示例用 MediatR，本页按 [P10](governance/policy.md) 改**手写分发器 + EF Core 拦截器**。厘清与 event-driven 的边界：领域事件=进程内同事务，集成事件=跨服务+发件箱。
+    - **同步**：mkdocs.yml（领域建模组加"领域事件"）、index、思维导图、sources；event-driven / enterprise-patterns 加反向链接。`mkdocs build --strict` 零死链通过。
+    - 影响：architecture/domain-events.md（新）、architecture/event-driven.md、architecture/enterprise-patterns.md、mkdocs.yml、index.md、思维导图.md、sources/README.md。
+
 - 2026-07-10 **巡检（Patrol）**：按 `governance/patrol.md` 全量执行，触发词"巡检"。
     - **新增 POLICY P14**：只吸收架构思想，知识页正文/标题/summary/source/参考资料**不得出现 "ABP" 与 `abp.io`**，一律用微软官方文档表述。
     - **去 ABP 命名**：`architecture/abp-inspired.md` → 重写为 `enterprise-patterns.md`（企业级架构模式导览，厂商中立）；specification-pattern/multi-tenancy/auditing-soft-delete/domain-application-services 四页的 `source` 与参考资料改为微软官方文档（EF Core 多租户/查询筛选器/拦截器、.NET 微服务 DDD 指南），删除所有 ABP 字样。

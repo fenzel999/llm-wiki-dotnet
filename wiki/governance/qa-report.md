@@ -18,6 +18,13 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**巡检 Patrol #2** — 合规复扫 + 吸收新设计思想）
+- 范围：全库合规复扫；DDD/架构缺口补齐。
+- 结论：**知识页 P10/P12/P14 零违规**（上一轮整改已生效）；剩余 "第三方/ABP" 命中均为治理记录、P14 规则本身、或"不用 X"教学提示，均合规。
+- Ingest：新增 `architecture/domain-events.md`，吸收"聚合收集领域事件 + 随工作单元（SaveChanges）延迟分发、副作用同事务"这一核心设计思想；对照微软 eShop 官方文档，官方用 MediatR → 本页按 P10 改**手写分发器 + EF Core 拦截器**。与 `event-driven.md`（跨服务集成事件 + 发件箱）划清边界，互加链接。
+- 前沿性：延续 Patrol #1 结论——生产 .NET 10 LTS，.NET 11/C# 15 预览页已在库。`mkdocs build --strict` 零死链通过。
+- 待你判定：无。
+
 - 日期：2026-07-10（**巡检 Patrol** — 全库前沿核对 + P10/P12/P14 合规扫描 + 删旧换新）
 - 范围：全库 78 页扫描；重点整改 architecture/*、patterns/composition、standards/quality-engineering、dotnet/fundamentals/testing、dotnet/versions。
 - 结论：**新增 P14（正文不得提及 ABP）并落地**；**发现并修复 4 处 P10/P12 违规**（合规扫描比上一轮更严）：

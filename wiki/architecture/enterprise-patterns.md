@@ -36,7 +36,8 @@ updated: 2026-07-10
 | 可复用查询条件 | [规约模式](specification-pattern.md)（手写表达式树 + EF Core） |
 | 多租户隔离 | [多租户](multi-tenancy.md)（EF 全局查询筛选器 + 租户解析中间件） |
 | 审计 / 软删除 | [审计与软删除](auditing-soft-delete.md)（EF `SaveChanges` 拦截器 + 全局筛选） |
-| 模块/服务解耦 | [事件驱动](event-driven.md)（领域事件手写发布器 + 发件箱） · [CQRS](cqrs.md) |
+| 聚合间副作用（同事务） | [领域事件](domain-events.md)（聚合收集 + 随 SaveChanges 分发） |
+| 模块/服务解耦 | [事件驱动](event-driven.md)（集成事件 + 发件箱） · [CQRS](cqrs.md) |
 
 ## 常见误区
 

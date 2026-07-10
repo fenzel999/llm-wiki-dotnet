@@ -57,6 +57,7 @@ public class Dispatcher(IEnumerable<object> handlers)      // 手写极简分发
 
 ## 参考资料
 
+- [领域事件（进程内、同事务）](domain-events.md)
 - [微服务架构](microservices.md)
 - [后台服务（消费者）](../dotnet/fundamentals/background-services.md)
 - [弹性与容错](../dotnet/fundamentals/resilience.md)

@@ -125,6 +125,7 @@ nav:
       - 领域建模:
           - 领域驱动设计 DDD: architecture/ddd.md
           - 领域服务与应用服务: architecture/domain-application-services.md
+          - 领域事件: architecture/domain-events.md
           - 规约模式: architecture/specification-pattern.md
       - 横切与企业能力:
           - CQRS: architecture/cqrs.md

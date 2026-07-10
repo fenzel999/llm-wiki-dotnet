@@ -43,6 +43,8 @@ updated: 2026-07-10
     - [依赖注入](dotnet/fundamentals/dependency-injection.md) — DI 容器与生命周期
     - [配置与 Options](dotnet/fundamentals/configuration-options.md) — 多源配置、强类型绑定与启动校验
     - [测试](dotnet/fundamentals/testing.md) — xUnit、集成测试、手写测试替身
+    - [集成测试](dotnet/fundamentals/integration-testing.md) — WebApplicationFactory / SQLite 内存库测真链路
+    - [测试替身](dotnet/fundamentals/test-doubles.md) — 手写 fake/stub/spy，不引 mock 框架
     - [日志与可观测性](dotnet/fundamentals/observability.md) — 结构化日志、OpenTelemetry 三信号
     - [HttpClient 与工厂](dotnet/fundamentals/http-client.md) — IHttpClientFactory、避免套接字耗尽
     - [弹性与容错](dotnet/fundamentals/resilience.md) — 重试/熔断/超时（Polly）

@@ -32,6 +32,14 @@ updated: 2026-07-09
 ### 待办（后续巡检）：P16 全库 AOT 合规扫描
 - 待分类决策：`patterns/composition.md` 是否物理迁移到 `dotnet/fundamentals/`（其内容为 Options/Host/Pipeline/Minimal API，属基础/Web 而非"实践/模式"）。本轮先保留在 patterns，待后续按重排方案决定（迁移会改 ~10 处跨页链接与内部相对路径深度）。
 
+- 日期：2026-07-10（**深写 Round 2 — 框架基础（fundamentals）完成**）
+- 触发：用户反馈"重新分析、整理、调优、分类" + P17 深度标准 + 测试方向偏弱。
+- 对 `dotnet/fundamentals/` 全部 9 页按 P17 深写并补 `### Native AOT 兼容性`：
+  - `dependency-injection.md`（前一轮已深写）；本轮 `configuration-options.md`（命名选项/校验/配置绑定源生成）、`observability.md`（Meter/ActivitySource/分布式追踪/W3C traceparent）、`http-client.md`（命名客户端/处理器链/构造 URL/取消令牌）、`resilience.md`（限流/隔离舱/回退/组合 + 策略决策表）、`caching.md`（三层次/标签失效/HybridCache）、`background-services.md`（Channel 队列/异常隔离/优雅停机）、`data-protection.md`（Data Protection vs 密码哈希/purpose 隔离）均扩到深度完整。
+  - 测试扩展：`testing.md` 改为总览，新增 `integration-testing.md`（WebApplicationFactory/SQLite 内存库/不引 Testcontainers）、`test-doubles.md`（fake/stub/spy，不引 Moq）。
+- `mkdocs build --strict` 待跑通过后提交。
+- 待你判定：无。
+
 - 日期：2026-07-10（**全局清理 Round 1** — 分类/规范一致化）
 - 触发：全库分析（子树）+ 人工反馈"重新分析、整理、调优、分类"。
 - 小节名统一：7 页 `## 反例（常见错误）`→`## 常见误区`（与 POLICY P13 一致）；`AGENTS.md`/`CLAUDE.md` 模板同步改为 `## 常见误区`。

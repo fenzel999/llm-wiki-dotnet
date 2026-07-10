@@ -258,3 +258,9 @@ updated: 2026-07-09
 - 修孤立链接：output-caching↔caching、rate-limiting/output-caching 入 middleware、data-protection 入 auth、concurrency/pagination/ef-vs-ado 入 ef-data-access。
 - 迁移决策待定：patterns/composition.md 是否移到 dotnet/fundamentals/（内容属基础/Web），本轮保留，记于 qa-report。
 - 影响：7 页正文、30 页 frontmatter、AGENTS.md、CLAUDE.md、middleware/auth/ef-data-access/caching 参考资料、qa-report。
+
+## 2026-07-10 · 深写 Round 2：框架基础（fundamentals）完成
+- 9 页全部按 P17 深写 + AOT 小节：config-options/observability/http-client/resilience/caching/background-services/data-protection 扩到深度完整；DI 前轮已完成。
+- 测试扩展：testing.md 改总览；新增 integration-testing.md、test-doubles.md（均不引第三方 mock/容器库）。
+- 同步：mkdocs.yml、index.md、思维导图.md、qa-report.md。
+- 影响：wiki/dotnet/fundamentals/*（9 页）、wiki/dotnet/fundamentals/integration-testing.md、wiki/dotnet/fundamentals/test-doubles.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。

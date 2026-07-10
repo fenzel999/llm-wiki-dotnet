@@ -79,6 +79,8 @@ nav:
           - 依赖注入: dotnet/fundamentals/dependency-injection.md
           - 配置与 Options: dotnet/fundamentals/configuration-options.md
           - 测试: dotnet/fundamentals/testing.md
+          - 集成测试: dotnet/fundamentals/integration-testing.md
+          - 测试替身: dotnet/fundamentals/test-doubles.md
           - 日志与可观测性: dotnet/fundamentals/observability.md
           - HttpClient 与工厂: dotnet/fundamentals/http-client.md
           - 弹性与容错: dotnet/fundamentals/resilience.md

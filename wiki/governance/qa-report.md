@@ -18,6 +18,14 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-11（**架构分类重构 + 薄页 P17 深写（Round A）**）
+- 触发：人工反馈——架构顶级分类按"四分组"重组（系统形态 / 模块内部 / 横切能力 / 部署与编排），且 architecture/ 薄页按 P17 深写（自足、深度完整、能教会旧知识模型）。
+- 分类重构：mkdocs.yml 架构段改四分组；Aspire/容器/健康检查归入"部署与编排"；index.md、思维导图.md 同步；solution-structure.md 补 `#arch-levels`/`#two-mode-deploy` 显式锚点，各架构页统一引用"三种架构不在同一层级"定位。
+- P17 深写（architecture 14 页 + 部署 3 页 + 性能 1 页）：每页补"定位（四种层级之一）+ 决策表 + 多示例 + ≥3 误区（含 why）+ Native AOT 兼容性小节"，互相交叉引用。
+- 校验：`mkdocs build --strict` 通过。修复：① policy.md 相对路径深度（architecture=`../`、cloud-native=`../../`）；② composition.md 实际位于 `patterns/`（非 dotnet/fundamentals/），全部引用改正；③ auditing-soft-delete 接口声明补分号。
+- 结论：无死链、无编码错误，已提交。
+- 待你判定：无。
+
 - 日期：2026-07-10（**Ingest/Correct #5** — HTTP 状态码约定 + 分页 + 组合性 + AOT 约束）
 - 触发：人工反馈——① API 用真实 HTTP 状态码（404/400/422）而非 Result 包装；② 需要动态分页知识；③ 解决方案应支持自定义工具（规约父类/分页）与清晰层级分工；④ 模块要能像成熟企业框架那样自由组合（单体模块↔独立微服务）；⑤ **不支持 AOT 的模式不用**（后端严格 AOT，前端豁免）。
 - 新增规则：**P15**（API 用真实 HTTP 状态码、不用 Result 信封）、**P16**（后端代码必须 Native AOT 兼容、前端豁免）。

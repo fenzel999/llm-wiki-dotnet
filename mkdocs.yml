@@ -122,26 +122,26 @@ nav:
           - .NET 11 / C# 15 前瞻（预览）: dotnet/versions/net11.md
   - 架构:
       - 企业级架构模式（导览）: architecture/enterprise-patterns.md
-      - 架构风格:
+      - 系统形态（System-Level）:
           - 模块化单体架构: architecture/modular-monolith.md
-          - 整洁架构: architecture/clean-architecture.md
+          - 整洁架构（模块内分层）: architecture/clean-architecture.md
           - 解决方案分层与项目引用: architecture/solution-structure.md
           - 垂直切片: architecture/vertical-slice.md
           - 微服务: architecture/microservices.md
-      - 领域建模:
+      - 模块内部（Module-Internal）:
           - 领域驱动设计 DDD: architecture/ddd.md
           - 领域服务与应用服务: architecture/domain-application-services.md
           - 领域事件: architecture/domain-events.md
           - 规约模式: architecture/specification-pattern.md
-      - 横切与企业能力:
+      - 横切能力（Cross-Cutting）:
           - CQRS: architecture/cqrs.md
           - 事件驱动: architecture/event-driven.md
           - 多租户: architecture/multi-tenancy.md
           - 审计与软删除: architecture/auditing-soft-delete.md
-  - 云原生:
-      - .NET Aspire: cloud-native/aspire.md
-      - 容器化: cloud-native/containers.md
-      - 健康检查: cloud-native/health-checks.md
+      - 部署与编排（Deployment）:
+          - .NET Aspire: cloud-native/aspire.md
+          - 容器化: cloud-native/containers.md
+          - 健康检查: cloud-native/health-checks.md
   - 性能与诊断:
       - 基准测试: performance/benchmarking.md
       - GC 与内存: performance/gc-memory.md

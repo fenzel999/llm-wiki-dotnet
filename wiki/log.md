@@ -277,3 +277,20 @@ updated: 2026-07-09
 - solution-structure.md：逐层职责（负责/拥有/依赖/不碰）+ 落点速查表 + 高内聚低耦合节 + "三种架构不在同一层级"（Aspire⊥模块化单体⊃整洁架构）。
 - 顺带：前次 dotnet/ef-core/pagination.md 多字段动态排序升级也一并提交。
 - 影响：wiki/architecture/solution-structure.md、wiki/dotnet/ef-core/pagination.md、qa-report.md。
+
+## 2026-07-11 · 架构分类重构（四分组）+ 薄页深写（Round A / Part 1）
+- mkdocs.yml 架构段重组为四分组：**系统形态（System-Level）** / **模块内部（Module-Internal）** / **横切能力（Cross-Cutting）** / **部署与编排（Deployment）**（Aspire/容器/健康检查归部署组）。index.md、思维导图.md 同步。
+- solution-structure.md 补显式锚点 `#arch-levels`/`#two-mode-deploy`；microservices.md 链接锚点修正。aspnet-core-10.md 补 `#minimal-api-validation`/`#openapi-3-1` 显式锚点（net8/net9/patterns 引用）。
+- P17 深写（部署组 + 导览）：`cloud-native/health-checks.md`（liveness/readiness 语义表 + 自定义 IHealthCheck + AOT 小节）、`architecture/enterprise-patterns.md`（四层能力映射表 + 取舍）、`architecture/microservices.md`（系统形态定位 + 二态部署 + 最终一致 + Aspire 编排 + AOT 小节）。
+- mkdocs build --strict 通过（修复 policy.md 相对路径深度）。
+- 待续：architecture/ 薄页 P17 深写（clean-architecture、ddd、event-driven、cqrs、vertical-slice、domain-*、specification、multi-tenancy、auditing-soft-delete）。
+
+## 2026-07-11 · 薄页 P17 深写（Round A / Part 2：架构全分类 + 部署 + 性能）
+- architecture/ 全部 14 页按 P17 深写：每页补"定位（四种层级之一）+ 决策表 + 代码 + ≥3 误区（含 why）+ Native AOT 兼容性小节"，并互相交叉引用锚点（#arch-levels、#二态部署）。
+  - 系统形态：microservices、vertical-slice 已 Part1；本轮补 modular-monolith/enterprise-patterns/solution-structure（前已完成）。
+  - 模块内部：clean-architecture、ddd、domain-application-services、specification-pattern（均补"内层依赖倒置/富领域/AOT 安全"等）。
+  - 横切能力：event-driven（领域事件 vs 集成事件表 + 发件箱 + 幂等）、cqrs（轻/重版决策表）、multi-tenancy（隔离模型选型 + 解析来源表）、auditing-soft-delete（IClock/ICurrentUser + 误用 DateTime.Now）、domain-events（前已完成）。
+- 部署组：aspire（"部署层与架构正交"定位 + AppHost/ServiceDefaults 表 + AOT 协作）、containers（Dockerfile vs PublishContainer 决策表 + AOT 更小镜像）、health-checks（Part1 已完成）。
+- 性能：benchmarking（定位 + 何时做基准决策表 + 读结果 + AOT 也要基准 + AOT 小节）。
+- 严格校验：mkdocs build --strict 通过；中途修复（1）policy.md 相对路径深度（architecture 用 ../、cloud-native 用 ../../）；（2）composition.md 实际位于 patterns/ 而非 dotnet/fundamentals/，全部链接改正；（3）auditing-soft-delete 接口声明补分号。
+- 影响：wiki/architecture/*.md（14 页）、wiki/cloud-native/aspire.md、wiki/cloud-native/containers.md、wiki/performance/benchmarking.md、wiki/log.md。

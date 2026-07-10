@@ -24,7 +24,7 @@ updated: 2026-07-10
 
 ## 正确做法
 
-### 1. 内置验证（自动 400 + ProblemDetails）
+### 1. 内置验证（自动 400 + ProblemDetails） {#minimal-api-validation}
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +58,7 @@ app.MapPost("/orders", (CreateOrder cmd) =>
     .ProducesProblem(StatusCodes.Status400BadRequest);
 ```
 
-### 3. 原生 OpenAPI 3.1
+### 3. 原生 OpenAPI 3.1 {#openapi-3-1}
 
 ```csharp
 builder.Services.AddOpenApi();     // 生成 OpenAPI 3.1

@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Ingest（第 7 批，6 新页，全内置零第三方）**：按官方文档补齐常用横切能力。
+    - `dotnet/aspnet-core/`：实时通信 SignalR、限流 rate-limiting（net7+ 内置四算法）、输入验证 validation（DataAnnotations，弃 FluentValidation）、输出缓存 output-caching（取代响应缓存）。
+    - `dotnet/fundamentals/`：安全加固 data-protection（Data Protection + 机密管理）。
+    - `dotnet/csharp/`：源生成器实战 source-generators（增量生成器取代旧 ISourceGenerator）。
+    - 严守 P10/P11/P12：仅内置 API；验证/缓存/序列化以新写法取代旧；无付费/云绑定。
+    - 同步 nav / index / 思维导图 / sources；`mkdocs build --strict` 通过。
+
 - 2026-07-10 **大规模 Ingest（六方向扩建，26 新页）**：按微软官方文档补齐常用主题。
     - 后端核心（9）：`dotnet/fundamentals/` 测试/可观测性/配置Options/HttpClient/弹性/缓存/后台服务，`dotnet/aspnet-core/` 认证授权/中间件。
     - C# 深化（3）：`dotnet/csharp/` linq/collections/serialization。

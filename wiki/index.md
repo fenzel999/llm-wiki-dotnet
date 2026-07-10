@@ -38,6 +38,7 @@ updated: 2026-07-10
     - [LINQ 查询](dotnet/csharp/linq.md) — 延迟执行、IEnumerable vs IQueryable、避免多次枚举
     - [集合选型](dotnet/csharp/collections.md) — List/Dictionary/HashSet/Frozen/Concurrent 按用途选
     - [JSON 序列化](dotnet/csharp/serialization.md) — System.Text.Json 与源生成器（替代 Newtonsoft）
+    - [源生成器实战](dotnet/csharp/source-generators.md) — 增量生成器替代运行时反射、AOT 友好
 - **框架基础**：
     - [依赖注入](dotnet/fundamentals/dependency-injection.md) — DI 容器与生命周期
     - [配置与 Options](dotnet/fundamentals/configuration-options.md) — 多源配置、强类型绑定与启动校验
@@ -47,10 +48,15 @@ updated: 2026-07-10
     - [弹性与容错](dotnet/fundamentals/resilience.md) — 重试/熔断/超时（Polly）
     - [缓存](dotnet/fundamentals/caching.md) — IMemoryCache/IDistributedCache/HybridCache
     - [后台服务](dotnet/fundamentals/background-services.md) — BackgroundService / Worker
+    - [安全加固与机密](dotnet/fundamentals/data-protection.md) — Data Protection、密钥环、机密管理
 - **Web / Minimal API**：
     - [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
     - [认证与授权](dotnet/aspnet-core/auth.md) — 认证方案与基于策略的授权
     - [中间件管道](dotnet/aspnet-core/middleware.md) — 请求管道与顺序
+    - [输入验证](dotnet/aspnet-core/validation.md) — DataAnnotations / 最小 API 内置验证
+    - [限流](dotnet/aspnet-core/rate-limiting.md) — net7+ 内置限流四算法
+    - [输出缓存](dotnet/aspnet-core/output-caching.md) — 服务端响应缓存、标签失效
+    - [实时通信 SignalR](dotnet/aspnet-core/signalr.md) — 服务器推送、强类型 Hub
 - **数据访问（EF Core）**：
     - [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
     - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元

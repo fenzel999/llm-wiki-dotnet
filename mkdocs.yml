@@ -74,6 +74,7 @@ nav:
           - LINQ 查询: dotnet/csharp/linq.md
           - 集合选型: dotnet/csharp/collections.md
           - JSON 序列化: dotnet/csharp/serialization.md
+          - 源生成器实战: dotnet/csharp/source-generators.md
       - 框架基础:
           - 依赖注入: dotnet/fundamentals/dependency-injection.md
           - 配置与 Options: dotnet/fundamentals/configuration-options.md
@@ -83,10 +84,15 @@ nav:
           - 弹性与容错: dotnet/fundamentals/resilience.md
           - 缓存: dotnet/fundamentals/caching.md
           - 后台服务: dotnet/fundamentals/background-services.md
+          - 安全加固与机密: dotnet/fundamentals/data-protection.md
       - Web / Minimal API:
           - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
           - 认证与授权: dotnet/aspnet-core/auth.md
           - 中间件管道: dotnet/aspnet-core/middleware.md
+          - 输入验证: dotnet/aspnet-core/validation.md
+          - 限流: dotnet/aspnet-core/rate-limiting.md
+          - 输出缓存: dotnet/aspnet-core/output-caching.md
+          - 实时通信 SignalR: dotnet/aspnet-core/signalr.md
       - 数据访问 EF Core:
           - EF Core 10: dotnet/ef-core/ef-core-10.md
           - EF Core 数据访问: dotnet/ef-core/ef-data-access.md

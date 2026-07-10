@@ -272,3 +272,8 @@ updated: 2026-07-09
 ## 2026-07-10 · 修正：分页页升级为多字段动态排序
 - dotnet/ef-core/pagination.md 采用用户提供的更完整实现：多字段排序（WithDynamicOrderBy + ThenBy）、DynamicOrderByAllowList（Map 从表达式树取属性名、不反射）、WithOffsetPaging 夹紧参数；AOT 说明同步更新。
 - 影响：wiki/dotnet/ef-core/pagination.md（仅内容升级，未改结构）。
+
+## 2026-07-10 · 架构澄清 + 分页升级
+- solution-structure.md：逐层职责（负责/拥有/依赖/不碰）+ 落点速查表 + 高内聚低耦合节 + "三种架构不在同一层级"（Aspire⊥模块化单体⊃整洁架构）。
+- 顺带：前次 dotnet/ef-core/pagination.md 多字段动态排序升级也一并提交。
+- 影响：wiki/architecture/solution-structure.md、wiki/dotnet/ef-core/pagination.md、qa-report.md。

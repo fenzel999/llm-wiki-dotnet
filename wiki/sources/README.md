@@ -57,6 +57,8 @@ updated: 2026-07-09
 ### 架构
 - [常见 Web 应用体系结构](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures) — Microsoft Learn
 - [.NET 微服务架构](https://learn.microsoft.com/dotnet/architecture/microservices/) · [DDD/CQRS 模式](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/) — Microsoft Learn
+- [EF Core 全局查询筛选器](https://learn.microsoft.com/ef/core/querying/filters) · [EF Core 拦截器](https://learn.microsoft.com/ef/core/logging-events-diagnostics/interceptors) — Microsoft Learn
+- [ABP 架构文档（仅思想来源，不引其包）](https://abp.io/docs/latest/framework/architecture/domain-driven-design) · [多租户](https://abp.io/docs/latest/framework/architecture/multi-tenancy) · [规约](https://abp.io/docs/latest/framework/architecture/domain-driven-design/specifications) — ABP 官方文档
 
 ### 云原生与性能
 - [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/) — Microsoft Learn

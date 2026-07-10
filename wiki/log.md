@@ -13,6 +13,14 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Ingest：从 ABP 汲取架构思想（厂商中立，5 新页）+ 定义巡检流程**：按你拍板"只吸收 ABP 架构思想、厂商中立重写"与"定义巡检指令按需触发"。
+    - 联网核对 ABP 官方架构文档（DDD/模块化/多租户/规约/审计/事件总线），仅作**思想来源**，不引 `Volo.ABP.*`、不用控制器/付费模块/AutoMapper。
+    - 新页：`architecture/abp-inspired.md`（导览：吸收什么/拒绝什么）、`specification-pattern.md`（手写表达式树规约）、`multi-tenancy.md`（EF 全局查询筛选器 + 租户解析中间件 + AsyncLocal）、`auditing-soft-delete.md`（`SaveChanges` 拦截器 + 全局筛选）、`domain-application-services.md`（领域/应用服务 + DTO 手写映射）。
+    - 治理：新增 `governance/patrol.md` 巡检流程（人类说"巡检"即触发全量前沿核对→删旧换新→合规扫描→Lint→重排→build→push）。
+    - 架构分类优化：nav/index/思维导图把"架构"重组为 架构风格 / 领域建模 / 横切与企业能力 三组 + 导览页。
+    - 同步：mkdocs.yml、index.md、思维导图.md、sources/README.md；`mkdocs build --strict` 零死链通过。
+    - 影响：architecture/*（+5）、governance/patrol.md（新）、mkdocs.yml、index.md、思维导图.md、sources/README.md。
+
 - 2026-07-10 **可读性统一（P13 落地，全库 63 内容页）**：为每个内容页在正文前加"要点速览"（3–6 条 bullet），使人类可秒扫、AI 可零解析提取事实。
     - 本次会话 35 新页 + 28 旧种子页全部补齐；`grep 要点速览` 覆盖率 100%。
     - 新增 **POLICY P13**：页面结构对 AI/人类双友好（要点速览 + 固定小节 + ✅/❌ 好坏代码）。

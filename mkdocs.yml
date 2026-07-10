@@ -115,13 +115,21 @@ nav:
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
   - 架构:
-      - 模块化单体架构: architecture/modular-monolith.md
-      - 整洁架构: architecture/clean-architecture.md
-      - 垂直切片: architecture/vertical-slice.md
-      - CQRS: architecture/cqrs.md
-      - 领域驱动设计 DDD: architecture/ddd.md
-      - 微服务: architecture/microservices.md
-      - 事件驱动: architecture/event-driven.md
+      - 从 ABP 汲取（导览）: architecture/abp-inspired.md
+      - 架构风格:
+          - 模块化单体架构: architecture/modular-monolith.md
+          - 整洁架构: architecture/clean-architecture.md
+          - 垂直切片: architecture/vertical-slice.md
+          - 微服务: architecture/microservices.md
+      - 领域建模:
+          - 领域驱动设计 DDD: architecture/ddd.md
+          - 领域服务与应用服务: architecture/domain-application-services.md
+          - 规约模式: architecture/specification-pattern.md
+      - 横切与企业能力:
+          - CQRS: architecture/cqrs.md
+          - 事件驱动: architecture/event-driven.md
+          - 多租户: architecture/multi-tenancy.md
+          - 审计与软删除: architecture/auditing-soft-delete.md
   - 云原生:
       - .NET Aspire: cloud-native/aspire.md
       - 容器化: cloud-native/containers.md
@@ -149,6 +157,7 @@ nav:
   - 治理:
       - 质量准则 QA: governance/qa.md
       - 持久约定 POLICY: governance/policy.md
+      - 巡检流程: governance/patrol.md
       - 质量报告: governance/qa-report.md
       - 如何反馈: governance/feedback.md
       - 资料索引: sources/README.md

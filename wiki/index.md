@@ -82,13 +82,10 @@ updated: 2026-07-10
 
 ### 架构
 
-- [模块化单体架构](architecture/modular-monolith.md) — 单进程内按模块解耦，兼顾单体的简单与微服务的边界
-- [整洁架构](architecture/clean-architecture.md) — 依赖向内、接口内定外实现
-- [垂直切片](architecture/vertical-slice.md) — 按功能而非技术分层组织代码
-- [CQRS](architecture/cqrs.md) — 读写分离，无需第三方中介库
-- [领域驱动设计 DDD](architecture/ddd.md) — 聚合、值对象、限界上下文、富领域模型
-- [微服务](architecture/microservices.md) — 自治独立部署；多数应用应先模块化单体
-- [事件驱动](architecture/event-driven.md) — 事件解耦、领域事件与发件箱模式
+- [从 ABP 汲取（导览）](architecture/abp-inspired.md) — 吸收 ABP 企业架构思想，厂商中立重写（不引 Volo.ABP.*、不用控制器/付费）
+- **架构风格**：[模块化单体](architecture/modular-monolith.md) · [整洁架构](architecture/clean-architecture.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md)
+- **领域建模**：[DDD](architecture/ddd.md) · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [规约模式](architecture/specification-pattern.md)
+- **横切与企业能力**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md)
 
 ### 云原生
 
@@ -116,7 +113,7 @@ updated: 2026-07-10
 
 ### 治理
 
-- [质量准则 QA](governance/qa.md) · [持久约定 POLICY](governance/policy.md) · [质量报告](governance/qa-report.md)
+- [质量准则 QA](governance/qa.md) · [持久约定 POLICY](governance/policy.md) · [巡检流程](governance/patrol.md) · [质量报告](governance/qa-report.md)
 - [如何反馈](governance/feedback.md) · [资料索引](sources/README.md)
 - [思维导图](思维导图.md)
 
@@ -139,14 +136,14 @@ updated: 2026-07-10
         - `dotnet/runtime/` —— 运行时（JIT…）
         - `dotnet/blazor/` —— Blazor
         - `dotnet/versions/` —— 各版本关键知识（net8 / net9…）
-    - `architecture/` —— 架构方向（模块化单体、整洁架构、垂直切片、CQRS、DDD、微服务、事件驱动）
+    - `architecture/` —— 架构方向（风格：模块化单体/整洁/垂直切片/微服务；建模：DDD/领域应用服务/规约；能力：CQRS/事件驱动/多租户/审计软删除；导览：从 ABP 汲取）
     - `cloud-native/` —— 云原生（Aspire、容器化、健康检查）
     - `performance/` —— 性能与诊断（基准测试、GC/内存、诊断工具）
     - `standards/` —— 工程规范（命名、异常、日志、配置、测试、API 设计…）
     - `patterns/` —— 推荐做法（Options、管道、泛型主机、最小 API 组织、释放）
     - `anti-patterns/` —— 反模式（含 ❌ 错误 / ✅ 正确 对比）
     - `comparisons/` —— 取舍对比（record vs class 等）
-    - `governance/` —— 质量准则 `qa.md`、约定 `policy.md`、报告 `qa-report.md`、反馈 `feedback.md`
+    - `governance/` —— 质量准则 `qa.md`、约定 `policy.md`、巡检 `patrol.md`、报告 `qa-report.md`、反馈 `feedback.md`
     - `sources/` —— 一手来源登记
 - **链接**：全程相对 Markdown 链接，GitHub / MkDocs / 网页三处均可解析。
 - **质量**：内容需经 `governance/qa.md` 判定；不确定处标 `⚠️ needs-your-call`。

@@ -18,6 +18,11 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（Ingest：从 ABP 汲取架构思想，厂商中立重写 5 新页 + 定义巡检流程）
+- 范围：新增 `architecture/` 5 页（abp-inspired / specification-pattern / multi-tenancy / auditing-soft-delete / domain-application-services）+ `governance/patrol.md`。
+- 结论：**两处 needs-your-call 已由你拍板并落地**——(1) ABP 只吸收架构思想、厂商中立重写（不引 `Volo.ABP.*`、不用控制器/付费模块/AutoMapper，遵守 P10/P12）；(2) "每 10 分钟自动整理"因 Agent 无常驻定时器不可行，改为**人类说"巡检"即触发**的 `patrol.md` 流程。
+- 落实：ABP 架构文档仅作思想来源（DDD/模块化/多租户/规约/审计/事件总线）；实现全部微软内置 + 手写 + Minimal API。与既有 `ef-data-access.md`"不引仓储/UoW"、"不用控制器"保持一致（应用服务页明确拒绝 Repository/UoW/AutoMapper）。架构 nav 重组为 风格/建模/能力 三组。`mkdocs build --strict` 零死链通过。
+
 - 日期：2026-07-10（六方向大规模 Ingest：26 新页，全部对照微软官方文档）
 - 范围：后端核心 9 + C# 深化 3 + 数据访问 5 + 架构 6 + 云原生 3 + 性能诊断 3。
 - 结论：**新增 POLICY P10/P11/P12 并全程遵守**——仅用微软/基金会包（xUnit/Polly/BenchmarkDotNet 属基金会），其余手写；删旧换新；不用付费/云绑定组件。

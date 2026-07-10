@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-typ
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - `record` = 值相等 + 不可变建模；`class` = 引用相等 + 可变状态。
+> - DTO/值对象/不可变数据用 record；有身份/可变/复杂继承用 class。
+> - record 也可 `record struct`；需 `with` 非破坏性拷贝时尤其合适。
+
 ## 概述
 
 `record` 和 `class` 在 C# 里都是引用类型——也就是说变量存的是"指向堆上对象的引用"，不是对象本身。但光看这点会让人误以为它们差不多，实际上两者想表达的东西完全不同：`record` 想说的是"这个值是什么"，而 `class` 想说的是"这个东西是谁"。

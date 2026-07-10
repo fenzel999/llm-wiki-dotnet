@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-core-3-0
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 现代 .NET 奠基版：C# 8 NRT、异步流、范围/索引、内置 System.Text.Json。
+> - 单文件发布、程序集裁剪、ReadyToRun；Windows 桌面（WPF/WinForms）回归。
+> - **已 EOL**；Newtonsoft 通用场景已被 System.Text.Json 取代。
+
 ## 概述
 
 .NET Core 3.0 在 2019 年 9 月发布，紧接着 3.1 在 2019 年 12 月作为 **LTS** 稳定下来（支持已于 2022 年 12 月结束，现已 **EOL**）。虽然版本本身早已过时，但它是**现代 .NET 的奠基版本**：今天你在 .NET 10 里天天用的很多东西——C# 8 的可空引用类型、异步流、范围与索引，内置的 `System.Text.Json`，单文件发布与裁剪，Windows 桌面（WPF/WinForms）跑在 .NET Core 上——都是从这一版开始的。

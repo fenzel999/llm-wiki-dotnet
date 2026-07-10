@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - .NET 10 增强 Blazor 与 JavaScript 的互操作体验。
+> - 用 `IJSObjectReference` 管理 JS 模块，用完及时 `DisposeAsync`。
+> - JS 互操作在预渲染阶段不可用，注意调用时机。
+
 ## 概述
 
 Blazor 的魅力在于用 C# 写前端，但现实世界不会因为只有 Blazor 就停下——图表库、地图、各种现成的 JS 组件都还在 JavaScript 那一侧。所以 JS 互操作（JS interop）几乎每个正经 Blazor 项目都绕不开。问题在于，旧的做法有不少“手感不好”的地方：想创建一个 JS 对象实例，往往得 `InvokeVoidAsync("eval", "window.x = new X(...)")`，既用字符串拼代码、又污染全局命名空间；想读个属性值，得包一层 `InvokeAsync`；更麻烦的是 `IJSObjectReference` 这种资源如果不手动释放，JS 那侧就会悄悄泄漏。

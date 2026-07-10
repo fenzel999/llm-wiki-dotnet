@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-9
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - STS：C# 13 params 集合、新 `Lock` 类型、`\e` 转义。
+> - 内建 OpenAPI、HybridCache、Microsoft.Extensions.AI。
+> - GC（DATAS）与性能改进；ASP.NET Core 9 更新。
+
 ## 概述
 
 .NET 9 在 2024 年 11 月发布，是一个 **STS（标准期限支持）** 版本，支持窗口到 2026 年 5 月，对应语言版本 **C# 13**。STS 的定位介于两个 LTS 之间：它带来一波新能力，但支持周期比 LTS 短，适合愿意跟新、想用上新特性的项目。和 .NET 8 一样，.NET 9 的全部特性都向下兼容到了 .NET 10，并继续往上叠加更多东西。本页挑出 .NET 9 里最值得记的几块，和 .NET 8 / .NET 10 的逐项差异可看[.NET 版本演进](../../comparisons/net-evolution.md)。

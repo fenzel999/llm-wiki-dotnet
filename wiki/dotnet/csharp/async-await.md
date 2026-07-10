@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/csharp/asynchronous-programming
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - `await` 挂起而不阻塞线程，释放线程去干别的活。
+> - 库代码用 `ConfigureAwait(false)` 避免捕获同步上下文。
+> - 别用 `.Result`/`.Wait()` 阻塞（死锁风险）；并发要先发起任务再一起 await。
+
 ## 概述
 
 写异步代码，本质上是在回答一个问题：当一段操作（网络请求、文件读写、延时等待）需要时间，程序凭什么不卡在那里干等？C# 给出的答案是 `Task` 与 `Task<T>`——它们代表“一个将来会完成的操作”。当你在一个方法上写下 `async`，编译器并不会真的让线程空转，而是悄悄把这个方法改写成一个状态机：遇到 `await` 时，方法在此挂起并把控制权交还调用方，等被等待的操作完成后再从挂起点继续（这一步叫“延续”，continuation）。

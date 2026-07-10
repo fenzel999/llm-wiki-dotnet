@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/csharp/language-reference/statements/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 持有非托管/一次性资源的类型实现 `IDisposable`/`IAsyncDisposable`。
+> - 用 `using` 声明确保释放；异步资源用 `await using`。
+> - 别忘释放导致句柄/连接泄漏；别对已释放对象再操作。
+
 ## 概述
 
 C# 里有一类类型，它们手里攥着的是「系统资源」而不是普通内存：文件句柄、socket、数据库连接、通道（channel）、互斥量……这些资源不由 GC 替你回收，必须显式交还操作系统，否则句柄会越积越多，直到连接池耗尽或进程被打爆。凡是持有这类非托管资源的类型，都应当实现 `IDisposable`（同步）或 `IAsyncDisposable`（异步），保证在作用域结束时、无论是否发生异常，都能可靠地把资源还回去。

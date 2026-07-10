@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-10
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - .NET 6/8/10 = LTS，.NET 9 = STS；主题优先、版本作元数据。
+> - 时间线覆盖 Core 3.x→.NET 10、C# 8→14，EOL 版本已标注。
+> - 用 frontmatter 的 introduced-in/applies-to/status 表达时效，不为每版建文件夹。
+
 ## 概述
 
 挑 .NET 版本这件事，说到底是在"用新特性"和"有人兜底"之间做权衡。微软把发布节奏分成了两条轨道：**LTS**（long-term support，长期支持，大约 3 年补丁），和 **STS**（standard-term support，标准支持，只有约 18 个月）。对生产项目来说，结论其实没那么纠结——**默认选 LTS 版本（.NET 8 或 .NET 10）就够了**。STS 版本（比如 .NET 9）能让你早点用上新语言特性，但它的支持窗口短得有点尴尬，等你想升级的时候往往已经快过期了。

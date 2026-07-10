@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-8
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - LTS：C# 12 集合表达式 `[..]`、主构造函数、内联数组。
+> - Frozen 集合、keyed DI、`TimeProvider` 可测时钟。
+> - ASP.NET Core 8 与 EF Core 8 关键更新；仍在支持期。
+
 ## 概述
 
 .NET 8 在 2023 年 11 月发布，是一个 **LTS（长期支持）** 版本，支持窗口到 2026 年 11 月，对应的语言版本是 **C# 12**。对大多数团队来说，LTS 的意义在于“稳”——它适合作为长期驻留的生产系统的基线。也正因为是 LTS，.NET 8 的所有特性都向下兼容到了 .NET 9 和 .NET 10：你今天在 .NET 8 上学到的东西，到了新版本依然成立，只是新版本又往上叠了更多能力。

@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immu
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - `List<T>` 可变；`ImmutableArray<T>` 不可变、隐式线程安全、缓存友好。
+> - 集合会变用 List；定型后只读/跨线程/作 API 边界用 ImmutableArray。
+> - `default(ImmutableArray<T>)` 是未初始化态（访问抛异常），空集用 `.Empty`。
+
 ## 概述
 
 `List<T>` 和 `ImmutableArray<T>` 表面上看都是"一串东西"的容器，但骨子里是两种相反的价值观。前者是mutable（可变）的动态数组：你想加就加、想改就改，容量不够它就自己扩容，用起来特别随意。后者是不可变（immutable）的连续内存数组：一旦创建就锁死，任何所谓的"修改"都不会动原来的数据，而是返回一个全新的数组。

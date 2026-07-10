@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-5
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 统一之版：net5.0 TFM 合并 netcoreapp/netstandard。
+> - C# 9：records、顶层语句、init 属性、模式匹配增强。
+> - **已 EOL**，仅保留至今仍有效的知识；通用场景见 [.NET 10](../../index.md)。
+
 ## 概述
 
 .NET 5 在 2020 年 11 月发布，是 .NET Core 3.1 的继任者，也是一个 **STS** 版本（支持已于 2022 年 5 月结束，现已 **EOL**）。它的名字里刻意去掉了 "Core"：跳过 4.x 以避免和 .NET Framework 4.x 混淆，并宣告"这就是 .NET 往后唯一的主线实现"。从这一版起，`net5.0` 这个 **TFM** 合并并取代了过去的 `netcoreapp` 与 `netstandard`——一处目标框架就能覆盖控制台、Web、桌面、类库。

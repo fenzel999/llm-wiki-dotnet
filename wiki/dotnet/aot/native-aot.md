@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/deploying/native-aot
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 提前编译成原生可执行文件：启动快、内存小、无需运行时。
+> - 代价：trimming + 反射受限，序列化等须用源生成器。
+> - 适合 CLI/容器微服务；重反射/运行时动态加载场景不适用。
+
 ## 概述
 
 通常我们发布的 .NET 应用，跑起来时还得靠目标机器上的 .NET 运行时，代码是到运行时才被 JIT 编译的。原生 AOT（Native AOT，ahead-of-time compilation，提前编译）走的是另一条路：它在**发布阶段**就把你的应用连同运行时的一部分一起，编译成一个独立的原生可执行文件。用户拿到手就能直接跑，机器上装不装 .NET 都无所谓。

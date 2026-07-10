@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-7
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 性能与 Native AOT 之版；引入限流中间件、输出缓存。
+> - C# 11：泛型数学、原始字符串字面量、`required` 成员。
+> - **已 EOL**；旧 `DllImport` 已被 `LibraryImport` 源生成取代。
+
 ## 概述
 
 .NET 7 在 2022 年 11 月发布，是一个 **STS** 版本（支持已于 2024 年 5 月结束，现已 **EOL**）。它的关键词是**快**：OSR（栈上替换）、PGO 更易开启、Arm64 代码生成改进，以及最受关注的——**Native AOT** 首次面向控制台应用落地。语言侧 **C# 11** 也补上了泛型数学、原始字符串字面量、必需成员等几块拼图。

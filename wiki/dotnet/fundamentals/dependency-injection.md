@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/extensions/dependency-injection
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 别自己 `new` 依赖，用**构造函数注入**，由容器管理生命周期。
+> - 三生命周期：transient（每次新建）/scoped（每请求）/singleton（全局唯一）。
+> - 别把 scoped 注入 singleton；别用 `IServiceProvider` 当服务定位器。
+
 ## 概述
 
 依赖注入（Dependency Injection, DI）听起来像个大词，但它的出发点特别朴素：一个类需要用到别的服务时，别自己 `new`，而是由外部在构造它的时候把依赖“送进门”。这样做最大的好处是解耦——`OrderService` 只认 `IOrderRepository` 这个接口，至于背后是 EF Core、还是内存实现、还是测试用的假数据，它一概不关心。于是替换实现、做单元测试都变得轻而易举。

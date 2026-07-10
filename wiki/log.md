@@ -13,6 +13,11 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **可读性统一（P13 落地，全库 63 内容页）**：为每个内容页在正文前加"要点速览"（3–6 条 bullet），使人类可秒扫、AI 可零解析提取事实。
+    - 本次会话 35 新页 + 28 旧种子页全部补齐；`grep 要点速览` 覆盖率 100%。
+    - 新增 **POLICY P13**：页面结构对 AI/人类双友好（要点速览 + 固定小节 + ✅/❌ 好坏代码）。
+    - `mkdocs build --strict` 通过。
+
 - 2026-07-10 **Ingest（第 7 批，6 新页，全内置零第三方）**：按官方文档补齐常用横切能力。
     - `dotnet/aspnet-core/`：实时通信 SignalR、限流 rate-limiting（net7+ 内置四算法）、输入验证 validation（DataAnnotations，弃 FluentValidation）、输出缓存 output-caching（取代响应缓存）。
     - `dotnet/fundamentals/`：安全加固 data-protection（Data Protection + 机密管理）。

@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/ef/core/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - `DbContext` 本身已是仓储 + 工作单元，别再套 Repository/Unit of Work。
+> - 直接用 `DbSet` + LINQ + `SaveChanges`，减少无意义抽象。
+> - 需要抽象就抽在用例/查询层，而非包一层薄仓储。
+
 ## 概述
 
 “要不要给 EF Core 再包一层 Repository / Unit of Work？”——这是 .NET 项目里被问得最多、也最容易被过度设计的问题之一。我的结论很明确：不要。原因在于，这层抽象是重复的。`DbContext` 本身就实现了一个工作单元（Unit of Work）：它跟踪实体的变更，并在你调用 `SaveChangesAsync` 时一次性、原子地提交；而它的每个 `DbSet<T>` 本身就是一个仓储（Repository）：它代表某个聚合根的集合，提供查询与新增。在它们之上再写 `IOrderRepository`、`IUnitOfWork`，等于把框架已经替你做的事又做了一遍，增加的只是样板代码、一层无意义的间接调用，以及——更隐蔽的代价——它会让领域边界变得模糊，让新人搞不清“真正的业务规则到底在哪”。

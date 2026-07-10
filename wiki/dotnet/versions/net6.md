@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/whats-new/dotnet-6
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 首个统一 LTS：最小 API、最小托管模型。
+> - C# 10：global using、文件范围命名空间、record struct；DateOnly/TimeOnly。
+> - **已 EOL**；旧 `Startup.cs` 已被最小托管取代，通用场景见 .NET 10。
+
 ## 概述
 
 .NET 6 在 2021 年 11 月发布，是统一之后的**首个 LTS**（支持已于 2024 年 11 月结束，现已 **EOL**）。它完成了从 .NET 5 开始的统一计划，把 SDK、基础库、运行时在移动/桌面/云/IoT 上收敛为一套。对开发者最直接的影响是两件事：**最小 API + 最小托管模型**让 Web 服务的启动代码大幅瘦身，**C# 10** 又把很多样板（`global using`、文件级命名空间）省掉了。

@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 最小 API 内置验证：DataAnnotations 不合法自动返回 400。
+> - 原生 OpenAPI 3.1 文档生成（内置，无需第三方 Swagger 包）。
+> - 延续最小 API 路线：更少样板、更强类型化端点。
+
 ## 概述
 
 如果你这两年写过 ASP.NET Core 的最小 API（minimal API），大概对这种组合不陌生：为了校验请求体，引入 FluentValidation 或手写一堆过滤器；为了出一份 API 文档，挂上 Swashbuckle/Swagger。这两件事本身没问题，但它们都是“第三方外加的”，意味着每个项目都得重复装包、重复配置、重复踩坑。ASP.NET Core 10 的思路很直接——把这些约定级的能力收进框架本身。

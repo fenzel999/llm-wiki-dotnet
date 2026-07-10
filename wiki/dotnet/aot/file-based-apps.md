@@ -9,6 +9,11 @@ source: https://learn.microsoft.com/dotnet/core/sdk/file-based-apps
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - .NET 10 支持免项目文件直接运行单文件 C#（`dotnet run app.cs`）。
+> - 用 `#:package`/`#:sdk` 指令声明依赖，隐式 global using。
+> - 适合脚本/原型；成规模后 `dotnet project convert` 转正式项目。
+
 ## 概述
 
 你有没有过这种时候：只是想写几行 C# 验证一个想法、处理一份文本、或者给同事演示一小段逻辑，却得先 `dotnet new console`、在一堆 `.csproj` 里翻找、等 `dotnet build` 跑完？文件型应用（file-based apps）就是为消灭这种“为了跑三行代码而先搭一套工程”的摩擦而生的。它让你写一个 `.cs` 文件，然后直接 `dotnet run app.cs` 就能跑——没有项目文件，没有 `Main` 方法的样板，连 `using` 指令大多都能省掉。

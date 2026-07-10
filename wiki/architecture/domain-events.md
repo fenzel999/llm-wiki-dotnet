@@ -87,6 +87,10 @@ public sealed class DomainEventInterceptor(IServiceProvider sp) : SaveChangesInt
 
 `ISaveChangesInterceptor` net6+；模式本身与版本无关。示例面向 net8+。
 
+### Native AOT 兼容性
+
+领域事件分发器靠 DI 解析处理器、`OfType` 过滤，无运行期反射，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。注意：若事件携带类型信息做反序列化，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
+
 ## 参考资料
 
 - [领域驱动设计](ddd.md) · [领域服务与应用服务](domain-application-services.md)

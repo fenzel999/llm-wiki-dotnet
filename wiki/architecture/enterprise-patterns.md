@@ -49,6 +49,10 @@ updated: 2026-07-10
 
 架构思想与版本无关；实现示例面向 net8+（Minimal API、EF Core 全局查询筛选器、`SaveChanges` 拦截器）。
 
+### Native AOT 兼容性
+
+本页描述的架构模式（Minimal API、EF Core、`IExceptionHandler`、手写映射/仓储/分发器）均为 **AOT 友好**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。无运行期反射、程序集扫描、第三方重型框架依赖。
+
 ## 参考资料
 
 - [领域服务与应用服务](domain-application-services.md) · [规约模式](specification-pattern.md) · [多租户](multi-tenancy.md) · [审计与软删除](auditing-soft-delete.md)

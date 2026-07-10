@@ -44,6 +44,8 @@ public class EfOrderRepository(AppDbContext db) : IOrderRepository
 builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
 ```
 
+> 说明：这里的 `IOrderRepository` 是为**依赖倒置**声明的**窄接口**（让领域/应用层不认识 EF Core），不是通用 `Repository<T>`/UoW 抽象。多数项目其实无需它——默认[直接注入 `DbContext`](../dotnet/ef-core/ef-data-access.md)即可；只有当你确需领域层**完全不依赖持久化框架**时，才引入这种按用例定制的窄接口。
+
 ## 常见误区
 
 ❌ 让领域/应用层直接引用 `Microsoft.EntityFrameworkCore` 或 `AppDbContext`，依赖方向反了，核心被基础设施绑死。内层只依赖自己定义的接口。

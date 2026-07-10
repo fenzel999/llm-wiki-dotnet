@@ -18,6 +18,12 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**巡检 Patrol #3** — 吸收"解决方案分层与项目引用"设计思想）
+- 范围：架构分层缺口补齐 + 一致性修复。
+- Ingest：新增 `architecture/solution-structure.md`——项目分层（Domain/Application/Infrastructure/Web）与**单向无环引用规则**、契约轻依赖、组合根唯一绑定实现、架构测试守边界；厂商中立不提 ABP，对齐 Minimal API + DbContext-direct 约定，对照微软"常见 Web 应用体系结构"与"中央包管理"文档。
+- 一致性（Q3/P5）：修复 `clean-architecture.md`（`IOrderRepository`）与 `ef-data-access.md`（不用仓储）张力——注明前者是依赖倒置窄接口、非通用仓储，默认仍直用 `DbContext`。
+- 结论：知识页 P10/P12/P14 持续零违规；`mkdocs build --strict` 零死链通过。待你判定：无。
+
 - 日期：2026-07-10（**巡检 Patrol #2** — 合规复扫 + 吸收新设计思想）
 - 范围：全库合规复扫；DDD/架构缺口补齐。
 - 结论：**知识页 P10/P12/P14 零违规**（上一轮整改已生效）；剩余 "第三方/ABP" 命中均为治理记录、P14 规则本身、或"不用 X"教学提示，均合规。

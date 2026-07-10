@@ -56,7 +56,7 @@ updated: 2026-07-09
 - [ADO.NET 概述](https://learn.microsoft.com/dotnet/framework/data/adonet/) — Microsoft Learn
 
 ### 架构
-- [常见 Web 应用体系结构](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures) — Microsoft Learn
+- [常见 Web 应用体系结构](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures) · [中央包管理（CPM）](https://learn.microsoft.com/nuget/consume-packages/central-package-management) — Microsoft Learn
 - [.NET 微服务架构](https://learn.microsoft.com/dotnet/architecture/microservices/) · [DDD/CQRS 模式](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/) — Microsoft Learn
 - [EF Core 全局查询筛选器](https://learn.microsoft.com/ef/core/querying/filters) · [EF Core 拦截器](https://learn.microsoft.com/ef/core/logging-events-diagnostics/interceptors) · [EF Core 多租户](https://learn.microsoft.com/ef/core/miscellaneous/multitenancy) — Microsoft Learn
 - [面向 DDD 的微服务设计](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice) · [基础设施与持久层设计（规约模式）](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design) · [领域事件：设计与实现](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation) — Microsoft Learn

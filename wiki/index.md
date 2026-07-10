@@ -84,7 +84,7 @@ updated: 2026-07-10
 ### 架构
 
 - [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
-- **架构风格**：[模块化单体](architecture/modular-monolith.md) · [整洁架构](architecture/clean-architecture.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md)
+- **架构风格**：[模块化单体](architecture/modular-monolith.md) · [整洁架构](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md)
 - **领域建模**：[DDD](architecture/ddd.md) · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
 - **横切与企业能力**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md)
 

@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **巡检（Patrol #3）**：吸收"解决方案分层与项目引用"设计思想。
+    - **Ingest**：新增 `architecture/solution-structure.md`，吸收"项目按 Domain/Application/Infrastructure/Web 分层、**依赖只向内单向无环**、契约项目轻依赖、仅组合根引用实现"这一设计思想（用户点名的"文件夹层级之间如何引用"）。厂商中立、不提 ABP；对齐本库约定（Minimal API 不用控制器、DbContext 直用不套仓储）；含标准目录树、引用箭头图、`Directory.Packages.props` 中央包管理、架构测试守边界。
+    - **一致性修复（Q3/P5）**：`clean-architecture.md` 的 `IOrderRepository` 与 `ef-data-access.md`"不用仓储"存在张力——补一句说明：那是依赖倒置的**窄接口**（非通用 `Repository<T>`），默认仍直用 `DbContext`。
+    - **锚点**：给 `modular-monolith.md` 架构测试小节加显式锚点 `{#用架构测试守住边界}` 供跨页深链。
+    - **同步**：mkdocs.yml（架构风格组加新页）、index、思维导图、sources（加 CPM 链接）。`mkdocs build --strict` 零死链通过。
+    - 影响：architecture/solution-structure.md（新）、architecture/clean-architecture.md、architecture/modular-monolith.md、mkdocs.yml、index.md、思维导图.md、sources/README.md。
+
 - 2026-07-10 **巡检（Patrol #2）**：合规复扫 + 吸收新设计思想。
     - **合规复扫（P10/P12/P14）**：全库扫描第三方/付费/云绑定/ABP 字样——知识页**零违规**；剩余命中均为治理/日志记录、P14 规则本身、或"不用 X"教学提示（Newtonsoft/Dapper/Moq/Swashbuckle 等，均正确拒绝）。
     - **Ingest 新设计思想（厂商中立）**：补齐 DDD 拼图缺口——新增 `architecture/domain-events.md`（**聚合收集领域事件 + 在 SaveChanges 提交前用手写分发器派发，副作用与业务变更同一事务**）。对照微软官方 eShop「领域事件：设计与实现」文档；官方示例用 MediatR，本页按 [P10](governance/policy.md) 改**手写分发器 + EF Core 拦截器**。厘清与 event-driven 的边界：领域事件=进程内同事务，集成事件=跨服务+发件箱。

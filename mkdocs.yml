@@ -120,6 +120,7 @@ nav:
       - 架构风格:
           - 模块化单体架构: architecture/modular-monolith.md
           - 整洁架构: architecture/clean-architecture.md
+          - 解决方案分层与项目引用: architecture/solution-structure.md
           - 垂直切片: architecture/vertical-slice.md
           - 微服务: architecture/microservices.md
       - 领域建模:

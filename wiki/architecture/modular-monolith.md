@@ -153,7 +153,7 @@ internal sealed class CreateInvoiceOnOrderPlaced(IInvoiceService invoices)
 
 进程内事件让模块**在编译期解耦**，同时保留了日后换成消息队列（真正跨进程）的升级路径。
 
-### 5. 用架构测试守住边界
+### 5. 用架构测试守住边界 {#用架构测试守住边界}
 
 边界最大的敌人是时间——一年后总有人「图方便」直接引用了别的模块内部类型。把边界写成**架构测试**，让 CI 自动拦截：
 

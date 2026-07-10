@@ -1,7 +1,7 @@
 ---
 title: 测试（单元测试与集成测试）
-summary: 用 xUnit 写单元测试，用 WebApplicationFactory 做集成测试，用 Testcontainers 跑真实依赖。
-tags: [testing, xunit, integration-test, testcontainers, 质量]
+summary: 用 xUnit 写单元测试，用 WebApplicationFactory 做集成测试，用内置 Microsoft.Data.Sqlite 跑真实依赖。
+tags: [testing, xunit, integration-test, 质量]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -73,7 +73,7 @@ public class OrdersApiTests(WebApplicationFactory<Program> factory)
 }
 ```
 
-要测真实数据库行为（迁移、SQL、并发），用 Testcontainers 起一个真 PostgreSQL/SQL Server 容器，测完自动销毁，避免"我机器上能过"。
+要测真实数据库行为（迁移、SQL、并发），用内置 `Microsoft.Data.Sqlite` 的内存连接，或用手写 `docker compose` 脚本在测试前起一次性数据库、测完销毁，避免"我机器上能过"。按 [P10](../../governance/policy.md) 不引第三方容器库。
 
 ## 常见误区
 

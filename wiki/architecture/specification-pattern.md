@@ -5,7 +5,7 @@ tags: [architecture, specification, ddd, ef-core, expression]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
-source: https://abp.io/docs/latest/framework/architecture/domain-driven-design/specifications
+source: https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design
 updated: 2026-07-10
 ---
 
@@ -19,7 +19,7 @@ updated: 2026-07-10
 
 ## 概述
 
-同一套查询条件（"活跃的高价值客户"、"待发货的订单"）在代码里反复出现、各写各的 `Where`，既重复又容易写歪。**规约模式（Specification）**把这类"筛选规则"提炼成一个有名字、可复用、可组合的对象——业务语义集中表达一次，处处引用。它是 DDD 里的经典战术模式，ABP 也内置了它；我们用**手写基类 + EF Core 表达式树**实现，不引任何第三方包（[P10](../governance/policy.md)）。
+同一套查询条件（"活跃的高价值客户"、"待发货的订单"）在代码里反复出现、各写各的 `Where`，既重复又容易写歪。**规约模式（Specification）**把这类"筛选规则"提炼成一个有名字、可复用、可组合的对象——业务语义集中表达一次，处处引用。它是 DDD 里的经典战术模式；我们用**手写基类 + EF Core 表达式树**实现，不引任何第三方包（[P10](../governance/policy.md)）。
 
 关键约束：规约必须暴露 **`Expression<Func<T, bool>>`**（表达式树），而不是编译后的 `Func<T, bool>`。只有表达式树能被 EF Core 的 `IQueryable` 翻译成 SQL 在数据库端执行；给 `IQueryable.Where` 传 `Func` 会退化成客户端求值，把整张表拉进内存再过滤。
 
@@ -74,4 +74,4 @@ var list = await db.Customers.Where(spec.ToExpression()).ToListAsync();
 - [领域驱动设计](ddd.md)
 - [EF Core 查询性能](../dotnet/ef-core/query-performance.md)
 - [LINQ 延迟执行](../dotnet/csharp/linq.md)
-- ABP 官方（思想来源）：[Specifications](https://abp.io/docs/latest/framework/architecture/domain-driven-design/specifications)
+- 官方文档：[基础设施与持久层设计（规约模式）](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design)

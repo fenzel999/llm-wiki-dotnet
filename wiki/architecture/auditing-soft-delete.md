@@ -5,7 +5,7 @@ tags: [architecture, auditing, soft-delete, ef-core, interceptor]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
-source: https://abp.io/docs/latest/framework/infrastructure/audit-logging
+source: https://learn.microsoft.com/ef/core/logging-events-diagnostics/interceptors
 updated: 2026-07-10
 ---
 
@@ -19,7 +19,7 @@ updated: 2026-07-10
 
 ## 概述
 
-两个几乎每个企业应用都要的横切能力：**审计**（谁在何时创建/修改了记录）和**软删除**（删除只是标记，数据仍在，可追溯、可恢复）。ABP 把它们做成了内置能力；我们用 EF Core 原生机制手写实现，零第三方（[P10](../governance/policy.md)）。
+两个几乎每个企业应用都要的横切能力：**审计**（谁在何时创建/修改了记录）和**软删除**（删除只是标记，数据仍在，可追溯、可恢复）。我们用 EF Core 原生机制手写实现，零第三方（[P10](../governance/policy.md)）。
 
 思路是"集中处理，而非散落赋值"：定义标记接口 `IAuditedEntity`、`ISoftDelete`，在 **`SaveChanges` 拦截器**（`ISaveChangesInterceptor`，或重写 `SaveChanges`）里统一读取 `ChangeTracker`——新增/修改时自动填时间戳与操作者，删除时**拦截为标记而非真删**。查询侧用**全局查询筛选器**自动追加 `WHERE IsDeleted = 0`，让已删数据默认对应用不可见。
 
@@ -73,5 +73,4 @@ modelBuilder.Entity<Order>().HasQueryFilter(o => !o.IsDeleted);
 
 - [多租户（同类筛选机制）](multi-tenancy.md)
 - [EF Core 关系建模](../dotnet/ef-core/modeling-relationships.md)
-- ABP 官方（思想来源）：[Audit Logging](https://abp.io/docs/latest/framework/infrastructure/audit-logging) · [Data Filtering](https://abp.io/docs/latest/framework/infrastructure/data-filtering)
-- 官方文档：[EF Core 拦截器](https://learn.microsoft.com/ef/core/logging-events-diagnostics/interceptors)
+- 官方文档：[EF Core 拦截器](https://learn.microsoft.com/ef/core/logging-events-diagnostics/interceptors) · [EF Core 全局查询筛选器](https://learn.microsoft.com/ef/core/querying/filters)

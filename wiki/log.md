@@ -13,6 +13,15 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **巡检（Patrol）**：按 `governance/patrol.md` 全量执行，触发词"巡检"。
+    - **新增 POLICY P14**：只吸收架构思想，知识页正文/标题/summary/source/参考资料**不得出现 "ABP" 与 `abp.io`**，一律用微软官方文档表述。
+    - **去 ABP 命名**：`architecture/abp-inspired.md` → 重写为 `enterprise-patterns.md`（企业级架构模式导览，厂商中立）；specification-pattern/multi-tenancy/auditing-soft-delete/domain-application-services 四页的 `source` 与参考资料改为微软官方文档（EF Core 多租户/查询筛选器/拦截器、.NET 微服务 DDD 指南），删除所有 ABP 字样。
+    - **P10 违规修复（发现旧内容仍推荐第三方）**：`patterns/composition.md` 把管道行为从 **MediatR** 改写为**手写装饰器**；`architecture/modular-monolith.md` 把进程内事件从 MediatR notification 改为**手写事件分发器**、架构测试从 **NetArchTest** 改为**内置反射手写**；`dotnet/fundamentals/testing.md` 清除 **Testcontainers** 残留（frontmatter + 正文）改内置 `Microsoft.Data.Sqlite`/手写脚本。
+    - **P12 修复**：`standards/quality-engineering.md` 日志后端示例去 **Application Insights**，改开源自托管（Grafana Loki/ELK/Seq）。
+    - **前沿核对（联网）**：确认 .NET 10 / C# 14 仍是当前 GA LTS（推荐生产）；.NET 11 / C# 15 处于预览（Preview 5，GA 2026-11，STS，勿用于生产）。新增 `dotnet/versions/net11.md`（status: preview，联合类型/封闭类层次/Runtime Async/JSON Lines/Zstandard），明确标注预览不入生产。
+    - **同步**：mkdocs.yml（nav 改名 + 加 net11）、index.md、思维导图.md、sources/README.md；`mkdocs build --strict` 零死链通过。
+    - 影响：policy.md、architecture/*（重命名 1 + 改 4）、patterns/composition.md、standards/quality-engineering.md、dotnet/fundamentals/testing.md、dotnet/versions/net11.md（新）、mkdocs.yml、index.md、思维导图.md、sources/README.md。
+
 - 2026-07-10 **Ingest：从 ABP 汲取架构思想（厂商中立，5 新页）+ 定义巡检流程**：按你拍板"只吸收 ABP 架构思想、厂商中立重写"与"定义巡检指令按需触发"。
     - 联网核对 ABP 官方架构文档（DDD/模块化/多租户/规约/审计/事件总线），仅作**思想来源**，不引 `Volo.ABP.*`、不用控制器/付费模块/AutoMapper。
     - 新页：`architecture/abp-inspired.md`（导览：吸收什么/拒绝什么）、`specification-pattern.md`（手写表达式树规约）、`multi-tenancy.md`（EF 全局查询筛选器 + 租户解析中间件 + AsyncLocal）、`auditing-soft-delete.md`（`SaveChanges` 拦截器 + 全局筛选）、`domain-application-services.md`（领域/应用服务 + DTO 手写映射）。

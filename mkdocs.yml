@@ -114,8 +114,9 @@ nav:
           - .NET 7 / C# 11: dotnet/versions/net7.md
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
+          - .NET 11 / C# 15 前瞻（预览）: dotnet/versions/net11.md
   - 架构:
-      - 从 ABP 汲取（导览）: architecture/abp-inspired.md
+      - 企业级架构模式（导览）: architecture/enterprise-patterns.md
       - 架构风格:
           - 模块化单体架构: architecture/modular-monolith.md
           - 整洁架构: architecture/clean-architecture.md

@@ -89,7 +89,7 @@ throw new Exception("出错了");
 
 ## 日志 {#logging}
 
-日志规范规定使用 `Microsoft.Extensions.Logging.ILogger` 以结构化模板消息的方式记录日志，并合理选择级别、规避敏感数据。结构化日志让后端（如 Seq、ELK、Application Insights）能够按属性过滤、聚合与告警，而不是只能做纯文本检索。当日志带上正确的级别、使用命名占位符并避免敏感信息外泄时，排错效率与系统安全性都会显著提升。
+日志规范规定使用 `Microsoft.Extensions.Logging.ILogger` 以结构化模板消息的方式记录日志，并合理选择级别、规避敏感数据。结构化日志让后端（如开源自托管的 Grafana Loki、ELK/OpenSearch、Seq）能够按属性过滤、聚合与告警，而不是只能做纯文本检索。当日志带上正确的级别、使用命名占位符并避免敏感信息外泄时，排错效率与系统安全性都会显著提升。
 
 消息模板应使用命名占位符（如 `{CorrelationId}`），而非字符串拼接，这样既能避免拼接分配、也能防止日志注入。级别选择要符合语义：`Trace`/`Debug` 用于开发细节，`Information` 表示正常业务事件，`Warning` 用于可恢复的异常，`Error` 表示失败，`Critical` 则用于致命问题。严禁记录密码、令牌、身份证号等敏感数据，对必要的标识符要脱敏。用 `BeginScope` 建立请求或事务作用域（如 `CorrelationId`），让同一请求的日志自动聚合；记录异常时应把异常对象传给 `logger.LogError(ex, ...)`，交给提供程序处理结构化信息，而非手动 `ex.ToString()`。
 

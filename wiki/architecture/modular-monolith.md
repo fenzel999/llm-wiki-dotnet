@@ -124,19 +124,31 @@ internal sealed class OrdersDbContext(DbContextOptions<OrdersDbContext> options)
 两个模块要协作时，**不要**互相引用内部实现。有两种正确姿势：
 
 - **同步**：通过 `*.Contracts` 里的接口/DTO 调用（如上面的 `IOrderService`）。
-- **异步 / 解耦**：抛出**进程内领域事件**，让关心的模块各自订阅。下单成功后通知计费模块，用 MediatR 的 notification 即可：
+- **异步 / 解耦**：抛出**进程内领域事件**，让关心的模块各自订阅。无需第三方中介库（[P10](../governance/policy.md) 不引 MediatR）——手写一个极简事件分发器即可：只用内置 DI 收集所有订阅者并依次调用。
 
 ```csharp
-// Orders 抛事件（放在 Contracts，可被其它模块订阅）
-public sealed record OrderPlaced(Guid OrderId, Guid CustomerId) : INotification;
+// 契约（放在 Contracts，可被其它模块订阅）
+public sealed record OrderPlaced(Guid OrderId, Guid CustomerId);
+public interface IDomainEventHandler<in T> { Task Handle(T e, CancellationToken ct); }
+
+// 手写分发器：从 DI 取出所有订阅者依次调用
+public sealed class DomainEventDispatcher(IServiceProvider sp)
+{
+    public async Task Publish<T>(T e, CancellationToken ct)
+    {
+        foreach (var h in sp.GetServices<IDomainEventHandler<T>>())
+            await h.Handle(e, ct);
+    }
+}
 
 // Billing 模块订阅，彼此不直接引用实现
 internal sealed class CreateInvoiceOnOrderPlaced(IInvoiceService invoices)
-    : INotificationHandler<OrderPlaced>
+    : IDomainEventHandler<OrderPlaced>
 {
     public Task Handle(OrderPlaced e, CancellationToken ct) =>
         invoices.CreateDraftAsync(e.OrderId, e.CustomerId, ct);
 }
+// 注册：builder.Services.AddScoped<IDomainEventHandler<OrderPlaced>, CreateInvoiceOnOrderPlaced>();
 ```
 
 进程内事件让模块**在编译期解耦**，同时保留了日后换成消息队列（真正跨进程）的升级路径。
@@ -145,20 +157,23 @@ internal sealed class CreateInvoiceOnOrderPlaced(IInvoiceService invoices)
 
 边界最大的敌人是时间——一年后总有人「图方便」直接引用了别的模块内部类型。把边界写成**架构测试**，让 CI 自动拦截：
 
+用内置反射手写即可，无需第三方架构测试库（[P10](../governance/policy.md)）——扫描程序集里每个类型引用到的类型，断言没有一个落在禁止的命名空间：
+
 ```csharp
 [Fact]
 public void Orders_should_not_depend_on_Billing_internals()
 {
-    var result = Types.InAssembly(typeof(OrdersModule).Assembly)
-        .Should()
-        .NotHaveDependencyOn("Billing.Application") // 只允许依赖 Billing.Contracts
-        .GetResult();
+    var offenders = typeof(OrdersModule).Assembly.GetTypes()
+        .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic
+                                      | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly))
+        .SelectMany(m => m.GetParameters().Select(p => p.ParameterType).Append(m.ReturnType))
+        .Where(t => t.Namespace?.StartsWith("Billing.Application") == true)  // 只允许依赖 Billing.Contracts
+        .Select(t => t.FullName)
+        .Distinct();
 
-    Assert.True(result.IsSuccessful);
+    Assert.Empty(offenders);
 }
 ```
-
-（示例使用 `NetArchTest`；ArchUnitNET 亦可。）
 
 ## 反例（常见错误）
 

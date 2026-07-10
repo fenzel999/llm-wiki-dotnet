@@ -5,7 +5,7 @@ tags: [architecture, ddd, application-service, domain-service, dto]
 introduced-in: general
 applies-to: [all]
 status: stable
-source: https://abp.io/docs/latest/framework/architecture/domain-driven-design/application-services
+source: https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice
 updated: 2026-07-10
 ---
 
@@ -19,9 +19,9 @@ updated: 2026-07-10
 
 ## 概述
 
-ABP 的 DDD 分层里有两类"服务"，职责必须分清：**领域服务（Domain Service）**承载"跨多个聚合、放不进任何单个实体"的纯业务逻辑（如"跨账户转账"），无状态，属于领域层；**应用服务（Application Service）**是用例的编排者——接收 DTO、调用领域对象与领域服务、持久化，然后返回 DTO。应用服务是**事务边界**：一个用例方法内的所有更改一起提交或回滚，而这个"工作单元（UoW）"在 EF Core 里就是**一次 `SaveChanges`**，无需再造 UoW 抽象（沿用 [EF 数据访问](../dotnet/ef-core/ef-data-access.md)）。
+DDD 分层里有两类"服务"，职责必须分清：**领域服务（Domain Service）**承载"跨多个聚合、放不进任何单个实体"的纯业务逻辑（如"跨账户转账"），无状态，属于领域层；**应用服务（Application Service）**是用例的编排者——接收 DTO、调用领域对象与领域服务、持久化，然后返回 DTO。应用服务是**事务边界**：一个用例方法内的所有更改一起提交或回滚，而这个"工作单元（UoW）"在 EF Core 里就是**一次 `SaveChanges`**，无需再造 UoW 抽象（沿用 [EF 数据访问](../dotnet/ef-core/ef-data-access.md)）。
 
-两条我们与 ABP 不同的取舍：**不用控制器**——用 [Minimal API](../dotnet/aspnet-core/aspnet-core-10.md) 端点直接调用应用服务；**不用 AutoMapper**——DTO 与实体之间**手写映射**，几行投影既清晰又零依赖（[P10](../governance/policy.md)）。
+本库的两条取舍：**不用控制器**——用 [Minimal API](../dotnet/aspnet-core/aspnet-core-10.md) 端点直接调用应用服务；**不用 AutoMapper**——DTO 与实体之间**手写映射**，几行投影既清晰又零依赖（[P10](../governance/policy.md)）。
 
 ## 正确做法
 
@@ -64,4 +64,4 @@ app.MapPost("/orders", async (CreateOrderDto dto, OrderAppService svc) => Result
 
 - [领域驱动设计](ddd.md) · [整洁架构](clean-architecture.md) · [垂直切片](vertical-slice.md)
 - [EF Core 数据访问（DbContext 即 UoW）](../dotnet/ef-core/ef-data-access.md)
-- ABP 官方（思想来源）：[Application Services](https://abp.io/docs/latest/framework/architecture/domain-driven-design/application-services) · [Domain Services](https://abp.io/docs/latest/framework/architecture/domain-driven-design/domain-services)
+- 官方文档：[面向 DDD 的微服务设计](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice) · [领域模型层设计](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/net-core-microservice-domain-model)

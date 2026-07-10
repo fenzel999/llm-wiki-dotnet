@@ -18,6 +18,16 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**巡检 Patrol** — 全库前沿核对 + P10/P12/P14 合规扫描 + 删旧换新）
+- 范围：全库 78 页扫描；重点整改 architecture/*、patterns/composition、standards/quality-engineering、dotnet/fundamentals/testing、dotnet/versions。
+- 结论：**新增 P14（正文不得提及 ABP）并落地**；**发现并修复 4 处 P10/P12 违规**（合规扫描比上一轮更严）：
+  1. `patterns/composition.md` 管道行为原本教 **MediatR** → 改**手写装饰器**（内置 DI 逐层包裹）。
+  2. `architecture/modular-monolith.md` 进程内事件用 **MediatR notification**、架构测试用 **NetArchTest** → 均改**手写**（DI 事件分发器 + 反射断言）。
+  3. `dotnet/fundamentals/testing.md` frontmatter/正文仍推荐 **Testcontainers**（与自身正文矛盾）→ 统一为内置 `Microsoft.Data.Sqlite`/手写脚本。
+  4. `standards/quality-engineering.md` 日志后端举例含 **Application Insights**（P12 付费/云绑定）→ 改开源自托管。
+- 前沿性：联网核实 .NET 10/C# 14 为当前 GA LTS（生产推荐）；.NET 11/C# 15 仍预览（GA 2026-11）。新增 `dotnet/versions/net11.md`（status: preview），满足 Q2「预览不写成稳定承诺」。
+- 去 ABP：`abp-inspired.md`→`enterprise-patterns.md`，4 架构页 source/参考资料改微软官方文档。`mkdocs build --strict` 零死链通过。
+
 - 日期：2026-07-10（Ingest：从 ABP 汲取架构思想，厂商中立重写 5 新页 + 定义巡检流程）
 - 范围：新增 `architecture/` 5 页（abp-inspired / specification-pattern / multi-tenancy / auditing-soft-delete / domain-application-services）+ `governance/patrol.md`。
 - 结论：**两处 needs-your-call 已由你拍板并落地**——(1) ABP 只吸收架构思想、厂商中立重写（不引 `Volo.ABP.*`、不用控制器/付费模块/AutoMapper，遵守 P10/P12）；(2) "每 10 分钟自动整理"因 Agent 无常驻定时器不可行，改为**人类说"巡检"即触发**的 `patrol.md` 流程。

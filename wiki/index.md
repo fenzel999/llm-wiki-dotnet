@@ -78,11 +78,12 @@ updated: 2026-07-10
     - [.NET 7 / C# 11](dotnet/versions/net7.md) — 性能与 Native AOT；泛型数学、限流（EOL）
     - [.NET 8 / C# 12 关键知识](dotnet/versions/net8.md) — LTS；集合表达式、主构造函数、EF Core 8
     - [.NET 9 / C# 13 关键知识](dotnet/versions/net9.md) — STS；params 集合、内建 OpenAPI 3.0、Microsoft.Extensions.AI
+    - [.NET 11 / C# 15 前瞻（预览）](dotnet/versions/net11.md) — 预览期；联合类型、封闭类层次、Runtime Async（生产仍用 .NET 10）
     - [.NET 版本演进](comparisons/net-evolution.md) — 时间线、LTS/STS 与特性矩阵
 
 ### 架构
 
-- [从 ABP 汲取（导览）](architecture/abp-inspired.md) — 吸收 ABP 企业架构思想，厂商中立重写（不引 Volo.ABP.*、不用控制器/付费）
+- [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
 - **架构风格**：[模块化单体](architecture/modular-monolith.md) · [整洁架构](architecture/clean-architecture.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md)
 - **领域建模**：[DDD](architecture/ddd.md) · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [规约模式](architecture/specification-pattern.md)
 - **横切与企业能力**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md)
@@ -136,7 +137,7 @@ updated: 2026-07-10
         - `dotnet/runtime/` —— 运行时（JIT…）
         - `dotnet/blazor/` —— Blazor
         - `dotnet/versions/` —— 各版本关键知识（net8 / net9…）
-    - `architecture/` —— 架构方向（风格：模块化单体/整洁/垂直切片/微服务；建模：DDD/领域应用服务/规约；能力：CQRS/事件驱动/多租户/审计软删除；导览：从 ABP 汲取）
+    - `architecture/` —— 架构方向（风格：模块化单体/整洁/垂直切片/微服务；建模：DDD/领域应用服务/规约；能力：CQRS/事件驱动/多租户/审计软删除；导览：企业级架构模式）
     - `cloud-native/` —— 云原生（Aspire、容器化、健康检查）
     - `performance/` —— 性能与诊断（基准测试、GC/内存、诊断工具）
     - `standards/` —— 工程规范（命名、异常、日志、配置、测试、API 设计…）

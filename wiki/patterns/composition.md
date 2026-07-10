@@ -1,7 +1,7 @@
 ---
 title: 组合与架构模式
 summary: 把 Options、泛型主机、管道行为、最小 API 组织这四个常用模式串起来讲——它们如何彼此衔接，以及各自适合什么场景。
-tags: [pattern, configuration, hosting, mediatr, aspnet-core, minimal-api, cross-cutting]
+tags: [pattern, configuration, hosting, pipeline, aspnet-core, minimal-api, cross-cutting]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -174,84 +174,78 @@ protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 
 当项目里有了请求 / handler，你很快就会意识到：日志、验证、事务、性能度量这类横切关注点（cross-cutting concern）几乎每个 handler 都需要，但又不属于任何一条业务逻辑本身。把它们逐条写进 handler，代码会迅速变脏；而管道行为模式（Pipeline Behavior）的思路，是把这些逻辑抽出来，以管道的方式统一「包裹」在请求处理之外，让 handler 只管核心。
 
-最典型的实现是 MediatR 风格的 `IPipelineBehavior<TRequest, TResponse>`。当你有多条请求 / handler 共享同一类横切逻辑、又希望 handler 保持精简时，它非常合适；但如果某段逻辑只属于某一个 handler 特有，硬塞进通用管道反而增加理解成本，那就老老实实写在 handler 内部。
+实现它**不需要任何第三方中介库**（[P10](../governance/policy.md) 不引 MediatR 之类）：只要定义一个自己的极简 handler 接口，再用**装饰器（decorator）**把横切逻辑一层层包在真实 handler 外面即可，思路和"管道"完全一致。当你有多条请求 / handler 共享同一类横切逻辑、又希望 handler 保持精简时，这非常合适；但如果某段逻辑只属于某一个 handler 特有，硬塞进通用管道反而增加理解成本，那就老老实实写在 handler 内部。
 
-以 MediatR 为例，实现 `IPipelineBehavior<TRequest, TResponse>` 即可定义一个行为。先来一个日志行为，在请求处理前后各记一条：
+先定义一个自己的 handler 抽象——一个接口足矣：
 
 ```csharp
-using MediatR;
+public interface IRequestHandler<in TRequest, TResponse>
+{
+    Task<TResponse> Handle(TRequest request, CancellationToken ct);
+}
+```
+
+日志装饰器包住内层 handler，在请求处理前后各记一条：
+
+```csharp
 using Microsoft.Extensions.Logging;
 
-namespace App.Behaviors;
-
-public sealed class LoggingBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
+public sealed class LoggingHandler<TRequest, TResponse>(
+    IRequestHandler<TRequest, TResponse> inner,
+    ILogger<LoggingHandler<TRequest, TResponse>> logger)
+    : IRequestHandler<TRequest, TResponse>
 {
-    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
-    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
-        => _logger = logger;
-
-    public async Task<TResponse> Handle(
-        TRequest request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken ct)
     {
-        _logger.LogInformation("处理请求 {Request}", typeof(TRequest).Name);
-        var response = await next();
-        _logger.LogInformation("完成请求 {Request}", typeof(TRequest).Name);
+        logger.LogInformation("处理请求 {Request}", typeof(TRequest).Name);
+        var response = await inner.Handle(request, ct);   // 调用被包裹的下一层
+        logger.LogInformation("完成请求 {Request}", typeof(TRequest).Name);
         return response;
     }
 }
 ```
 
-再来一个事务行为，把整个 handler 包进一个数据库事务里，提交或回滚都交给 EF Core 管理：
+事务装饰器把整个内层 handler 包进一个数据库事务里，提交或回滚都交给 EF Core 管理：
 
 ```csharp
-// 事务行为示例
-public sealed class TransactionBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
+public sealed class TransactionHandler<TRequest, TResponse>(
+    IRequestHandler<TRequest, TResponse> inner, AppDbContext db)
+    : IRequestHandler<TRequest, TResponse>
 {
-    private readonly AppDbContext _db;
-    public TransactionBehavior(AppDbContext db) => _db = db;
-
-    public async Task<TResponse> Handle(
-        TRequest request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken ct)
     {
-        await using var tx = await _db.Database.BeginTransactionAsync(cancellationToken);
-        var response = await next();
-        await _db.SaveChangesAsync(cancellationToken);
-        await tx.CommitAsync(cancellationToken);
+        await using var tx = await db.Database.BeginTransactionAsync(ct);
+        var response = await inner.Handle(request, ct);
+        await db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
         return response;
     }
 }
 ```
 
-注意这里用的是 `await using`——事务的提交和释放走的是异步路径，这正好呼应了[释放与 using](disposable-using.md)里讲的 `IAsyncDisposable`。注册时只要按声明顺序把它们串成管道，MediatR 会依次包裹请求处理，下面先记日志、再开事务：
+注意这里用的是 `await using`——事务的提交和释放走的是异步路径，这正好呼应了[释放与 using](disposable-using.md)里讲的 `IAsyncDisposable`。注册时用[依赖注入](../dotnet/fundamentals/dependency-injection.md)手动把装饰器一层层套上：最外层最先执行，所以按"先记日志、再开事务"的顺序，让日志包在事务外面：
 
 ```csharp
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-    cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
-});
+builder.Services.AddScoped<PlaceOrderHandler>();          // 真实 handler
+builder.Services.AddScoped<IRequestHandler<PlaceOrder, OrderDto>>(sp =>
+    new LoggingHandler<PlaceOrder, OrderDto>(             // 最外层：先执行
+        new TransactionHandler<PlaceOrder, OrderDto>(     // 内层：再开事务
+            sp.GetRequiredService<PlaceOrderHandler>(),
+            sp.GetRequiredService<AppDbContext>()),
+        sp.GetRequiredService<ILogger<LoggingHandler<PlaceOrder, OrderDto>>>()));
 ```
 
-如果你没用 MediatR，同样的效果也能通过[依赖注入](../dotnet/fundamentals/dependency-injection.md)的装饰器（decorator）实现——把横切逻辑包在真实 handler 的外层即可，思路完全一致。
-
-❌ 顺序错了就很要命：下面把验证行为排在事务之后，意味着哪怕请求根本不合法，也会先开一个数据库事务，白白占用连接：
+❌ 顺序错了就很要命：下面把事务装饰器套在最外层、验证套在里面，意味着哪怕请求根本不合法，也会先开一个数据库事务，白白占用连接：
 
 ```csharp
-cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
-cfg.AddOpenBehavior(typeof(ValidationBehavior<,>)); // 顺序错误：应先验证
+new TransactionHandler<PlaceOrder, OrderDto>(   // 错误：事务在最外层先开
+    new ValidationHandler<PlaceOrder, OrderDto>(real, ...), db);  // 验证反而在事务内
 ```
 
 其它常见坑：
 
 - **把单个 handler 特有的逻辑硬塞进通用管道**：直接写在 handler 内更清晰。
-- **忽略管道顺序**：验证、鉴权等前置逻辑应排在事务 / 业务之前。
+- **忽略装饰顺序**：验证、鉴权等前置逻辑应包在事务 / 业务之外（更靠外层）。
 - **在行为里吞掉异常或返回错误响应却不记录**：问题会难以排查。
 
 管道行为对所有受支持版本通用，无差异。
@@ -340,7 +334,6 @@ public record Result<T>(bool IsSuccess, T? Value, string? Error); // 重复造�
 
 - [Options 模式官方文档](https://learn.microsoft.com/dotnet/core/extensions/options)
 - [.NET 通用宿主官方文档](https://learn.microsoft.com/dotnet/core/extensions/generic-host)
-- [MediatR](https://github.com/jbogard/MediatR)
 - [ASP.NET Core Minimal API](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
 - 相关：[依赖注入](../dotnet/fundamentals/dependency-injection.md)
 - 相关：[释放与 using](disposable-using.md)

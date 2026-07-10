@@ -5,7 +5,7 @@ tags: [architecture, multi-tenancy, saas, ef-core, query-filter]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
-source: https://abp.io/docs/latest/framework/architecture/multi-tenancy
+source: https://learn.microsoft.com/ef/core/miscellaneous/multitenancy
 updated: 2026-07-10
 ---
 
@@ -73,5 +73,4 @@ EF Core 全局查询筛选器 net(core) 全版本；`AsyncLocal` 全版本。示
 
 - [审计与软删除（同类筛选机制）](auditing-soft-delete.md)
 - [认证与授权](../dotnet/aspnet-core/auth.md)
-- ABP 官方（思想来源）：[Multi-Tenancy](https://abp.io/docs/latest/framework/architecture/multi-tenancy)
-- 官方文档：[EF Core 全局查询筛选器](https://learn.microsoft.com/ef/core/querying/filters)
+- 官方文档：[EF Core 多租户](https://learn.microsoft.com/ef/core/miscellaneous/multitenancy) · [EF Core 全局查询筛选器](https://learn.microsoft.com/ef/core/querying/filters)

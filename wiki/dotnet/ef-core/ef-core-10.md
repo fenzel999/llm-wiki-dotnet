@@ -83,11 +83,69 @@ var all = await db.Posts
 === "net8"
     引入复杂类型但功能范围较小；每个实体仅一个匿名筛选器，`IgnoreQueryFilters()` 全禁用。
 
-### Native AOT 兼容性
+## 预编译查询（实验性） {#precompiled-queries}
 
-复杂类型与 JSON 列映射、命名查询筛选器均为模型/查询定义，**AOT 下需启用 EF 编译模型**（见 [EF AOT](ef-data-access.md) + [AOT 矩阵](../aot/aot-compatibility.md)）。注意 JSON 列（`ToJson()`）序列化走 `System.Text.Json`，AOT 下同样需**源生成**（见 [序列化](../csharp/serialization.md)）。
+> **要点速览**
+> - **仅 net10+**、**实验性**（Experimental），随版本可能破坏性变更。
+> - 作用：**编译期把 LINQ 查询转成 C# 拦截器代码**，替代运行时查询管道的动态编译，实现 AOT 兼容 + 首次查询零开销。
+> - **限制**：不支持动态 LINQ、代码体积膨胀、需显式运行优化命令并集成 CI/CD。
+> - **仅用于 AOT 发布**；JIT 场景无需开启。
 
-## 参考资料
+### 原理
+
+传统 EF Core 查询管道在**运行时**把 LINQ 表达式树编译成 SQL，涉及反射与动态代码生成，AOT 下不可用。预编译查询在**编译期**分析代码里的 LINQ 查询，生成等价的 C# 拦截器代码（实现 `IQueryExpressionInterceptor`），编译进最终二进制。运行时直接走拦截器，**零反射、零动态编译**。
+
+### 开启方式
+
+```xml
+<!-- .csproj -->
+<PropertyGroup>
+  <PublishAot>true</PublishAot>
+  <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+</PropertyGroup>
+```
+
+```bash
+# 1. 安装工具（net9+ 自带 dotnet-ef）
+dotnet tool install --global dotnet-ef
+
+# 2. 生成预编译查询代码（会在项目里产出 .g.cs 文件）
+dotnet ef dbcontext optimize
+
+# 3. 正常发布 AOT
+dotnet publish -c Release -r linux-x64 -p:PublishAot=true
+```
+
+生成的拦截器会自动注册到 `DbContext`，无需手动注册。
+
+### 正确用法与限制决策表
+
+| 场景 | 能否用预编译 | 说明 |
+|------|--------------|------|
+| 固定 LINQ 查询（编译期已知） | ✅ 推荐 | 编译期已知结构，直接生成拦截器 |
+| `Where(u => u.Name == name)` 参数化查询 | ✅ 支持 | 参数在运行时传入，结构编译期已知 |
+| 运行时动态拼接 `IQueryable`（如报表筛选器） | ❌ 不支持 | 结构运行期才定，无法编译期生成 |
+| `Where(u => someList.Contains(u.Id))` 集合参数 | ✅ 支持 | 结构固定，集合值运行时传入 |
+| 复杂投影 `Select(u => new Dto { ... })` | ✅ 支持 | 投影结构编译期已知 |
+| 需原生 SQL / `FromSql` | ❌ 不支持 | 非 LINQ，走 `ExecuteSql` 即可 |
+
+### 常见误区
+
+❌ **以为开启后所有查询自动预编译** —— 仅对源码里以 LINQ 形式出现的查询生效；字符串 SQL、`ExecuteSql`、动态拼接的 `IQueryable` 均不生效。
+
+❌ **忽略代码体积膨胀** —— 每个查询生成的拦截器代码量大，查询数多时二进制体积显著增大，可能抵消 AOT 体积优势。**先用 `dotnet ef dbcontext optimize --dry-run` 预估体积**。
+
+❌ **不把优化命令集成 CI/CD** —— 预编译代码必须随源码提交，**必须在构建流水线显式运行 `dotnet ef dbcontext optimize`**，否则源码与生成代码不同步会导致运行时行为不一致。
+
+❌ **以为能替代所有 EF Core 查询** —— 仅作用于“编译期已知结构的 LINQ”；动态报表、用户自定义筛选等场景仍需运行时查询管道（需保留 JIT 回退或接受不兼容）。
+
+### AOT 兼容性补充
+
+- 预编译查询**仅在 `PublishAot=true` 时生效**；JIT 发布忽略生成的拦截器。
+- 仍需**启用 EF 编译模型**（`dotnet ef dbcontext optimize`）与 **JSON 源生成**（见 [序列化](../csharp/serialization.md)）。
+- 生成的拦截器代码属于项目源码，**AOT 安全**（无反射、无动态代码生成）。
+
+## 适用版本
 
 - 相关：[EF Core 数据访问](ef-data-access.md)
 - 官方文档：[What's new in EF Core 10](https://learn.microsoft.com/ef/core/what-is-new/ef-core-10.0/whatsnew)

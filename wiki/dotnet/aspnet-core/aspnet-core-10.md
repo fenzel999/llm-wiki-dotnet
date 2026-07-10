@@ -1,6 +1,6 @@
 ---
 title: ASP.NET Core 10 Web 特性
-summary: .NET 10 / ASP.NET Core 10 的关键 Web 特性——最小 API 内置验证（自动 400）、原生 OpenAPI 3.1 文档。
+summary: .NET 10 关键 Web 特性——最小 API 内置验证、TypedResults、原生 OpenAPI 3.1、MapGroup 分组与 AOT 源生成。
 tags: [aspnet-core, minimal-api, validation, openapi, net10]
 introduced-in: net10
 applies-to: [net10]
@@ -9,77 +9,116 @@ source: https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0
 updated: 2026-07-10
 ---
 
+# ASP.NET Core 10 Web 特性
+
 > **要点速览**
-> - 最小 API 内置验证：DataAnnotations 不合法自动返回 400。
-> - 原生 OpenAPI 3.1 文档生成（内置，无需第三方 Swagger 包）。
-> - 延续最小 API 路线：更少样板、更强类型化端点。
+> - 最小 API **内置验证**：DataAnnotations 不合法自动 `400`，无需 FluentValidation/Swashbuckle。
+> - **`TypedResults`/`Results<T>`** 表达多结果，类型安全、AOT 友好。
+> - 原生 **OpenAPI 3.1**（`AddOpenApi()` + `MapOpenApi()`），不装第三方 Swagger 包。
+> - **`MapGroup`** 分组复用前缀/过滤器/授权；端点组织见[最小 API 组织](../../patterns/composition.md#minimal-api-organization)。
+> - 最小 API 是 **AOT 支持**的路径（[P16](../../governance/policy.md)）。
 
 ## 概述
 
-如果你这两年写过 ASP.NET Core 的最小 API（minimal API），大概对这种组合不陌生：为了校验请求体，引入 FluentValidation 或手写一堆过滤器；为了出一份 API 文档，挂上 Swashbuckle/Swagger。这两件事本身没问题，但它们都是“第三方外加的”，意味着每个项目都得重复装包、重复配置、重复踩坑。ASP.NET Core 10 的思路很直接——把这些约定级的能力收进框架本身。
+过去写最小 API（minimal API），校验请求体常引 FluentValidation、出文档常挂 Swashbuckle/Swagger——都是"第三方外加"，每个项目重复装包、配置、踩坑。ASP.NET Core 10 把这些**约定级能力收进框架本身**：内置验证、内置 OpenAPI。配合既有的 `TypedResults`、`MapGroup`，最小 API 现在是一套几乎零样板、强类型、AOT 友好的完整写法。
 
-这一页讲两件最核心的事：最小 API 现在内置了模型验证，参数带数据注解就会自动校验、失败直接返回 400；以及原生的 `AddOpenApi()` 现在直接产出 OpenAPI 3.1 文档，不再需要 Swashbuckle。端点本身怎么组织、怎么分层，不属于本页范围，可以看[最小 API 组织](../../patterns/composition.md#minimal-api-organization)。
+## 正确做法
 
-## 最小 API 内置验证 {#minimal-api-validation}
-
-先说验证。在 .NET 10 里，最小 API 的模型验证是框架自带的，不需要 FluentValidation，也不需要任何第三方库。规则很简单：只要绑定到处理程序的参数身上带了 `System.ComponentModel.DataAnnotations` 的特性（比如 `[Required]`、`[Range]`、`[StringLength]`），框架在执行你的处理程序之前就会先校验一遍；校验不通过时，它直接返回 `400 Bad Request` 加一份 Problem Details，你根本不需要在业务代码里写任何 `if (!ModelState.IsValid)` 之类的分支。
-
-> 约定：本项目使用 .NET 10 原生验证，不引入 FluentValidation。
+### 1. 内置验证（自动 400 + ProblemDetails）
 
 ```csharp
-using System.ComponentModel.DataAnnotations;
-
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddValidation();   // 为所有最小 API 自动启用内置验证
+builder.Services.AddValidation();            // 为所有最小 API 启用内置验证
 var app = builder.Build();
 
 app.MapPost("/users", (CreateUser input) => Results.Ok(input));
-// 带 [Required]/[Range] 等特性的参数会自动校验；失败返回 400 + Problem Details
-
-app.Run();
+// [Required]/[Range] 等特性自动校验；失败直接 400 + ProblemDetails，处理程序不执行
 
 record CreateUser(
     [Required, StringLength(50)] string Name,
     [Range(0, 130)] int Age);
 ```
 
-你只管写“成功之后做什么”。比如有人 POST 一个 `Age = 200`，框架会自动拦截，返回 400 和字段级错误信息，处理程序连执行都执行不到。如果某个特定端点确实想跳过自动校验，调一下 `.DisableValidation()` 即可；要是校验逻辑需要跨属性（比如“开始日期必须早于结束日期”），实现 `IValidatableObject` 就能做。
+跨字段规则用 `IValidatableObject`；某端点要跳过验证用 `.DisableValidation()`。
 
-不过有几种常见失误值得提一句。最容易忘的就是漏了 `AddValidation()` 这一步——不注册，注解就完全不生效，请求会被照单全收。其次，在 `record` 的位置参数上挂特性时，要确认 `[Required]` 等确实落到成员上了，而不是写在不知道哪里的构造参数上。最后，别一边用内置验证、一边又手写一套校验并返回另一种格式的错误，那样会让调用方拿到两种不一致的响应形态。
+### 2. 类型化结果：`TypedResults` / `Results<T>`
 
-## 原生 OpenAPI 3.1 {#openapi-3-1}
-
-再说文档。过去出 OpenAPI/Swagger 文档几乎是 Swashbuckle 的天下，但从 .NET 9 起框架就内置了 `Microsoft.AspNetCore.OpenApi`，到 .NET 10 这一步更进了——它直接生成 OpenAPI 3.1 文档。3.1 最重要的变化是它完全对齐 JSON Schema，所以过去 3.0 里那些 `nullable` 之类的特殊处理可以顺势简化。
-
-> 约定：本项目不使用 Swagger/Swashbuckle。API 文档由 .NET 10 原生 `AddOpenApi()` 生成。
+不要"永远 200"——用具体 `TypedResults` 表达真实状态，且对 OpenAPI/AOT 友好：
 
 ```csharp
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddOpenApi();
-var app = builder.Build();
+app.MapGet("/orders/{id}", async (int id, OrdersDbContext db) =>
+    await db.Orders.FindAsync(id) is { } o
+        ? Results.Ok(o)                       // 200
+        : Results.NotFound());                // 404（见 异常处理）
 
-app.MapOpenApi();   // 暴露 /openapi/v1.json
-
-app.MapGet("/ping", () => "pong")
-   .WithSummary("健康检查");
-
-app.Run();
+// 多个结果时声明返回类型，便于 OpenAPI 与 AOT 源生成
+app.MapPost("/orders", (CreateOrder cmd) =>
+    Results.Created($"/orders/{...}", cmd))
+    .Produces<Order>(StatusCodes.Status201Created)
+    .ProducesProblem(StatusCodes.Status400BadRequest);
 ```
 
-用起来就是 `AddOpenApi()` + `MapOpenApi()` 两行，文档就挂在 `/openapi/v1.json`。这里要纠正一个常见预期：内置的 `AddOpenApi` 只负责“生成文档（JSON）”，它不附带那种可交互的 Swagger UI 页面。如果你或前端同事需要在浏览器里点着试接口，可以接一个轻量的替代品（比如 Scalar），让它指向 `MapOpenApi` 暴露的那个文档端点即可。另外，已经从 Swashbuckle 迁移的项目，记得把 `AddSwaggerGen` / `UseSwagger` / `UseSwaggerUI` 这些调用都清掉，统一走原生方案，别让两套并存。
+### 3. 原生 OpenAPI 3.1
+
+```csharp
+builder.Services.AddOpenApi();     // 生成 OpenAPI 3.1
+var app = builder.Build();
+app.MapOpenApi();                   // 暴露 /openapi/v1.json
+app.MapGet("/ping", () => "pong").WithSummary("健康检查");
+```
+
+> 内置 `AddOpenApi` 只生成 JSON 文档，**不含**可交互 UI。需要浏览器试接口可接轻量替代（如 Scalar）指向该端点。本项目**不使用 Swashbuckle**。
+
+### 4. `MapGroup` 分组复用前缀/授权/过滤器
+
+```csharp
+var api = app.MapGroup("/api/orders").RequireAuthorization("User");
+
+api.MapGet("/", ListAsync);
+api.MapPost("/", CreateAsync);      // 共享 "/api/orders" 前缀与授权策略
+```
+
+### 5. 版本差异
+
+=== "net10"
+    最小 API 内置验证 + 自动 400；`AddOpenApi()` 生成 **OpenAPI 3.1**；`TypedResults` 完善。
+
+=== "net9"
+    无内置验证，需手写过滤器；`AddOpenApi()` 可用但生成 **OpenAPI 3.0**。
+
+=== "net8"
+    无内置 OpenAPI 生成器、无内置最小 API 验证，需第三方。
+
+## 常见误区
+
+❌ **漏注册 `AddValidation()`**——不注册则注解完全不生效，请求被照单全收。验证要显式开启。
+
+❌ **一边用内置验证、一边手写另一套校验并返回不同格式**——调用方拿到两种不一致的错误形态。统一走内置验证的 ProblemDetails。
+
+❌ **返回"总是 200 + 包装体"**——破坏 HTTP 语义与 OpenAPI。用 `TypedResults`/`Results<T>` 表达真实状态（见 [异常处理](exception-handling.md)）。
+
+❌ **Swashbuckle / FluentValidation 与内置方案并存**——两套机制、两份配置、易冲突。本库统一用 .NET 10 原生方案（[P10](../../governance/policy.md)）。
+
+❌ **`record` 参数特性没生效**——确认 `[Required]` 等确实修饰成员而非裸构造参数；用 `record` 时写在位置参数属性上即可。
 
 ## 适用版本
 
 === "net10"
-    最小 API 内置验证与自动 400；原生 `AddOpenApi()` 生成 **OpenAPI 3.1**。
+    最小 API 内置验证、自动 400；原生 `AddOpenApi()` 生成 **OpenAPI 3.1**；`TypedResults`/`MapGroup` 成熟。
 
 === "net9"
-    无内置验证，需手写过滤器或第三方库；原生 `AddOpenApi()` 已可用但生成 **OpenAPI 3.0**。
+    无内置验证；`AddOpenApi()` 生成 **OpenAPI 3.0**。
 
 === "net8"
-    无内建 OpenAPI 生成器，需第三方库；无内置最小 API 验证。
+    无内置 OpenAPI 生成器、无内置最小 API 验证。
+
+### Native AOT 兼容性
+
+最小 API **是 AOT 支持**的路径（✅，[P16](../../governance/policy.md)、[AOT 矩阵](../aot/aot-compatibility.md)）。配套要点：用 `TypedResults`/`Results<T>` 让源生成器推断返回类型；响应 JSON 用 `System.Text.Json` **源生成**（见 [序列化](../csharp/serialization.md)）；声明 `Produces<T>`/`ProducesProblem` 帮助 AOT 源生成器覆盖所有返回形状。MVC/控制器不支持 AOT，故本库统一最小 API。
 
 ## 参考资料
 
-- 相关：[最小 API 组织](../../patterns/composition.md#minimal-api-organization)
+- [最小 API 组织（分组/端点）](../../patterns/composition.md#minimal-api-organization)
+- [输入验证（DataAnnotations）](validation.md) · [全局异常处理（400/422）](exception-handling.md)
+- [AOT 兼容性矩阵](../aot/aot-compatibility.md)
 - 官方文档：[What's new in ASP.NET Core 10](https://learn.microsoft.com/aspnet/core/release-notes/aspnetcore-10.0)

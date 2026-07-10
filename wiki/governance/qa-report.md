@@ -32,6 +32,18 @@ updated: 2026-07-09
 ### 待办（后续巡检）：P16 全库 AOT 合规扫描
 - 待分类决策：`patterns/composition.md` 是否物理迁移到 `dotnet/fundamentals/`（其内容为 Options/Host/Pipeline/Minimal API，属基础/Web 而非"实践/模式"）。本轮先保留在 patterns，待后续按重排方案决定（迁移会改 ~10 处跨页链接与内部相对路径深度）。
 
+- 日期：2026-07-10（**深写 Round 3 — Web / Minimal API（aspnet-core）完成**）
+- 对 `dotnet/aspnet-core/` 全部 7 页按 P17 深写并补 AOT 小节：
+  - `auth.md`：三种方案表 + JWT 完整校验参数 + 自定义 AuthorizationHandler + 多方案并存；**明确标注 Cookie/OIDC ❌ 不兼容 AOT、JWT Bearer ✅，AOT 后端用 JWT**。
+  - `middleware.md`：两种自定义中间件写法（内联/约定类）、MapWhen/UseWhen 分支、顺序表、AOT 小节（✅）。
+  - `validation.md`：自定义 ValidationAttribute、422/ProblemDetails、版本差异、AOT（JSON 源生成）。
+  - `rate-limiting.md`：四算法全代码示例 + 分区限流 + 429/Retry-After、AOT（✅）。
+  - `output-caching.md`（子代理）：VaryBy 三态、策略复用、标签失效、AOT（✅）。
+  - `signalr.md`（子代理）：分组/目标选择/生命周期重连/backplane/认证、AOT（🟡 部分支持，注意测试）。
+  - `aspnet-core-10.md`：TypedResults/Results<T>、MapGroup、OpenAPI 3.1、版本差异、AOT（✅ 最小 API 是 AOT 路径）。
+- `mkdocs build --strict` 通过。
+- 待你判定：无。
+
 - 日期：2026-07-10（**深写 Round 2 — 框架基础（fundamentals）完成**）
 - 触发：用户反馈"重新分析、整理、调优、分类" + P17 深度标准 + 测试方向偏弱。
 - 对 `dotnet/fundamentals/` 全部 9 页按 P17 深写并补 `### Native AOT 兼容性`：

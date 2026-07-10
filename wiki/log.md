@@ -264,3 +264,7 @@ updated: 2026-07-09
 - 测试扩展：testing.md 改总览；新增 integration-testing.md、test-doubles.md（均不引第三方 mock/容器库）。
 - 同步：mkdocs.yml、index.md、思维导图.md、qa-report.md。
 - 影响：wiki/dotnet/fundamentals/*（9 页）、wiki/dotnet/fundamentals/integration-testing.md、wiki/dotnet/fundamentals/test-doubles.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。
+
+## 2026-07-10 · 深写 Round 3：Web / Minimal API（aspnet-core）完成
+- 7 页全部按 P17 深写 + AOT 小节：auth（Cookie/OIDC ❌ 非 AOT、JWT ✅）、middleware、validation、rate-limiting、output-caching、signalr（🟡 部分）、aspnet-core-10（TypedResults/MapGroup/OpenAPI 3.1）。
+- 影响：wiki/dotnet/aspnet-core/*（7 页）。

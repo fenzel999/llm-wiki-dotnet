@@ -230,3 +230,9 @@ updated: 2026-07-09
 - 写治理文件 POLICY.md / QA.md / QA-REPORT.md / 如何反馈.md。
 - 影响：仓库根、wiki/ 治理层。
 - 待办：种子页面、可视化、git 提交与 push。
+
+## 2026-07-10 · 巡检 Patrol #4：吸收"统一异常处理"设计思想
+- Ingest：新增 `dotnet/aspnet-core/exception-handling.md`——业务异常带错误码 + `IExceptionHandler`（net8+）全局映射为 `ProblemDetails`（RFC 9457）统一错误响应；按 P10 用微软内置、不引第三方，厂商中立不提 ABP；含 net10 诊断抑制说明。
+- 同步：mkdocs.yml nav、index.md、思维导图.md、sources/README.md、middleware.md 互加链接、qa-report.md。
+- 校验：`mkdocs build --strict` 零死链通过。
+- 影响：dotnet/aspnet-core/exception-handling.md、dotnet/aspnet-core/middleware.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md、wiki/sources/README.md、wiki/governance/qa-report.md。

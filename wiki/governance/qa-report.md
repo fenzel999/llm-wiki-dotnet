@@ -18,6 +18,13 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**巡检 Patrol #4** — 吸收"统一异常处理"设计思想）
+- 范围：Web 层横切能力缺口补齐 + 合规复扫。
+- 结论：知识页 P10/P12/P14 持续零违规（复扫命中均为"不用 X"教学提示与治理记录）。
+- Ingest：新增 `dotnet/aspnet-core/exception-handling.md`——吸收"业务异常携带错误码 + 全局集中映射为标准化错误响应"这一设计思想；用微软内置 `IExceptionHandler`（net8+）+ `ProblemDetails`（RFC 9457）+ `IProblemDetailsService` 表达，按 P10 不引第三方（如 Hellang），厂商中立不提 ABP。与 `middleware.md`（异常处理在管道最外层）、`validation.md`、`quality-engineering.md#exception-handling` 互补并互加链接。net10 诊断抑制行为已在"适用版本"注明。
+- 前沿性：核对官方 error-handling 文档确认 `IExceptionHandler` / `AddProblemDetails` / `UseExceptionHandler` API 与 net10 `SuppressDiagnosticsCallback` 变更。`mkdocs build --strict` 零死链通过。
+- 待你判定：无。
+
 - 日期：2026-07-10（**Correct** — solution-structure 改为模块化单体布局）
 - 触发：人工指正——上一版顶层用横切分层（整个应用一套 Domain/Application/Infrastructure），是传统分层单体，与本库 modular-monolith 偏好矛盾。
 - 修正：`solution-structure.md` 顶层改为**按业务模块切**，模块内部再分层；跨模块只经 `*.Contracts`，Host 唯一组合根。与 `modular-monolith.md` 互补对齐（概念 vs .csproj 布局），消除矛盾（Q3）。`mkdocs build --strict` 通过。

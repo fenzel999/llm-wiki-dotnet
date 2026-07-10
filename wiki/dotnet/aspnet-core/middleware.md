@@ -64,6 +64,7 @@ app.Use(async (context, next) =>
 
 ## 参考资料
 
+- [全局异常处理与统一错误响应](exception-handling.md)
 - [认证与授权](auth.md)
 - [ASP.NET Core 10](aspnet-core-10.md)
 - 官方文档：[ASP.NET Core 中间件](https://learn.microsoft.com/aspnet/core/fundamentals/middleware/)

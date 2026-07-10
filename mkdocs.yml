@@ -89,6 +89,7 @@ nav:
           - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
           - 认证与授权: dotnet/aspnet-core/auth.md
           - 中间件管道: dotnet/aspnet-core/middleware.md
+          - 全局异常处理: dotnet/aspnet-core/exception-handling.md
           - 输入验证: dotnet/aspnet-core/validation.md
           - 限流: dotnet/aspnet-core/rate-limiting.md
           - 输出缓存: dotnet/aspnet-core/output-caching.md

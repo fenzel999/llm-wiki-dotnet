@@ -41,6 +41,7 @@ updated: 2026-07-09
 - [ASP.NET Core 缓存](https://learn.microsoft.com/aspnet/core/performance/caching/overview) · [HybridCache](https://learn.microsoft.com/aspnet/core/performance/caching/hybrid) — Microsoft Learn
 - [托管服务 / Worker](https://learn.microsoft.com/dotnet/core/extensions/workers) — Microsoft Learn
 - [ASP.NET Core 安全性](https://learn.microsoft.com/aspnet/core/security/) · [中间件](https://learn.microsoft.com/aspnet/core/fundamentals/middleware/) — Microsoft Learn
+- [处理错误](https://learn.microsoft.com/aspnet/core/fundamentals/error-handling) · [处理 Web API 错误](https://learn.microsoft.com/aspnet/core/web-api/handle-errors) — Microsoft Learn
 - [SignalR 简介](https://learn.microsoft.com/aspnet/core/signalr/introduction) · [限流中间件](https://learn.microsoft.com/aspnet/core/performance/rate-limit) — Microsoft Learn
 - [模型验证](https://learn.microsoft.com/aspnet/core/mvc/models/validation) · [最小 API 验证](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/validation) — Microsoft Learn
 - [输出缓存](https://learn.microsoft.com/aspnet/core/performance/caching/output) · [Data Protection](https://learn.microsoft.com/aspnet/core/security/data-protection/introduction) — Microsoft Learn

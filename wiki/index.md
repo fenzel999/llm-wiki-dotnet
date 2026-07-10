@@ -53,6 +53,7 @@ updated: 2026-07-10
     - [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
     - [认证与授权](dotnet/aspnet-core/auth.md) — 认证方案与基于策略的授权
     - [中间件管道](dotnet/aspnet-core/middleware.md) — 请求管道与顺序
+    - [全局异常处理](dotnet/aspnet-core/exception-handling.md) — IExceptionHandler + ProblemDetails 统一错误响应
     - [输入验证](dotnet/aspnet-core/validation.md) — DataAnnotations / 最小 API 内置验证
     - [限流](dotnet/aspnet-core/rate-limiting.md) — net7+ 内置限流四算法
     - [输出缓存](dotnet/aspnet-core/output-caching.md) — 服务端响应缓存、标签失效

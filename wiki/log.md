@@ -307,3 +307,9 @@ updated: 2026-07-09
 - ef-core/ 基础 5 页按 P17 深写：query-performance（问题→解法决策表 + ToQueryString + AOT 需预编译查询）、migrations（本地 vs 生产部署对比表 + AOT 无关/设计期工具）、modeling-relationships（关系类型表 + OnDelete 显式 + AOT 需编译模型）、concurrency（乐观 vs 悲观表 + PostgreSQL xmin + 重试前 reload + AOT 安全）、ef-core-10（补 AOT 小节：JSON 列需源生成）。
 - mkdocs build --strict 通过。
 - 影响：wiki/dotnet/ef-core/query-performance.md、migrations.md、modeling-relationships.md、concurrency.md、ef-core-10.md、wiki/log.md。
+
+## 2026-07-11 · 薄页 P17 深写（Round D：dotnet/performance + 验收）
+- performance/ 2 页按 P17 深写：gc-memory（分配优化选型表 + struct 与 class 取舍 + AOT 下 GC 不变但需源生成）、diagnostics（症状→工具决策表 + 容器/K8s 用法 + AOT 同样可用，裁剪影响堆分析深度）。
+- 所有后端核心页面（architecture、deployment、csharp、ef-core、fundamentals、performance）已完成 P17 深写。
+- mkdocs build --strict 通过。
+- 影响：wiki/performance/gc-memory.md、diagnostics.md、wiki/log.md。

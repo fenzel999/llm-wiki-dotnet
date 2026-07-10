@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/ef/core/managing-schemas/migrations/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 迁移把模型变更记录成有序、可版本化、可回滚的文件（`Up`/`Down`）。
+> - 工具用官方 `dotnet ef`：`migrations add` → `database update`（本地）。
+> - **生产别用 `database update`/启动自动 `Migrate()`**；用幂等脚本或迁移 bundle。
+> - 迁移文件与 `ModelSnapshot` 必须进 git；别改已应用过的迁移。
+
 ## 概述
 
 当你的 C# 实体模型变了（加字段、改类型、建关系），数据库表结构也得跟着变。EF Core 的**迁移（Migrations）**就是把这种变更记录成一个个有序、可版本化、可回滚的 C# 迁移文件，让数据库架构和代码一起进版本库、一起演进。每个迁移都有 `Up`（应用变更）和 `Down`（回滚变更）两个方向。

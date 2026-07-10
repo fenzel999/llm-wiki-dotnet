@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/performance/caching/overview
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 三层：`IMemoryCache`（最快、单进程）、`IDistributedCache`（跨实例）、`HybridCache`（两级+防击穿）。
+> - 新项目首选 **`HybridCache`**，`GetOrCreateAsync` 并发缺失时回源只跑一次。
+> - 每个条目要有过期策略与失效手段，别"永不过期"。
+> - 内存缓存要设大小上限，别塞巨大对象撑爆内存。
+
 ## 概述
 
 缓存的本质是"用空间换时间"：把昂贵计算或慢查询的结果暂存起来，避免重复付出代价。.NET 提供三个层次：**`IMemoryCache`** 存在单进程内存里，最快但不跨实例、重启即失；**`IDistributedCache`** 存在 Redis/SQL Server 等外部存储，跨实例共享但有网络开销；net9 引入的 **`HybridCache`** 把两者合成"L1 本地 + L2 分布式"的两级缓存，并内置了单机的关键能力——**防缓存击穿（stampede protection）**：同一个 key 并发缺失时只让一个请求去回源，其余等待复用结果。

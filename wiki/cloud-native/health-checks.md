@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/host-and-deploy/health-checks
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 内置健康检查（无需第三方），用 tag 分组映射到不同端点。
+> - **liveness**（进程是否健康，不健康就重启）vs **readiness**（是否可接流量）。
+> - liveness **不要**检查外部依赖（否则数据库一抖就被反复重启）；依赖属 readiness。
+> - 检查要轻量快速，别做重查询。
+
 ## 概述
 
 容器编排器（如 Kubernetes）需要一种方式来问你的应用："你还活着吗？可以给你发流量吗？"ASP.NET Core 内置的**健康检查**就是这套机制，全部在框架内（`Microsoft.Extensions.Diagnostics.HealthChecks`），无需第三方包。

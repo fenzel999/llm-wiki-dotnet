@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/standard/collections/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 按访问模式选：顺序/索引→`List`，按键查找→`Dictionary`，去重/存在性→`HashSet`。
+> - 多线程共享用 `Concurrent*`，别给普通集合到处加锁。
+> - "构建一次、海量只读"用 `Frozen*`（net8+）；需不可变共享用 `Immutable*`。
+> - 别用 `ArrayList`/`Hashtable`（已被泛型取代）；已知规模就预设容量。
+
 ## 概述
 
 选错集合类型，是很多性能问题的隐秘根源。选型的第一问题是**访问模式**：需要按索引顺序访问、频繁追加 → `List<T>`；需要按键快速查找（O(1)）→ `Dictionary<TKey,TValue>`；只关心"存不存在"、要去重 → `HashSet<T>`；先进先出/后进先出 → `Queue<T>`/`Stack<T>`。第二问题是**是否并发**：多线程读写必须用 `System.Collections.Concurrent` 里的 `ConcurrentDictionary` 等，而不是给普通集合到处加锁。

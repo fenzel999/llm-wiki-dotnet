@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/performance/caching/output
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - net7+ 内置输出缓存：响应存**服务端**、服务端掌控失效，通用场景**取代**响应缓存。
+> - 用 `VaryBy` 分键、`Tag` 打标签；数据变更后 `EvictByTagAsync` 主动失效。
+> - 默认只缓存匿名 GET/HEAD 无 Set-Cookie 的响应。
+> - 个性化/带授权内容谨慎缓存或按用户分键。
+
 ## 概述
 
 对"生成代价高、但一段时间内结果不变"的响应（如首页、榜单、报表），把整个响应缓存起来直接复用，能极大降负载。net7 起 ASP.NET Core 内置**输出缓存（Output Caching）**中间件，缓存**存在服务端**、由服务端完全掌控失效，比老的响应缓存（Response Caching，依赖客户端/代理遵守 HTTP 缓存头、不可控）更可靠——通用场景**输出缓存已取代响应缓存**（[P11](../../governance/policy.md)）。

@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/diagnostics/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 微软官方 `dotnet-*` 工具可挂到运行中进程取证，无需改代码、不停服。
+> - 顺序：先 `dotnet-counters` 定性（CPU？GC？线程池？），再 `dotnet-trace`/`dotnet-dump` 定位。
+> - 内存增长用 `dotnet-gcdump` 看什么在堆积、被谁引用，别乱猜"泄漏"。
+> - 容器/K8s 里同样可用；别用 `Console.WriteLine` 埋点当剖析。
+
 ## 概述
 
 线上应用变慢、内存涨、偶发卡顿，靠加日志猜往往事倍功半。.NET 提供一整套**跨平台命令行诊断工具**（全部微软官方，`dotnet tool` 安装），可以挂到正在运行的进程上取证，不必改代码、不必停服：

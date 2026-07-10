@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/extensions/workers
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 长期后台任务用 `BackgroundService`（重写 `ExecuteAsync`）；无 Web 的常驻进程用 Worker 模板。
+> - 定时循环用 `PeriodicTimer`，全程尊重 `stoppingToken` 实现优雅停机。
+> - 托管服务是 singleton：用 scoped 服务（如 `DbContext`）要在循环内 `CreateScope()`。
+> - 包住循环体 try/catch——未捕获异常 net6+ 会让宿主崩溃。
+
 ## 概述
 
 很多工作不该由 HTTP 请求线程去干：定时轮询、消费消息队列、批处理、清理任务。这些"随应用一起启动、在后台长期运行"的活儿，交给 **`IHostedService`**，而绝大多数场景用它的便捷基类 **`BackgroundService`** 即可——你只需重写一个 `ExecuteAsync(CancellationToken)`。若整个进程本就没有 Web，只是个常驻后台程序，用 **Worker Service** 项目模板（`dotnet new worker`），它可以直接注册成 Windows 服务或 systemd 守护进程。

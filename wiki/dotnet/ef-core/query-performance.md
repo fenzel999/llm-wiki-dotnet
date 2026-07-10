@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/ef/core/performance/efficient-querying
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 每个 LINQ 查询 = 一次数据库往返；先看生成的 SQL（`ToQueryString()`/日志）。
+> - 只读查询用 `AsNoTracking`；只取所需列（投影到 DTO）。
+> - 循环访问导航会触发 **N+1**，用 `Include` 或投影一次取齐。
+> - 多集合 `Include` 笛卡尔爆炸时用 `AsSplitQuery`；分页别一次拉全表。
+
 ## 概述
 
 EF Core 的便利容易让人忘记每个 LINQ 查询背后都是一次真实的数据库往返。绝大多数 EF 性能问题都来自几个固定套路：**N+1 查询**（循环里逐条访问导航属性，触发 N 次额外查询）、**过度加载**（查了整个实体却只用两个字段）、**无谓的变更跟踪**（只读查询也建快照）、以及**一次拉回海量行**。理解这些，配合下推过滤、按需投影、关闭跟踪，就能解决大部分问题。

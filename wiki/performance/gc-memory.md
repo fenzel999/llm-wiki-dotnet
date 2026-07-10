@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/standard/garbage-collection/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - GC 分代（Gen0/1/2 + LOH）：多数对象朝生夕死，优化核心是**少制造垃圾**。
+> - 热路径减少分配：`Span`/`stackalloc`、`ArrayPool` 复用缓冲、`StringBuilder`。
+> - 别频繁 `GC.Collect()`（打乱自适应）；别频繁分配 ≥85KB 进 LOH。
+> - `struct` 用于小而短命的值可省分配，但大结构体复制反而更贵。
+
 ## 概述
 
 .NET 的垃圾回收器（GC）自动管理托管堆，但它不是免费的——回收要暂停、要付出 CPU。理解它才能写出低压力的代码。GC 是**分代（generational）**的：新对象进 **Gen 0**，熬过回收的晋升到 Gen 1、Gen 2，大对象（≥85KB）进**大对象堆（LOH）**。绝大多数对象朝生夕死，所以 Gen 0 回收又快又频繁，Gen 2/LOH 回收才昂贵。优化的核心思路因此是：**少制造垃圾**，尤其少制造会晋升到高代的中长寿命对象。

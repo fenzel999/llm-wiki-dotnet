@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/diagnostics/observability-with-o
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 三大信号：日志（事件）、指标（可聚合数值）、追踪（跨服务请求链路）。
+> - 日志用 `ILogger` + **命名占位符**（结构化），高频路径用 `LoggerMessage` 源生成零分配。
+> - 用 OpenTelemetry + OTLP 导出到开源后端（Prometheus/Grafana/Jaeger），不绑定付费云。
+> - 别用字符串插值写日志；别把敏感信息写进日志。
+
 ## 概述
 
 线上系统出问题时，你能不能快速回答"哪儿慢了、为什么错了"，取决于可观测性做得好不好。可观测性由三大信号组成：**日志（Logs）**记录离散事件，**指标（Metrics）**是可聚合的数值（QPS、延迟、内存），**追踪（Traces）**串起一次请求跨越多个服务的完整路径。.NET 对三者都有一等支持，且统一对接业界标准 **OpenTelemetry（OTel）**，通过 OTLP 协议导出到开源后端（Prometheus、Grafana、Jaeger 等），不绑定任何付费云服务（[POLICY P12](../../governance/policy.md)）。

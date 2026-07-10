@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/standard/serialization/system-text-js
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 用内置 `System.Text.Json`；`Newtonsoft.Json` 是第三方且通用功能已被取代。
+> - `JsonSerializerOptions` 线程安全，定义 `static readonly` 复用，别每次新建。
+> - 热路径/AOT 用**源生成器**（`JsonSerializerContext`）实现零反射。
+> - 注意大小写/命名策略（前端 camelCase 用 `JsonSerializerDefaults.Web`）。
+
 ## 概述
 
 .NET 的官方 JSON 库是内置的 **`System.Text.Json`**（命名空间 `System.Text.Json`）。它默认高性能、低分配，直接构建在 `Span`/`Utf8` 之上。老项目里常见的 `Newtonsoft.Json` 是第三方库，其通用能力**已被 `System.Text.Json` 取代**——新代码一律用内置库（[POLICY P10/P11](../../governance/policy.md)）；仅当遇到 `System.Text.Json` 尚不支持的边角特性且无法手写时，才需另行评估。

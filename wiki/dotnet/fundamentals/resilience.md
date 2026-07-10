@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/resilience/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 五策略：重试、熔断、超时、限流/隔离、回退；用 `Microsoft.Extensions.Resilience`（基于 Polly，基金会）。
+> - 类型化 HttpClient 一行 `AddStandardResilienceHandler()` 拿到合理默认。
+> - 重试要**指数退避 + jitter**，避免重试风暴；只对**幂等**操作重试。
+> - 只重试不熔断会拖垮自己；下游持续失败时熔断快速失败。
+
 ## 概述
 
 分布式系统里"远程调用会失败"是常态而非意外：网络抖动、下游过载、瞬时超时。弹性（Resilience）就是让应用**优雅地承受并从这些故障中恢复**。核心策略有五种：**重试（Retry）**应对瞬时故障、**熔断（Circuit Breaker）**在下游持续失败时快速失败以免雪崩、**超时（Timeout）**避免无限等待、**限流/隔离（Rate limiter / Bulkhead）**保护自身资源、**回退（Fallback）**提供降级结果。

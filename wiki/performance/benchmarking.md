@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/testing/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 先测量再优化；微基准用 **BenchmarkDotNet**（.NET 基金会）。
+> - 别用 `Stopwatch` 手写下结论（无预热、无统计、受干扰）。
+> - 必须 **Release** 运行；加 `[MemoryDiagnoser]` 同时看分配。
+> - 先用[诊断工具](diagnostics.md)找热点，再基准它，别优化冷路径。
+
 ## 概述
 
 性能优化的第一原则是：**先测量，别猜**。凭直觉改代码往往优化了根本不热的路径，甚至改慢了。做可靠的微基准，标准工具是 **BenchmarkDotNet**（.NET 基金会项目，符合 [P10](../governance/policy.md)）。它替你处理了手写计时器几乎不可能做对的事：JIT 预热、多次迭代取统计、隔离进程、自动测内存分配、输出带标准差的可信结果。

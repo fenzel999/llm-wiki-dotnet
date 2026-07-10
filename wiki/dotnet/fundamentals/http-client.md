@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclie
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - `HttpClient` 别频繁 `new`——会耗尽套接字；用单例或 `IHttpClientFactory`。
+> - 首选**类型化客户端**：按用途配基址/默认头，强类型可注入。
+> - 横切逻辑（鉴权/重试）用消息处理器串接；配合[弹性](resilience.md)。
+> - 别注册成 scoped/transient；别手拼 URL（用 `Uri`/`QueryHelpers`）。
+
 ## 概述
 
 `HttpClient` 实现 `IDisposable`，但它**不是**"用完即丢"的对象——它底层复用一个 `HttpClientHandler` 和连接池，每 `new` 一个就建立一套新的连接管理，频繁创建会导致**套接字耗尽（TIME_WAIT 堆积）**。正确的姿势是：要么把单个 `HttpClient` 注册成 singleton 长期复用（net5+ 已解决 DNS 变更不刷新的老问题），要么用 **`IHttpClientFactory`** 让框架统一管理生命周期与连接池。

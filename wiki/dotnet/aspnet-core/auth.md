@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/security/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 认证=你是谁，授权=你能干嘛；顺序永远先认证后授权。
+> - Web 常用 Cookie、API 常用 JWT Bearer；授权用**基于策略**而非散写角色字符串。
+> - 中间件顺序：`UseAuthentication()` 必须在 `UseAuthorization()` 之前。
+> - JWT 密钥进密钥库，校验签发者/受众/有效期要完整。
+
 ## 概述
 
 两个词长得像，职责却完全不同：**认证（Authentication）**回答"你是谁"——校验凭据、建立用户身份（`ClaimsPrincipal`）；**授权（Authorization）**回答"你能做什么"——在已知身份的前提下判断是否放行。顺序上总是先认证、后授权。

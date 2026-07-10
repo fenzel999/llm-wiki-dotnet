@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/framework/data/adonet/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 两条路都只用微软官方组件：EF Core（ORM）与原生 ADO.NET（手写 SQL）。
+> - **默认 EF Core**；仅热路径/复杂查询/批处理才下沉 ADO.NET。
+> - 需原生 SQL 时优先用 EF 的 `FromSql`（参数化），不必真退回裸 ADO.NET。
+> - 不引第三方微型 ORM（如 Dapper，不属 MS/基金会）。
+
 ## 概述
 
 数据访问有两条路，且都只依赖微软官方组件（[POLICY P10](../governance/policy.md)）：**EF Core** 是官方 ORM，把表映射成对象、自动生成 SQL、管理变更跟踪与迁移；**原生 ADO.NET**（`Microsoft.Data.SqlClient` 等）让你直接写 SQL、用 `DbConnection`/`DbCommand`/`DbDataReader` 手动读结果，控制到极致但样板代码多。

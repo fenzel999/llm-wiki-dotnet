@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/architecture/microservices/microservi
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 把写（命令，走领域模型）和读（查询，直接投影 DTO）拆成两条路径。
+> - 默认用**轻量版**（同库、分处理器）；读写分库+事件同步的重量版仅在负载严重不对称时才用。
+> - 不用 MediatR：处理器就是普通类，DI 注入直接调用。
+> - 查询路径别硬套完整领域实体 + 跟踪，直接 `AsNoTracking` + 投影。
+
 ## 概述
 
 CQRS（Command Query Responsibility Segregation）的核心主张只有一句：**把"改状态的操作"（命令 Command）和"读数据的操作"（查询 Query）分成两条独立的路径**。写路径关心业务规则、一致性、领域模型；读路径关心展示效率，往往可以绕开领域模型直接投影成 DTO。二者需求本就不同，硬用同一套模型会互相拖累。

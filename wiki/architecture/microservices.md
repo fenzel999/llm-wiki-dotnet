@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/architecture/microservices/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 按业务能力拆成自治、独立部署、各自拥有数据的小服务。
+> - 代价真实（网络、最终一致、运维复杂）：**多数应用应先[模块化单体](modular-monolith.md)**，需要时再拆。
+> - 服务间不共享数据库（共享=分布式单体）；跨服务调用必加[弹性](../dotnet/fundamentals/resilience.md)。
+> - 全链路[可观测性](../dotnet/fundamentals/observability.md)是刚需；解耦用异步[事件](event-driven.md)。
+
 ## 概述
 
 微服务把一个大应用拆成一组**围绕业务能力划分、各自独立部署、各自拥有数据**的小服务，服务间通过网络（HTTP/gRPC 或消息）通信。好处很诱人：团队可独立开发部署、按需单独扩缩、技术栈可局部演进、故障可隔离。但代价同样真实：分布式系统的网络不可靠、数据一致性变难（跨服务没有分布式事务，只能最终一致）、可观测性与运维复杂度陡增。

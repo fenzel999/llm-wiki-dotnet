@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/performance/rate-limit
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - net7+ 内置限流中间件（无需第三方），四算法：固定窗口/滑动窗口/令牌桶/并发。
+> - 定义命名策略 + `RequireRateLimiting`；超限返回 **429** 并给 `Retry-After`。
+> - 按用户/IP/Key **分区**限流，避免一个用户拖垮所有人。
+> - 固定窗口有边界突刺；限流是纵深防御之一，配合认证/弹性。
+
 ## 概述
 
 限流（Rate Limiting）是保护服务不被突发或恶意流量压垮的第一道闸门。net7 起，ASP.NET Core **内置**了限流中间件（`Microsoft.AspNetCore.RateLimiting` + `System.Threading.RateLimiting`），无需任何第三方包。它提供四种经典算法：**固定窗口（Fixed Window）**简单但边界会突刺；**滑动窗口（Sliding Window）**更平滑；**令牌桶（Token Bucket）**允许一定突发；**并发限制（Concurrency）**限制同时处理的请求数。

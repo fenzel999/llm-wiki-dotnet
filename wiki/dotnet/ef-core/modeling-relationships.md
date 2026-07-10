@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/ef/core/modeling/relationships
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 用导航属性 + 外键映射一对多/多对多/一对一，多数按约定自动识别。
+> - 外键**不可空=必需**、**可空=可选**，直接决定列可空性与级联行为。
+> - 多对多 net5+ 无需显式连接实体（除非连接表带额外列）。
+> - 明确设 `OnDelete(...)` 表达级联意图，别依赖默认悄悄连删。
+
 ## 概述
 
 关系型数据库靠外键把表连起来，EF Core 用**导航属性 + 外键属性**把这种关系映射成对象图。三种基本关系：**一对多**（一个 `Blog` 有多篇 `Post`）、**多对多**（`Post` 与 `Tag`）、**一对一**（`User` 与 `UserProfile`）。EF Core 大多能按约定自动识别关系（属性名合规时），复杂或需精确控制时用 Fluent API 在 `OnModelCreating` 里显式配置。

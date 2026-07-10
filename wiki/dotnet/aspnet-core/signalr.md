@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/signalr/introduction
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 服务器主动推送（聊天/通知/实时看板）用内置 SignalR，Hub 自动协商 WebSocket 等传输。
+> - 用**强类型 Hub**（`Hub<T>` + 接口），编译期检查，别用字符串方法名。
+> - Hub 实例瞬时，别存每连接状态；多实例部署配 backplane（可自托管开源）。
+> - Hub 也要 `[Authorize]` 保护。
+
 ## 概述
 
 普通 HTTP 是"客户端问、服务器答"，服务器没法主动找客户端。聊天、通知、实时仪表盘、协作编辑这类场景需要**服务器主动推送**，这正是 **SignalR**（微软内置，`Microsoft.AspNetCore.SignalR`）要解决的。它把底层传输（WebSocket、Server-Sent Events、长轮询）抽象成一个 **Hub**——你只管在 Hub 上定义方法、调用客户端方法，SignalR 负责协商出当前环境能用的最佳传输、处理连接管理与分组广播。

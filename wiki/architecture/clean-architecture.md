@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/co
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 铁律：依赖方向**只向内**（Web/基础设施 → 应用 → 领域）。
+> - 内层（领域/应用）定义接口，外层（基础设施）实现，靠**依赖倒置**在启动处组装。
+> - 好处：核心业务不被 EF Core/Web 框架绑架，可独立测试、可替换存储。
+> - 小项目别过度分层，[模块化单体](modular-monolith.md)即可。
+
 ## 概述
 
 整洁架构（Clean Architecture，又称洋葱/六边形架构的一类）的一条铁律是：**依赖方向只能向内**。最内层是**领域（Domain）**——实体与业务规则，不依赖任何框架；外一层是**应用（Application）**——用例编排，定义它需要的接口（如 `IOrderRepository`）；最外层是**基础设施（Infrastructure）**与 **表现（Web/UI）**——数据库、EF Core、HTTP 都在这里，它们**实现**内层定义的接口。

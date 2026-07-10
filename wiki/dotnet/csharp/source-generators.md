@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/csharp/roslyn-sdk/source-generators-o
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 编译期生成代码**替代运行时反射**，AOT/裁剪友好；框架已用于 JSON/Logging/Regex/P-Invoke。
+> - 日常先**用**官方生成器（`LoggerMessage`/`GeneratedRegex`/JSON 源生成）。
+> - 自己写用**增量生成器**（`IIncrementalGenerator`）；旧 `ISourceGenerator` 卡 IDE，已被取代。
+> - 管道里只传轻量可比较的数据模型，别传 `ISymbol`/`Compilation`（破坏缓存）。
+
 ## 概述
 
 源生成器（Source Generator）是 Roslyn 编译器的扩展点：它在**编译期**分析你的代码，再**生成新的 C# 源码**一起参与编译。它的最大价值是用编译期代码生成**替代运行时反射**——反射慢、且在 Native AOT/裁剪下不可靠，而生成的代码是静态的、可被 AOT 完整编译。.NET 自己就大量使用它：`System.Text.Json` 源生成、`LoggerMessage`、`GeneratedRegex`、`LibraryImport`（P/Invoke）都是源生成器产物，是对应运行时反射写法的**现代替代**。

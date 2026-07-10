@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/aspnet/core/mvc/models/validation
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 永不信任外部输入；验证做在**边界**尽早拦截。
+> - 用内置 **DataAnnotations** 特性 + `IValidatableObject`（跨字段），不引 FluentValidation。
+> - net10 最小 API 内置验证：`AddValidation()`，不合法自动 400。
+> - 服务端验证是底线（前端可绕过）；别把校验散写进业务深处。
+
 ## 概述
 
 永远不要信任外部输入。验证要做在边界上——请求一进来就挡住不合法数据，别让脏数据渗进业务逻辑。.NET **内置**的验证机制是 `System.ComponentModel.DataAnnotations`：用特性（`[Required]`、`[Range]`、`[StringLength]`、`[EmailAddress]` 等）声明规则，框架在模型绑定后自动校验。跨字段的复杂规则实现 `IValidatableObject` 的 `Validate` 方法，或写自定义 `ValidationAttribute`。

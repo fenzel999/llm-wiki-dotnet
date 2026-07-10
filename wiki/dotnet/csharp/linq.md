@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/csharp/linq/
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - LINQ 算子**延迟执行**，真正枚举发生在终结算子（`ToList`/`Count`/`First`/`foreach`）时。
+> - `IEnumerable` 在内存执行；`IQueryable`（EF）翻译成 SQL 在数据库执行——位置天差地别。
+> - 结果会多次用就先 `ToList` 物化一次，别反复枚举延迟查询。
+> - 过滤/投影/分页尽量留在 `IQueryable` 下推数据库，别先 `ToList` 再筛。
+
 ## 概述
 
 LINQ 让你用统一的声明式语法查询任何数据源——内存集合、数据库、XML。它的核心是一串可组合的算子（`Where`、`Select`、`OrderBy`、`GroupBy`…），返回的仍是可继续链式操作的序列。要真正用好 LINQ，必须理解两件事：**延迟执行**和 **`IEnumerable` 与 `IQueryable` 的区别**。

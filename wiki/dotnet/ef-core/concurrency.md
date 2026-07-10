@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/ef/core/saving/concurrency
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 默认**乐观并发**：不加锁，提交时检测记录是否被人改过。
+> - 配并发令牌：`[Timestamp]`/rowversion 最省心，EF 自动加进 WHERE。
+> - 冲突抛 `DbUpdateConcurrencyException`，捕获后**重新读取**再重试，别用旧值覆盖。
+> - 乐观并发不排队加锁；需串行化才考虑事务隔离级别。
+
 ## 概述
 
 两个用户同时读了同一条记录、各自修改再保存，后保存的会**悄悄覆盖**前者的改动——这就是"丢失更新"问题。EF Core 默认采用**乐观并发（optimistic concurrency）**：不加锁，而是在更新时检查"这条记录自我读取以来有没有被别人改过"，若改过就抛 `DbUpdateConcurrencyException`，交给你决定怎么办（重试、合并、还是告诉用户）。

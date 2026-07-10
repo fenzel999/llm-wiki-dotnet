@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/docker/build-container
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 两条路：写 Dockerfile（最通用）或 `dotnet publish /t:PublishContainer`（net7+，免 Dockerfile）。
+> - 用**多阶段构建**：SDK 编译、精简 runtime 镜像只放产物。
+> - 用 **chiseled** 镜像（无 shell）+ 非 root（`USER $APP_UID`）。
+> - 别单阶段打包 SDK、别 root 运行、别把密钥烤进镜像。
+
 ## 概述
 
 容器把应用和它的运行环境打包成一个可移植镜像，"我机器上能跑"从此不再是问题。.NET 对容器化有两条路：写 **Dockerfile**（最通用、最可控），或用 **`dotnet publish` 内置的容器发布**（net7+，无需 Dockerfile 也能直接产出 OCI 镜像）。

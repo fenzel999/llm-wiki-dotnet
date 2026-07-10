@@ -9,6 +9,12 @@ source: https://learn.microsoft.com/dotnet/core/extensions/configuration
 updated: 2026-07-10
 ---
 
+> **要点速览**
+> - 配置是多源分层合并（json＜环境json＜环境变量＜命令行…），后者覆盖前者。
+> - 用 **Options 模式**强类型绑定，别到处 `IConfiguration["Key"]` 取魔法字符串。
+> - 加 `ValidateDataAnnotations().ValidateOnStart()` 启动即校验，fail-fast。
+> - 单例注 `IOptions`/`IOptionsMonitor`；scoped 才用 `IOptionsSnapshot`。机密别进 appsettings。
+
 ## 概述
 
 .NET 的配置系统是"多源分层合并"的：`appsettings.json`、环境专属的 `appsettings.{Environment}.json`、环境变量、命令行参数、用户机密（开发期）、密钥保管库（生产）等按顺序叠加，后加入的源覆盖先前的同名键。这套机制让"同一份代码在不同环境用不同配置"成为默认能力，而不是靠 `if (isProd)` 硬编码。

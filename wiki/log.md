@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **Ingest（DTO 知识）**：新增 `architecture/dto.md`（数据传输对象）。
+    - 来源：吸收企业级 DDD 文档中 DTO 章节思想（DTO 的必要性：抽象领域层/数据隐藏/序列化与延迟加载陷阱、输入输出 DTO 原则、列表与分页结果、请求上限校验、映射与校验）；按 [P14](governance/policy.md) 全部以**微软官方文档**表述与引用（微服务应用层实现、面向 DDD 的微服务设计），正文/标题/summary/source/参考资料**均不含 ABP 字样与 abp.io 链接**。
+    - 落地约定：用 `record` 定义 DTO；输入 DTO 不复用、输出 DTO 可复用；分页用 `PagedResult<T>` 载体（[P15](governance/policy.md) 明确允许，非统一 Result 信封）；请求分页 DTO 带默认页大小 + 硬上限校验（超限 422）；排序走白名单；映射手写/LINQ 投影不用 AutoMapper（[P10](governance/policy.md)）；序列化用 System.Text.Json 源生成（[P16](governance/policy.md) AOT）。
+    - 同步：mkdocs.yml（模块内部组新增）、index.md、思维导图.md；与既有 `domain-application-services.md`（DTO 手写映射）互补交叉链接，无矛盾。
+    - 验证：`mkdocs build --strict` 通过；全库无 "ABP"/"abp.io" 泄漏。
+    - 影响：architecture/dto.md、mkdocs.yml、index.md、思维导图.md、log.md。
+
 - 2026-07-11 **Correct（中文乱码修复）**：修复 `architecture/adr.md`、`architecture/api-design.md` 两页的中文乱码。
     - 问题：上次提交（2e9d80e）写入这两页时，内容被以 GBK/cp936 误编码后再存为 UTF-8，全文中文变为 `鏋舵瀯...` 类乱码，且写入管线把部分字节替换为 `?`（0x3F），造成约 323 处不可逆丢字（多为顿号 `、`、连接词、箭头 `→`）。
     - 处理：对原文做逐行 `cp936→utf-8` 逆向恢复为脚手架，再据上下文补齐丢失字符，用干净 UTF-8 重写两页；结构、代码块、表格保持原意。

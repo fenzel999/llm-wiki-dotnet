@@ -268,3 +268,7 @@ updated: 2026-07-09
 ## 2026-07-10 · 深写 Round 3：Web / Minimal API（aspnet-core）完成
 - 7 页全部按 P17 深写 + AOT 小节：auth（Cookie/OIDC ❌ 非 AOT、JWT ✅）、middleware、validation、rate-limiting、output-caching、signalr（🟡 部分）、aspnet-core-10（TypedResults/MapGroup/OpenAPI 3.1）。
 - 影响：wiki/dotnet/aspnet-core/*（7 页）。
+
+## 2026-07-10 · 修正：分页页升级为多字段动态排序
+- dotnet/ef-core/pagination.md 采用用户提供的更完整实现：多字段排序（WithDynamicOrderBy + ThenBy）、DynamicOrderByAllowList（Map 从表达式树取属性名、不反射）、WithOffsetPaging 夹紧参数；AOT 说明同步更新。
+- 影响：wiki/dotnet/ef-core/pagination.md（仅内容升级，未改结构）。

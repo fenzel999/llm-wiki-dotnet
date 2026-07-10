@@ -1,6 +1,6 @@
 ---
 title: 分页查询与动态排序
-summary: 应用层用可复用的 PagedResult<T> + 动态排序做偏移分页；排序列白名单，条件下推数据库。
+summary: 应用层用可复用的 PagedResult<T> + 多字段动态排序做偏移分页；排序列白名单，条件下推数据库。
 tags: [ef-core, pagination, sorting, application-layer, linq]
 introduced-in: general
 applies-to: [net8, net9, net10]
@@ -50,52 +50,79 @@ public sealed record PagedResult<T>(IReadOnlyList<T> Items, int TotalCount, int 
 ```
 
 ```csharp
-// SharedKernel：可复用的 IQueryable 扩展
-public static class QueryablePagingExtensions
+// SharedKernel：排序字段白名单（派生自字典，提供 Map 自动取属性名）
+public class DynamicOrderByAllowList<T> : Dictionary<string, Expression<Func<T, object>>>
 {
-    // 按"列名 → 表达式"的白名单动态排序，避免拼接任意属性名
-    public static IOrderedQueryable<T> OrderByWhitelist<T>(
-        this IQueryable<T> query,
-        string? sortBy, bool descending,
-        IReadOnlyDictionary<string, Expression<Func<T, object>>> allowed,
-        Expression<Func<T, object>> fallback)
+    public DynamicOrderByAllowList<T> Map(string fieldName, Expression<Func<T, object>> expr)
+    { this[fieldName] = expr; return this; }
+
+    // 从表达式自动取成员名："date" ← o => o.CreatedAt
+    public DynamicOrderByAllowList<T> Map(Expression<Func<T, object>> expr)
     {
-        var key = allowed.TryGetValue(sortBy ?? "", out var expr) ? expr : fallback;  // 命不中白名单→默认列
-        return descending ? query.OrderByDescending(key) : query.OrderBy(key);
+        var body = expr.Body is UnaryExpression u ? u.Operand : expr.Body;
+        if (body is MemberExpression m) this[m.Member.Name] = expr;
+        return this;
+    }
+}
+
+// SharedKernel：可复用的 IQueryable 扩展（net14 可用 extension 成员；低版本写成普通 static class）
+public static class QueryableExpressions
+{
+    // 多字段动态排序（逗号分隔、支持 DESC），白名单过滤防注入
+    public static IQueryable<T> WithDynamicOrderBy<T>(
+        this IQueryable<T> source, string? sorting,
+        IReadOnlyDictionary<string, Expression<Func<T, object>>> sortMap)
+    {
+        if (string.IsNullOrWhiteSpace(sorting)) return source;
+        IOrderedQueryable<T>? ordered = null;
+        foreach (var part in sorting.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            var span = part.AsSpan();
+            var space = span.IndexOf(' ');
+            var field = (space > 0 ? span[..space] : span).Trim().ToString();
+            var isDesc = space > 0 && span[space..].TrimStart().Equals("DESC", StringComparison.OrdinalIgnoreCase);
+            if (!sortMap.TryGetValue(field, out var expr)) continue;   // 不在白名单→跳过
+            ordered = ordered is null
+                ? (isDesc ? source.OrderByDescending(expr) : source.OrderBy(expr))
+                : (isDesc ? ordered.ThenByDescending(expr)   : ordered.ThenBy(expr));
+        }
+        return ordered ?? source;
     }
 
-    public static async Task<PagedResult<T>> ToPagedResultAsync<T>(
-        this IQueryable<T> query, PageRequest req, CancellationToken ct = default)
+    // 偏移分页，自动校正非法参数
+    public static IQueryable<T> WithOffsetPaging<T>(this IQueryable<T> source, int skipCount, int maxResultCount)
     {
-        var total = await query.CountAsync(ct);                     // 总数（下推 COUNT）
-        var items = await query
-            .Skip((req.SafePage - 1) * req.SafeSize)
-            .Take(req.SafeSize)
-            .ToListAsync(ct);                                       // 只取一页（下推 OFFSET/FETCH）
-        return new(items, total, req.SafePage, req.SafeSize);
+        skipCount = Math.Max(0, skipCount);
+        maxResultCount = Math.Clamp(maxResultCount, 1, 1000);   // 上限防止一次拉全表
+        return source.Skip(skipCount).Take(maxResultCount);
     }
 }
 ```
 
-应用服务组织查询：确定排序 → 分页 → 投影成 DTO，全程 `IQueryable`：
+应用服务组织查询：白名单可排序字段 → 多字段动态排序 → 偏移分页 → 投影成 DTO，全程 `IQueryable`：
 
 ```csharp
 // Orders.Application —— 分页是应用层的活
 internal sealed class OrderQueryService(OrdersDbContext db)
 {
-    // 显式声明"哪些列可排序"，前端只能在这个集合里选
-    private static readonly Dictionary<string, Expression<Func<Order, object>>> Sortable = new()
-    {
-        ["date"]   = o => o.CreatedAt,
-        ["amount"] = o => o.Total,
-    };
+    // 显式声明"哪些列可排序"（前端只能在这里选），Map 自动取属性名
+    private static readonly DynamicOrderByAllowList<Order> Sortable = new()
+        .Map(o => o.CreatedAt)   // 键 "CreatedAt"
+        .Map(o => o.Total);      // 键 "Total"
 
-    public Task<PagedResult<OrderDto>> ListAsync(PageRequest req, CancellationToken ct) =>
-        db.Orders
+    public async Task<PagedResult<OrderDto>> ListAsync(ListRequest req, CancellationToken ct)
+    {
+        var query = db.Orders
             .Where(o => !o.IsDeleted)
-            .OrderByWhitelist(req.SortBy, req.Descending, Sortable, fallback: o => o.CreatedAt)
-            .Select(o => new OrderDto(o.Id, o.Total, o.CreatedAt))   // 投影，别拉整实体
-            .ToPagedResultAsync(req, ct);
+            .WithDynamicOrderBy(req.Sorting, Sortable)        // "CreatedAt desc, Total"
+            .WithOffsetPaging((req.Page - 1) * req.PageSize, req.PageSize);
+
+        var total = await query.CountAsync(ct);
+        var items = await query
+            .Select(o => new OrderDto(o.Id, o.Total, o.CreatedAt))
+            .ToListAsync(ct);                                  // 只取一页（下推 OFFSET/FETCH）
+        return new(items, total, req.Page, req.PageSize);
+    }
 }
 ```
 
@@ -126,7 +153,7 @@ app.MapGet("/orders", async ([AsParameters] PageRequest req, OrderQueryService s
 
 ### Native AOT 兼容性
 
-动态排序刻意用**编译期表达式白名单**（`Dictionary<string, Expression<Func<T,object>>>`）而非"按字符串反射属性名"，正是为了 AOT 友好：反射构建排序键在 Native AOT 下会被裁剪、失效，而白名单里的表达式是编译期已知的，安全。注意 **EF Core 查询管道对 Native AOT 仅部分支持**，Native AOT 部署 EF Core 需启用编译模型/预编译查询；纯 `IQueryable`/`Skip/Take` 逻辑本身不含反射。
+动态排序刻意用**编译期表达式白名单**（`Dictionary<string, Expression<Func<T,object>>>` + `WithDynamicOrderBy`），而非"按字符串反射属性名"，正是为了 AOT 友好：反射构建排序键在 Native AOT 下会被裁剪、失效，而白名单里的表达式是编译期已知的，安全。`DynamicOrderByAllowList.Map(expr)` 从表达式树取成员名（`MemberExpression`），**不反射**。注意 **EF Core 查询管道对 Native AOT 仅部分支持**，Native AOT 部署 EF Core 需启用编译模型/预编译查询；纯 `IQueryable`/`Skip/Take` 逻辑本身不含反射。
 
 ## 参考资料
 

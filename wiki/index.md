@@ -49,7 +49,11 @@ updated: 2026-07-10
     - [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进
 - **Blazor**：
     - [Blazor JS 改进](dotnet/blazor/javascript-improvements.md) — Blazor 与 JS 互操作增强
-- **版本对照**：
+- **版本对照**（历史版本仅保留至今仍有效的知识，EOL 者标注）：
+    - [.NET Core 3.0 / 3.1 / C# 8](dotnet/versions/netcore3.md) — 现代 .NET 奠基；NRT、异步流、内置 System.Text.Json（EOL）
+    - [.NET 5 / C# 9](dotnet/versions/net5.md) — 统一之版；records、顶层语句（EOL）
+    - [.NET 6 / C# 10](dotnet/versions/net6.md) — 首个统一 LTS；最小托管、DateOnly/TimeOnly（EOL）
+    - [.NET 7 / C# 11](dotnet/versions/net7.md) — 性能与 Native AOT；泛型数学、限流（EOL）
     - [.NET 8 / C# 12 关键知识](dotnet/versions/net8.md) — LTS；集合表达式、主构造函数、EF Core 8
     - [.NET 9 / C# 13 关键知识](dotnet/versions/net9.md) — STS；params 集合、内建 OpenAPI 3.0、Microsoft.Extensions.AI
     - [.NET 版本演进](comparisons/net-evolution.md) — 时间线、LTS/STS 与特性矩阵

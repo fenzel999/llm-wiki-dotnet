@@ -23,18 +23,25 @@ updated: 2026-07-10
 
 | 版本 | 发布时间 | 支持类型 | 支持截止 | 对应 C# |
 |------|----------|----------|----------|---------|
-| .NET 6 | 2021-11 | LTS | 2024-11 | C# 10 |
-| .NET 7 | 2022-11 | STS | 2024-05 | C# 11 |
+| .NET Core 3.0 | 2019-09 | Current | 2020-03（EOL） | C# 8 |
+| .NET Core 3.1 | 2019-12 | LTS | 2022-12（EOL） | C# 8 |
+| .NET 5 | 2020-11 | STS | 2022-05（EOL） | C# 9 |
+| .NET 6 | 2021-11 | LTS | 2024-11（EOL） | C# 10 |
+| .NET 7 | 2022-11 | STS | 2024-05（EOL） | C# 11 |
 | .NET 8 | 2023-11 | LTS | 2026-11 | C# 12 |
 | .NET 9 | 2024-11 | STS | 2026-05 | C# 13 |
 | .NET 10 | 2025-11-11 | LTS | 2028-11-14 | C# 14 |
 
-注意两个 LTS 之间隔了整整两年（.NET 8 到 .NET 10），中间的 .NET 9 只是个 STS 过渡。生产环境里绝大多数团队就在这两端之间选。
+标了 **EOL** 的版本均已停止支持，不应用于新项目——它们的知识只作为"演进脉络"保留。当前只在两个仍受支持的 LTS（.NET 8 / .NET 10）之间选即可；中间的 .NET 9 只是个 STS 过渡。生产环境里绝大多数团队就在这两端之间选。各历史版本仍然有效的知识分别见 [.NET Core 3.0/3.1](../dotnet/versions/netcore3.md)、[.NET 5](../dotnet/versions/net5.md)、[.NET 6](../dotnet/versions/net6.md)、[.NET 7](../dotnet/versions/net7.md)。
 
 C# 这边几个值得记的节点：
 
 | C# | 关键特性（示意） | 对应运行时 |
 |----|------------------|------------|
+| C# 8 | 可空引用类型、异步流、范围/索引、`using` 声明 | .NET Core 3.x |
+| C# 9 | `record`、顶层语句、模式匹配增强、目标类型 `new` | .NET 5 |
+| C# 10 | `global using`、文件级命名空间、`record struct` | .NET 6 |
+| C# 11 | 泛型数学、原始字符串、`required` 成员、列表模式 | .NET 7 |
 | C# 12 | 主构造器、集合表达式、`inline` 数组 | .NET 8 |
 | C# 13 | `params` 集合、`ref` 改进、`\e` 转义 | .NET 9 |
 | C# 14 | `field` 关键字、扩展成员(`extension`)、更简 nameof | .NET 10 |
@@ -86,6 +93,10 @@ public class Order
 
 ## 参考资料
 
+- 相关：[.NET Core 3.0/3.1 / C# 8](../dotnet/versions/netcore3.md)
+- 相关：[.NET 5 / C# 9](../dotnet/versions/net5.md)
+- 相关：[.NET 6 / C# 10](../dotnet/versions/net6.md)
+- 相关：[.NET 7 / C# 11](../dotnet/versions/net7.md)
 - 相关：[.NET 8 / C# 12](../dotnet/versions/net8.md)
 - 相关：[.NET 9 / C# 13](../dotnet/versions/net9.md)
 - 相关：[持久约定 POLICY](../governance/policy.md)

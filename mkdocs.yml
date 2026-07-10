@@ -86,6 +86,10 @@ nav:
       - Blazor:
           - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
       - 版本对照:
+          - .NET Core 3.0 / 3.1 / C# 8: dotnet/versions/netcore3.md
+          - .NET 5 / C# 9: dotnet/versions/net5.md
+          - .NET 6 / C# 10: dotnet/versions/net6.md
+          - .NET 7 / C# 11: dotnet/versions/net7.md
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
   - 架构:

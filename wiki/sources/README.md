@@ -24,6 +24,12 @@ updated: 2026-07-09
 - [EF Core 复杂类型](https://learn.microsoft.com/ef/core/modeling/complex-types) — Microsoft Learn
 - [可空引用类型](https://learn.microsoft.com/dotnet/csharp/nullable-references) — Microsoft Learn
 - [源生成器](https://learn.microsoft.com/dotnet/csharp/roslyn-sdk/source-generators-overview) — Microsoft Learn
+- [What's new in .NET Core 3.0](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-core-3-0) — Microsoft Learn
+- [What's new in .NET Core 3.1](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-core-3-1) — Microsoft Learn
+- [What's new in .NET 5](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-5) — Microsoft Learn
+- [What's new in .NET 6](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-6) — Microsoft Learn
+- [What's new in .NET 7](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-7) — Microsoft Learn
+- [.NET 版本演进（LTS/STS 支持策略）](https://dotnet.microsoft.com/platform/support/policy/dotnet-core) — Microsoft
 
 ## 本地原始资料
 

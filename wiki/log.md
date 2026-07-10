@@ -13,6 +13,11 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **Ingest（历史版本）**：按微软官方 "What's new" 文档补齐 .NET Core 3.0/3.1、.NET 5/6/7 知识，遵循 POLICY P1「新写法为首选，旧写法一句话标为已被取代」。
+    - 新建 `dotnet/versions/netcore3.md`（C# 8：NRT/异步流/范围索引、内置 System.Text.Json 取代 Newtonsoft、单文件/裁剪/R2R、Windows 桌面）、`net5.md`（C# 9：records/顶层语句/模式匹配、统一 net5.0 TFM）、`net6.md`（C# 10 + 最小托管取代 Startup.cs、DateOnly/TimeOnly、日志源生成器）、`net7.md`（C# 11：泛型数学/原始字符串/required、Native AOT 控制台、限流、发布到容器、EF Core 7 批量更新、LibraryImport 取代 DllImport）。均标 `status: deprecated`（EOL），仅保留至今仍有效的知识并链到当前 .NET 10 推荐。
+    - 更新 `comparisons/net-evolution.md`：时间线表补 Core 3.0/3.1/5 并标 EOL；新增 C# 8–11 行；参考资料增 4 页链接。
+    - 同步 `mkdocs.yml` nav、`index.md`、`思维导图.md` 的「版本对照」，`sources/README.md` 登记 5 条官方来源。`mkdocs build --strict` 通过。
+
 - 2026-07-10 **重构（reorg）**：按技术子域重排 .NET 知识树，并新增架构方向。
     - `concepts/` 全部并入 `dotnet/`：`modern-csharp`、`async-await` → `dotnet/csharp/`；`dependency-injection` → `dotnet/fundamentals/`。`concepts/` 目录移除。
     - `dotnet/` 根下 `native-aot`、`file-based-apps` → `dotnet/aot/`。

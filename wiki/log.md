@@ -13,6 +13,12 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **Correct（中文乱码修复）**：修复 `architecture/adr.md`、`architecture/api-design.md` 两页的中文乱码。
+    - 问题：上次提交（2e9d80e）写入这两页时，内容被以 GBK/cp936 误编码后再存为 UTF-8，全文中文变为 `鏋舵瀯...` 类乱码，且写入管线把部分字节替换为 `?`（0x3F），造成约 323 处不可逆丢字（多为顿号 `、`、连接词、箭头 `→`）。
+    - 处理：对原文做逐行 `cp936→utf-8` 逆向恢复为脚手架，再据上下文补齐丢失字符，用干净 UTF-8 重写两页；结构、代码块、表格保持原意。
+    - 验证：两页残留乱码行 0、`U+FFFD` 0；`mkdocs build --strict` 通过。其余 90 个 wiki 页面经全库扫描均正常，未受影响。
+    - 影响：architecture/adr.md、architecture/api-design.md、log.md。
+
 - 2026-07-10 **Correct（人工纠错）**：`solution-structure.md` 改为**模块化单体**布局。
     - 问题：上一版把顶层设成横切分层（MyApp.Domain/Application/Infrastructure 覆盖整个应用），即传统分层单体，与本库 [modular-monolith](architecture/modular-monolith.md) 偏好矛盾（用户指正）。
     - 修正：顶层改为**按业务模块切**（Modules/Orders、Modules/Billing…），每个模块内部再分 `Contracts/Domain/Application/Infrastructure`；**模块内依赖只向内**、**跨模块只引对方 `*.Contracts`**、Host 为唯一组合根、SharedKernel 放共享基元。补充退化情形说明（单一上下文小应用=单模块=横向分层，可接受）。

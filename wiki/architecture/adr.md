@@ -1,6 +1,7 @@
 ﻿---
-title: 鏋舵瀯鍐崇瓥璁板綍 (ADR)
-summary: ADR 妯℃澘銆佺紪鍐欒鑼冦€佸瓨鍌ㄤ綅缃€佸鎵规祦绋嬨€佸簾寮?鏇夸唬鏈哄埗锛涙瘡涓噸澶ф灦鏋勫喅绛栧繀椤荤暀鐥曘€?tags: [architecture, adr, decision-record, governance]
+title: 架构决策记录 (ADR)
+summary: ADR 模板、编写规范、存储位置、审批流程、废弃/替代机制；每个重大架构决策必须留痕。
+tags: [architecture, adr, decision-record, governance]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -8,116 +9,130 @@ source: https://adr.github.io/
 updated: 2026-07-11
 ---
 
-# 鏋舵瀯鍐崇瓥璁板綍 (ADR)
+# 架构决策记录 (ADR)
 
-> **瑕佺偣閫熻**
-> - 姣忎釜**閲嶅ぇ鏋舵瀯鍐崇瓥**蹇呴』鍐?ADR锛氭妧鏈€夊瀷銆佹灦鏋勯鏍笺€佽法鍥㈤槦鎺ュ彛銆佹暟鎹ā鍨嬨€佸熀纭€璁炬柦閫夊瀷銆?> - 鏍煎紡锛歁arkdown + YAML Frontmatter锛涘瓨鏀?`architecture/adr/` 鐩綍锛涚紪鍙?`ADR-0001`銆乣ADR-0002`...
-> - 鐘舵€侊細`Proposed` 鈫?`Accepted` / `Rejected` / `Superseded` 鈫?`Deprecated`
-> - 瀹℃壒锛氭灦鏋勭粍 + 鐩稿叧 Tech Lead 绛惧瓧锛沗Superseded` 闇€閾炬帴鏂?ADR銆?
-## 姒傝堪
+> **要点速览**
+> - 每个**重大架构决策**必须写 ADR：技术选型、架构风格、跨团队接口、数据模型、基础设施选型。
+> - 格式：Markdown + YAML Frontmatter；存放 `architecture/adr/` 目录；编号 `ADR-0001`、`ADR-0002`...
+> - 状态：`Proposed` → `Accepted` / `Rejected` / `Superseded` → `Deprecated`
+> - 审批：架构组 + 相关 Tech Lead 签字；`Superseded` 需链接新 ADR。
 
-**鏋舵瀯鍐崇瓥璁板綍** 鏄崟鑾封€滀负浣曞仛姝ゅ喅绛栥€佽€冭檻浜嗕粈涔堟浛浠ｆ柟妗堛€佸悗鏋滄槸浠€涔堚€濈殑杞婚噺绾ф枃妗ｃ€傚畠涓嶆槸璁捐鏂囨。锛岃€屾槸**鍐崇瓥鐣欑棔**锛屼究浜庯細
+## 概述
 
-- 鏂版垚鍛樺揩閫熺悊瑙ｂ€滀负浠€涔堣繖涔堝仛鈥?- 閬垮厤閲嶅璁ㄨ宸插喅浜嬮」
-- 鍥炴函鍐崇瓥涓婁笅鏂囷紝璇勪及鏄惁闇€瑕佹帹缈?
-## ADR 缁撴瀯妯℃澘
+**架构决策记录** 是捕获“为何做此决策、考虑了什么替代方案、后果是什么”的轻量级文档。它不是设计文档，而是**决策留痕**，便于：
+
+- 新成员快速理解“为什么这么做”
+- 避免重复讨论已决事项
+- 回溯决策上下文，评估是否需要推翻
+
+## ADR 结构模板
 
 ```markdown
 ---
-title: ADR-0001: 閲囩敤 Minimal API 浣滀负鍞竴 Web 妗嗘灦
+title: ADR-0001: 采用 Minimal API 作为唯一 Web 框架
 status: Accepted
 date: 2026-07-11
-deciders: [鏋舵瀯缁? Web Tech Lead]
+deciders: [架构组, Web Tech Lead]
 consulted: [Backend Lead, DevOps Lead]
 tags: [web-framework, minimal-api, aot]
 ---
 
-# 鑳屾櫙涓庨棶棰?
-鎴戜滑闇€瑕佺粺涓€ Web 妗嗘灦锛屾敮鎸?Native AOT銆侀浂鍙嶅皠銆侀珮鎬ц兘銆佷綆鏍锋澘浠ｇ爜銆?鍊欓€夛細Minimal API銆丮VC銆乬RPC銆丟raphQL銆?
-# 鍐崇瓥
+# 背景与问题
 
-閲囩敤 **Minimal API** 浣滀负鍞竴 Web 妗嗘灦锛涚鐢?MVC/Controller銆?
-# 鏇夸唬鏂规
+我们需要统一 Web 框架，支持 Native AOT、零反射、高性能、低样板代码。候选：Minimal API、MVC、gRPC、GraphQL。
 
-| 鏂规 | 浼樼偣 | 缂虹偣 | 鍐冲畾 |
+# 决策
+
+采用 **Minimal API** 作为唯一 Web 框架；禁用 MVC/Controller。
+
+# 替代方案
+
+| 方案 | 优点 | 缺点 | 决定 |
 |------|------|------|------|
-| Minimal API | AOT 鍘熺敓銆侀浂鍙嶅皠銆佹€ц兘寮恒€佹牱鏉垮皯 | 鍥㈤槦闇€瀛︿範 | 鉁?鎺ュ彈 |
-| MVC/Controller | 鎴愮啛銆佺敓鎬佷赴瀵?| 涓嶆敮鎸?AOT銆佸弽灏勯噸銆佹牱鏉垮 | 鉂?鎷掔粷 |
-| gRPC | 鍐呴儴楂樻€ц兘 | 澶栭儴 API 闇€ Gateway銆佸涔犳洸绾?| 浠呭唴閮ㄦ湇鍔￠棿 |
-| GraphQL | 鐏垫椿鏌ヨ | 澶嶆潅銆丯+1銆丄OT 闅?| 鉂?鎷掔粷 |
+| Minimal API | AOT 原生、零反射、性能强、样板少 | 团队需学习 | ✅ 接受 |
+| MVC/Controller | 成熟、生态丰富 | 不支持 AOT、反射重、样板多 | ❌ 拒绝 |
+| gRPC | 内部高性能 | 外部 API 需 Gateway、学习曲线 | 仅内部服务间 |
+| GraphQL | 灵活查询 | 复杂、N+1、AOT 难 | ❌ 拒绝 |
 
-# 鍚庢灉
+# 后果
 
-**姝ｉ潰**锛欰OT 鍏煎銆佸惎鍔ㄥ揩銆佷簩杩涘埗灏忋€佹€ц兘鍩虹嚎楂樸€?**璐熼潰**锛氬洟闃熼渶閫傚簲 Minimal API 鍐欐硶锛汷penAPI 鏂囨。闇€婧愮敓鎴愬櫒銆?**椋庨櫓**锛氭棫 MVC 浠ｇ爜杩佺Щ鎴愭湰锛涚紦瑙ｏ細鍒嗘ā鍧楁笎杩涜縼绉伙紝鏂版ā鍧楀己鍒?Minimal API銆?
-# 鎵ц璁″垝
+**正面**：AOT 兼容、启动快、二进制小、性能基线高。**负面**：团队需适应 Minimal API 写法；OpenAPI 文档需源生成器。**风险**：旧 MVC 代码迁移成本；缓解：分模块渐进迁移，新模块强制 Minimal API。
 
-1. 鏂版ā鍧楀己鍒?Minimal API锛堜唬鐮佸鏌ュ己鍒讹級
-2. 瀛橀噺 MVC 妯″潡鎸変紭鍏堢骇娓愯繘杩佺Щ锛圦3 瀹屾垚鏍稿績妯″潡锛?3. 鍩硅锛氬唴閮?Workshop 2 鍦猴紝鏂囨。钀藉簱
+# 执行计划
 
-# 鐩稿叧 ADR
+1. 新模块强制 Minimal API（代码审查强制）
+2. 存量 MVC 模块按优先级渐进迁移（Q3 完成核心模块）
+3. 培训：内部 Workshop 2 场，文档落库
 
-- ADR-0002: 閲囩敤 EF Core 缂栬瘧妯″瀷 + 棰勭紪璇戞煡璇?(AOT)
-- ADR-0003: 缁熶竴 JWT Bearer 璁よ瘉锛岀鐢?Cookie/OIDC (AOT)
+# 相关 ADR
+
+- ADR-0002: 采用 EF Core 编译模型 + 预编译查询 (AOT)
+- ADR-0003: 统一 JWT Bearer 认证，禁用 Cookie/OIDC (AOT)
 ```
 
-## ADR 鐢熷懡鍛ㄦ湡
+## ADR 生命周期
 
 ```
-Proposed 鈫?(璇勫) 鈫?Accepted / Rejected
-Accepted 鈫?(鏃堕棿鎺ㄧЩ/鎶€鏈彉鏇? 鈫?Superseded (by ADR-xxxx)
-Superseded 鈫?(褰诲簳搴熷純) 鈫?Deprecated
+Proposed → (评审) → Accepted / Rejected
+Accepted → (时间推移/技术变更) → Superseded (by ADR-xxxx)
+Superseded → (彻底废弃) → Deprecated
 ```
 
-| 鐘舵€?| 鍚箟 | 鍚庣画鍔ㄤ綔 |
+| 状态 | 含义 | 后续动作 |
 |------|------|----------|
-| `Proposed` | 鑽夋锛屽緟璇勫 | 鍙戣捣璇勫浼氾紝鏀堕泦鍙嶉 |
-| `Accepted` | 姝ｅ紡鐢熸晥 | 鎵ц璁″垝钀藉湴锛屼唬鐮佸鏌ュ己鍒?|
-| `Rejected` | 涓嶉噰绾?| 璁板綍鍘熷洜锛屽綊妗?|
-| `Superseded` | 琚柊 ADR 鏇夸唬 | 鏍囨敞 `Superseded by ADR-xxxx`锛屼繚鐣欏巻鍙?|
-| `Deprecated` | 褰诲簳搴熷純 | 涓嶅啀鍙傝€冿紝浠呭彶鏂?|
+| `Proposed` | 草案，待评审 | 发起评审会，收集反馈 |
+| `Accepted` | 正式生效 | 执行计划落地，代码审查强制 |
+| `Rejected` | 不采纳 | 记录原因，归档 |
+| `Superseded` | 被新 ADR 替代 | 标注 `Superseded by ADR-xxxx`，保留历史 |
+| `Deprecated` | 彻底废弃 | 不再参考，仅史料 |
 
-## 瀛樺偍涓庡懡鍚?
+## 存储与命名
+
 ```
 wiki/architecture/adr/
-鈹溾攢鈹€ ADR-0001-minimal-api-framework.md
-鈹溾攢鈹€ ADR-0002-ef-core-aot-compiled-model.md
-鈹溾攢鈹€ ADR-0003-jwt-bearer-auth.md
-鈹溾攢鈹€ ADR-0004-modular-monolith-vs-microservices.md
-鈹斺攢鈹€ README.md  # 绱㈠紩琛?```
+├── ADR-0001-minimal-api-framework.md
+├── ADR-0002-ef-core-aot-compiled-model.md
+├── ADR-0003-jwt-bearer-auth.md
+├── ADR-0004-modular-monolith-vs-microservices.md
+└── README.md  # 索引表
+```
 
-鍛藉悕锛歚ADR-<4浣嶇紪鍙?-<kebab-case涓婚>.md`
+命名：`ADR-<4位编号>-<kebab-case主题>.md`
 
-## 璇勫娴佺▼
+## 评审流程
 
-1. **璧疯崏**锛氬彂璧蜂汉鍐欒崏妗堬紝鎻愪氦 PR 鍒?`architecture/adr/`
-2. **璇勫**锛氭灦鏋勭粍 + 鐩稿叧 Tech Lead 瀹￠槄锛屾彁鍑洪棶棰?鏇夸唬鏂规
-3. **鍐崇瓥**锛氳揪鎴愬叡璇?鈫?`Accepted`锛涘垎姝уぇ 鈫?寤舵湡鎴?`Rejected`
-3. **鍚堝苟**锛氬悎骞?PR锛岀姸鎬佹敼 `Accepted`锛岀紪鍙峰浐鍖?4. **鍚屾**锛氭洿鏂?`architecture/adr/README.md` 绱㈠紩琛?
-## 绱㈠紩琛ㄧず渚?
-| 缂栧彿 | 鏍囬 | 鐘舵€?| 鏃ユ湡 | 鍐崇瓥鑰?| 鍏宠仈 |
+1. **起草**：发起人写草案，提交 PR 到 `architecture/adr/`
+2. **评审**：架构组 + 相关 Tech Lead 审阅，提出问题/替代方案
+3. **决策**：达成共识 → `Accepted`；分歧大 → 延期或 `Rejected`
+4. **合并**：合并 PR，状态改 `Accepted`，编号固定
+5. **同步**：更新 `architecture/adr/README.md` 索引表
+
+## 索引表示例
+
+| 编号 | 标题 | 状态 | 日期 | 决策者 | 关联 |
 |------|------|------|------|--------|------|
-| ADR-0001 | 閲囩敤 Minimal API 鍞竴 Web 妗嗘灦 | Accepted | 2026-07-11 | 鏋舵瀯缁?| 鈥?|
-| ADR-0002 | EF Core 缂栬瘧妯″瀷 + 棰勭紪璇戞煡璇?(AOT) | Accepted | 2026-07-11 | 鏁版嵁鏋舵瀯 | ADR-0001 |
-| ADR-0003 | 缁熶竴 JWT Bearer锛岀鐢?Cookie/OIDC | Accepted | 2026-07-11 | 瀹夊叏缁?| ADR-0001 |
-| ADR-0004 | 妯″潡鍖栧崟浣撲紭鍏堬紝寰湇鍔℃寜闇€鎷嗗垎 | Accepted | 2026-07-11 | 鏋舵瀯缁?| ADR-0001 |
+| ADR-0001 | 采用 Minimal API 唯一 Web 框架 | Accepted | 2026-07-11 | 架构组 | — |
+| ADR-0002 | EF Core 编译模型 + 预编译查询 (AOT) | Accepted | 2026-07-11 | 数据架构 | ADR-0001 |
+| ADR-0003 | 统一 JWT Bearer，禁用 Cookie/OIDC | Accepted | 2026-07-11 | 安全组 | ADR-0001 |
+| ADR-0004 | 模块化单体优先，微服务按需拆分 | Accepted | 2026-07-11 | 架构组 | ADR-0001 |
 
-## 涓庢不鐞嗚鍒欑殑鍏崇郴
+## 与治理规则的关系
 
-| 鏀跨瓥 | ADR 瑕佹眰 |
+| 政策 | ADR 要求 |
 |------|----------|
-| **P10/P12** 鍘傚晢涓珛 | 閫夊瀷 ADR 蹇呴』鍒楀嚭鈥滄棤鍘傚晢閿佸畾鈥濅綔涓鸿瘎浼扮淮搴?|
-| **P16** 鍚庣涓ユ牸 AOT | 娑夊強妗嗘灦/搴撻€夊瀷鐨?ADR 蹇呴』缁欏嚭 AOT 鍏煎鎬х粨璁?|
-| **P17** 娣卞害瀹屾暣 | ADR 蹇呴』鍚€滄浛浠ｆ柟妗堝姣旇〃鈥濃€滃悗鏋滃垎鏋愨€濃€滄墽琛岃鍒掆€?|
-| **閾佸緥 4/5/6** | 鏂?ADR 蹇呰繘 `index.md`銆乣鎬濈淮瀵煎浘.md`銆乣log.md` |
+| **P10/P12** 厂商中立 | 选型 ADR 必须列出“无厂商锁定”作为评估维度 |
+| **P16** 后端严格 AOT | 涉及框架/库选型的 ADR 必须给出 AOT 兼容性结论 |
+| **P17** 深度完整 | ADR 必须含“替代方案对比表”“后果分析”“执行计划” |
+| **铁律 4/5/6** | 新 ADR 必进 `index.md`、`思维导图.md`、`log.md` |
 
-## 甯歌璇尯
+## 常见误区
 
-鉂?**鎶婅璁℃枃妗ｅ綋 ADR** 鈥斺€?ADR 鍙鈥滃喅绛?鐞嗙敱鈥濓紝涓嶅啓璇︾粏璁捐锛堣璁℃枃妗ｅ彟瀛橈級  
-鉂?**浜嬪悗琛?ADR** 鈥斺€?鍐崇瓥鍓嶅繀椤绘湁 ADR锛屼簨鍚庤ˉ璁板け鍘烩€滃喅绛栨椂涓婁笅鏂団€? 
-鉂?**鏃犳浛浠ｆ柟妗堝姣?* 鈥斺€?蹇呴』鍒楀嚭鑷冲皯 2 涓閫夛紝鍚﹀垯涓嶆槸鍐崇瓥鏄粯璁? 
-鉂?**涓嶅啓鍚庢灉/椋庨櫓** 鈥斺€?蹇呴』鍐欐闈?璐熼潰/椋庨櫓/缂撹В锛屽惁鍒欐棤娉曚簨鍚庡鐩? 
+❌ **把设计文档当 ADR** —— ADR 只记“决策+理由”，不写详细设计（设计文档另存）  
+❌ **事后补 ADR** —— 决策前必须有 ADR，事后补记失去“决策时上下文”  
+❌ **无替代方案对比** —— 必须列出至少 2 个备选，否则不是决策是默认  
+❌ **不写后果/风险** —— 必须写正面/负面/风险/缓解，否则无法事后复盘  
 
-## 鍙傝€冭祫鏂?
-- [ADR GitHub 缁勭粐](https://adr.github.io/) 鈥斺€?鏍囧噯鍖栧€¤
+## 参考资料
+- [ADR GitHub 组织](https://adr.github.io/) —— 标准化倡议
 - [Michael Nygard: Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
-- [鏋舵瀯娌荤悊 P10-P17](../governance/policy.md) 路 [鏋舵瀯鍒嗙被](enterprise-patterns.md) 路 [鏃ュ織](../log.md)
+- [架构治理 P10-P17](../governance/policy.md) · [架构分类](enterprise-patterns.md) · [日志](../log.md)

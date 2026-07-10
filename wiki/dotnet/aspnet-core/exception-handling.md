@@ -12,6 +12,7 @@ updated: 2026-07-10
 # 全局异常处理与统一错误响应
 
 > **要点速览**
+> - 用**真实 HTTP 状态码**表达结果（400/401/403/404/409/**422**/5xx），**不**包"永远 200 + Result 信封"（[P15](../../governance/policy.md)）。
 > - 异常**集中处理**：用 `IExceptionHandler`（net8+）在一处把异常映射为响应，别在每个端点写 try/catch。
 > - 错误响应用标准 **`ProblemDetails`**（RFC 9457）：`AddProblemDetails()` + `UseExceptionHandler()`。
 > - 自定义**业务异常**（携带错误码 + 目标状态码），映射为带 `code` 的结构化错误，前端可据码处理。
@@ -23,21 +24,41 @@ updated: 2026-07-10
 
 设计思路借鉴成熟企业框架的做法：定义**业务异常（domain/business exception）**携带**错误码**与期望的 HTTP 状态码，由全局处理器统一翻译成响应。这样领域层只管 `throw`，表现层只管映射，两不相扰。
 
+**用真实 HTTP 状态码，而不是统一 Result 信封**（[P15](../../governance/policy.md)）：本库约定 API 直接用 HTTP 语义表达结果，不再包一层"永远返回 200 + `{ success, data, error }`"的返回类——那会让 HTTP 缓存、客户端错误处理、可观测性全部失效。常见映射：
+
+| 场景 | 状态码 | 典型异常 / 结果 |
+|------|--------|-----------------|
+| 请求格式/参数不合法 | **400** | 模型绑定失败、`ArgumentException` |
+| 未认证 | **401** | 缺少/无效凭据 |
+| 已认证但无权限 | **403** | 授权策略不通过 |
+| 资源不存在 | **404** | `NotFoundException` |
+| 状态冲突（并发/重复） | **409** | `ConflictException`、`DbUpdateConcurrencyException` |
+| 语义/业务规则校验失败 | **422** | `BusinessException`、`ValidationException` |
+| 未预期错误 | **5xx** | 其余异常 |
+
 ## 正确做法
 
 定义带错误码的业务异常，用 `IExceptionHandler` 集中映射为 `ProblemDetails`：
 
 ```csharp
-// 领域层：业务异常携带错误码 + 目标状态码
-public class BusinessException(string code, string message, int status = StatusCodes.Status400BadRequest)
+// 领域层：业务异常携带错误码 + 目标 HTTP 状态码
+public class BusinessException(string code, string message, int status = StatusCodes.Status422UnprocessableEntity)
     : Exception(message)
 {
     public string Code { get; } = code;
     public int Status { get; } = status;
 }
 
-// 例：领域规则失败时
+// 语义化子类：状态码固定，调用处只关心业务含义
+public sealed class NotFoundException(string code, string message)
+    : BusinessException(code, message, StatusCodes.Status404NotFound);
+
+public sealed class ConflictException(string code, string message)
+    : BusinessException(code, message, StatusCodes.Status409Conflict);
+
+// 例：业务规则失败 → 422；查不到 → 404
 throw new BusinessException("order.already_submitted", "订单已提交，不能修改");
+throw new NotFoundException("order.not_found", "订单不存在");
 ```
 
 ```csharp
@@ -87,6 +108,8 @@ app.UseExceptionHandler();                                  // 最外层，兜�
 
 ## 常见误区
 
+❌ 包一层**统一 Result 信封**（永远 `200 OK` + `{ success:false, error }`）。这让客户端无法用 HTTP 语义判断成败、破坏缓存与可观测性。用真实状态码 + `ProblemDetails`（[P15](../../governance/policy.md)）。
+
 ❌ 在**每个端点**里写 `try/catch` 各自拼错误响应，格式五花八门、重复且易漏。用 `IExceptionHandler` 集中处理一次。
 
 ❌ 把**堆栈/内部异常消息**直接返回给客户端（安全风险）。5xx 只回通用标题，详情写日志；详细页仅限开发环境。
@@ -100,6 +123,20 @@ app.UseExceptionHandler();                                  // 最外层，兜�
 ## 适用版本
 
 `IExceptionHandler` 与 `AddExceptionHandler<T>` **net8+**；`AddProblemDetails()` net7+。net10 起，被处理（`TryHandleAsync` 返回 `true`）的异常**默认不再发诊断日志/指标**，可用 `ExceptionHandlerOptions.SuppressDiagnosticsCallback` 调整。
+
+### Native AOT 兼容性
+
+`IExceptionHandler` 机制本身**不使用反射，完全兼容 Native AOT**（配合 [Minimal API](aspnet-core-10.md)，MVC/控制器路径不支持 AOT）。唯一要注意的是**响应的 JSON 序列化**——AOT 禁用基于反射的 `System.Text.Json`，须为 `ProblemDetails` 及自定义扩展启用**源生成**（[`JsonSerializerContext`](../csharp/source-generators.md)）：
+
+```csharp
+[JsonSerializable(typeof(ProblemDetails))]
+internal partial class ErrorJsonContext : JsonSerializerContext { }
+
+builder.Services.ConfigureHttpJsonOptions(o =>
+    o.SerializerOptions.TypeInfoResolverChain.Insert(0, ErrorJsonContext.Default));
+```
+
+> `Extensions` 里放 `object` 值（如错误码字符串）在 AOT 下也依赖源生成解析类型；保持扩展值为简单类型并纳入 JSON 上下文即可。
 
 ## 参考资料
 

@@ -74,6 +74,26 @@ Orleans 等）。技术讲解保持**厂商中立**：可观测性导出用 OTLP
 也不得引用 `abp.io` 链接。全部以**微软官方文档**表述与引用（EF Core 全局查询筛选器 / 拦截器、
 .NET 微服务 DDD/CQRS 架构指南等），实现用微软内置 + 手写 + Minimal API。
 
+## P15 API 用真实 HTTP 状态码，不用统一 Result 包装
+Web/API 边界一律返回**真实 HTTP 状态码**表达结果：成功 200/201/204，客户端错误 400（请求格式错）、
+401/403（认证/授权）、404（资源不存在）、409（冲突）、**422（语义/业务校验失败）**，服务器错误 5xx。
+**禁止**再包一层"永远 200 + `{ success, data, error }`"的统一返回类（`Result<T>` 信封）；
+错误统一走 [`ProblemDetails`](../dotnet/aspnet-core/exception-handling.md)（RFC 9457）。
+最小 API 用 `TypedResults`/`Results<T>` 表达多结果，不自造联合返回类型。
+注意：这与**分页载体** `PagedResult<T>`（承载 items+total 的数据结构）无关，后者是合法数据模型。
+
+## P16 后端代码必须 Native AOT 兼容（前端豁免）
+服务端/后端（API、应用服务、领域、基础设施、后台服务）的推荐写法**必须兼容 Native AOT**：
+- 只用 [Minimal API](../dotnet/aspnet-core/aspnet-core-10.md)，**不用 MVC/控制器**（不支持 AOT）；
+- **禁止运行期反射 / 动态代码生成**；JSON 用 System.Text.Json **源生成**（[`JsonSerializerContext`](../dotnet/csharp/source-generators.md)），不用反射序列化；
+- EF Core 在 AOT 发布下用**编译模型 / 预编译查询**；查询逻辑本身不得靠反射构建（如[动态排序用编译期表达式白名单](../dotnet/ef-core/pagination.md)，不按字符串反射属性名）；
+- DI 用**显式注册**，避免运行期程序集扫描。
+
+**前端（Blazor 等 UI 层）豁免**本规则（Blazor Server 不支持 AOT、WASM 另有 AOT 路径），但相关页仍须在「AOT 兼容性」小节说明限制。
+后端确需暂不支持 AOT 的能力（如 cookie/OIDC 认证）时，须在页面标「AOT 兼容性」并给出 AOT 友好替代（如 JWT）；无法替代则 `⚠️ needs-your-call` 并写入 `qa-report.md`。
+
+每个后端主题页在「适用版本」后应含一个 **`### Native AOT 兼容性`** 小节，说明是否兼容、限制与替代。
+
 ---
 
 ## 自学习记录
@@ -86,3 +106,5 @@ Orleans 等）。技术讲解保持**厂商中立**：可观测性导出用 OTLP
 | 2026-07-10 | P12 不用需付费/云绑定组件 | 人类约定：不用 Azure/Orleans 等付费包 |
 | 2026-07-10 | P13 页面加要点速览、结构标准化 | 人类约定：更适合 AI/人类阅读 |
 | 2026-07-10 | P14 只吸收思想、正文与来源不得提及 ABP | 人类约定：文中不许提到 ABP，一律用微软官方文档表述 |
+| 2026-07-10 | P15 API 用真实 HTTP 状态码、不用 Result 信封 | 人类约定：用 HTTP code（404/400/422…）而非保证返回类 |
+| 2026-07-10 | P16 后端严格 Native AOT 兼容、前端豁免 | 人类约定：不支持 AOT 的模式不用；后端严格、前端豁免 |

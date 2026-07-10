@@ -61,6 +61,7 @@ updated: 2026-07-10
 - **数据访问（EF Core）**：
     - [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
     - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
+    - [分页查询与动态排序](dotnet/ef-core/pagination.md) — PagedResult + 白名单动态排序，应用层职责
     - [迁移 Migrations](dotnet/ef-core/migrations.md) — 版本化演进架构、生产用脚本/bundle
     - [关系建模](dotnet/ef-core/modeling-relationships.md) — 一对多/多对多、必需与可选
     - [查询性能](dotnet/ef-core/query-performance.md) — 消灭 N+1、投影、AsNoTracking、拆分查询

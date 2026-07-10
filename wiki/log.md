@@ -236,3 +236,11 @@ updated: 2026-07-09
 - 同步：mkdocs.yml nav、index.md、思维导图.md、sources/README.md、middleware.md 互加链接、qa-report.md。
 - 校验：`mkdocs build --strict` 零死链通过。
 - 影响：dotnet/aspnet-core/exception-handling.md、dotnet/aspnet-core/middleware.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md、wiki/sources/README.md、wiki/governance/qa-report.md。
+
+## 2026-07-10 · Ingest/Correct #5：HTTP 状态码约定 + 分页 + 组合性 + AOT 约束
+- 新规则：POLICY **P15**（API 用真实 HTTP 状态码 404/400/422，不用 Result 信封）、**P16**（后端严格 Native AOT 兼容、前端豁免）。
+- Ingest：新增 `dotnet/ef-core/pagination.md`（应用层偏移分页 + 编译期表达式白名单动态排序 + PagedResult<T>；AOT 友好、非 Result 信封）。
+- Correct：`exception-handling.md` 加状态码映射表/语义化异常子类/反 Result 信封/AOT 小节；`solution-structure.md` 补 SharedKernel 工具清单+层级分工表+单体↔微服务组合+AOT 小节；`modular-monolith.md` 新增二态部署 §6 + AOT 小节，修 UseNpgsql→UseSqlServer（P10）。
+- 同步：mkdocs.yml、index.md、思维导图.md、policy.md、qa-report.md。
+- 待办：后续巡检为其余后端页补 P16 的 AOT 兼容性小节（auth 的 cookie/OIDC、signalr 等）。
+- 影响：wiki/dotnet/ef-core/pagination.md、wiki/dotnet/aspnet-core/exception-handling.md、wiki/architecture/solution-structure.md、wiki/architecture/modular-monolith.md、wiki/governance/policy.md、wiki/governance/qa-report.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。

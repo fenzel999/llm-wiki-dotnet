@@ -18,6 +18,23 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（**Ingest/Correct #5** — HTTP 状态码约定 + 分页 + 组合性 + AOT 约束）
+- 触发：人工反馈——① API 用真实 HTTP 状态码（404/400/422）而非 Result 包装；② 需要动态分页知识；③ 解决方案应支持自定义工具（规约父类/分页）与清晰层级分工；④ 模块要能像成熟企业框架那样自由组合（单体模块↔独立微服务）；⑤ **不支持 AOT 的模式不用**（后端严格 AOT，前端豁免）。
+- 新增规则：**P15**（API 用真实 HTTP 状态码、不用 Result 信封）、**P16**（后端代码必须 Native AOT 兼容、前端豁免）。
+- Ingest：新增 `dotnet/ef-core/pagination.md`——应用层偏移分页 + 编译期表达式白名单动态排序 + `PagedResult<T>`（明确它是数据载体，非 Result 信封），刻意用表达式白名单而非字符串反射以兼容 AOT。
+- Correct：
+  - `exception-handling.md` 加"HTTP 状态码映射表"、语义化异常子类（NotFound/Conflict）、反对 Result 信封（P15）、`### Native AOT 兼容性`（IExceptionHandler 无反射、JSON 用源生成）。
+  - `solution-structure.md` 补 SharedKernel 自定义工具清单（规约基类/分页/BusinessException）、"层级分工"表、"单体↔微服务自由组合"段、AOT 小节。
+  - `modular-monolith.md` 新增"§6 二态部署"（同模块两形态、只换接缝）、AOT 小节；修 P10 残留 `UseNpgsql`→`UseSqlServer`。
+- 结论：`mkdocs build --strict` 待跑通过后提交。
+- 待你判定：无。
+
+### 待办（后续巡检）：P16 全库 AOT 合规扫描
+P16 要求每个**后端主题页**补 `### Native AOT 兼容性` 小节。本轮仅覆盖新增/改动页，后续巡检需为其余后端页补齐并标注限制，重点：
+- `dotnet/aspnet-core/auth.md`：cookie/OpenID Connect **不支持 AOT**，应显式标注并推荐 AOT 后端用 JWT Bearer（现主例已是 JWT）。
+- `dotnet/aspnet-core/signalr.md`：AOT **部分支持**，需标注。
+- 全库排查运行期反射/反射式 JSON 序列化/DI 程序集扫描，替换为源生成/显式注册。
+
 - 日期：2026-07-10（**巡检 Patrol #4** — 吸收"统一异常处理"设计思想）
 - 范围：Web 层横切能力缺口补齐 + 合规复扫。
 - 结论：知识页 P10/P12/P14 持续零违规（复扫命中均为"不用 X"教学提示与治理记录）。

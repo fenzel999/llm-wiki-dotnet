@@ -74,7 +74,7 @@ public static class OrdersModule
     public static IServiceCollection AddOrdersModule(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<OrdersDbContext>(o =>
-            o.UseNpgsql(config.GetConnectionString("Orders")));
+            o.UseSqlServer(config.GetConnectionString("Orders")));
         services.AddScoped<Orders.Contracts.IOrderService, Orders.Application.OrderService>();
         return services;
     }
@@ -175,6 +175,30 @@ public void Orders_should_not_depend_on_Billing_internals()
 }
 ```
 
+### 6. 二态部署：同一模块，既是单体模块、也是独立微服务 {#二态部署}
+
+模块化单体真正的价值，是让**同一份模块代码**能在两种部署形态间平滑切换：进程内组装成单体，或独立宿主成微服务。诀窍是：**模块内部（Domain/Application/Infrastructure）完全不变，只换"模块之间的接缝"**——同步调用与事件传递的实现。
+
+| 关注点 | 单体模块（进程内） | 独立微服务（跨进程） |
+|--------|--------------------|----------------------|
+| 部署单元 | 一个 Host 进程装配所有模块 | 每模块自己的 Host，独立进程/容器 |
+| 同步调用 | 直接注入对方 `*.Contracts` 接口（本地实现） | 对方 `*.Contracts` 接口的 **HTTP/gRPC 客户端**实现 |
+| 事件通信 | [进程内领域事件](domain-events.md)，同事务同步分发 | [集成事件 + 发件箱](event-driven.md)，经消息中间件跨进程 |
+| 数据 | 各模块独立 schema，同一数据库 | 各模块独立数据库 |
+| 事务 | 本地事务（一次 `SaveChanges`） | 最终一致（发件箱 + 幂等消费） |
+
+因为**跨模块只依赖 `*.Contracts`**（见[解决方案分层](solution-structure.md)），要把某个模块抽成微服务时，改的只有组合根里那一行：把"本地实现"换成"远程客户端实现"，把"进程内事件分发"换成"集成事件发布"。消费方代码不动。
+
+```csharp
+// 单体：绑定本地实现
+services.AddScoped<Billing.Contracts.IInvoiceService, Billing.Application.InvoiceService>();
+
+// 拆分后：同一接口，换成远程客户端实现（消费方无感知）
+services.AddScoped<Billing.Contracts.IInvoiceService, Billing.Infrastructure.InvoiceHttpClient>();
+```
+
+这就是"先模块化单体、边界稳定后按需抽取微服务"能低成本落地的原因：边界从第一天就用契约划死，抽取只是替换接缝，不是重写。
+
 ## 反例（常见错误）
 
 - **按技术分层当模块**：把 `Controllers` / `Services` / `Repositories` 当成「模块」。这是分层，不是模块化；业务改一处仍要横跨所有层，耦合毫无改善。模块必须按**业务能力**切。
@@ -186,6 +210,10 @@ public void Orders_should_not_depend_on_Billing_internals()
 ## 适用版本
 
 模块化单体是一种架构风格，与具体 .NET 版本无关，适用于所有受支持版本。示例代码使用 .NET 10 / C# 14 的 Minimal API 与 EF Core 10 写法；早期版本（.NET 8 / 9）同样适用，只是个别 API 细节略有差异（见 [.NET 版本演进](../comparisons/net-evolution.md)）。
+
+### Native AOT 兼容性
+
+本架构的运行期写法**兼容 Native AOT**（[P16](../governance/policy.md)）：模块用**显式 DI 注册**（不做运行期程序集扫描）、事件分发靠 DI 解析而非反射、Web 层用 Minimal API。上文的**架构测试**用到反射，但那是**测试时**执行、不进入 AOT 发布产物，不受影响；EF Core 在 AOT 发布下需启用编译模型/预编译查询。
 
 ## 参考资料
 

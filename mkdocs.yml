@@ -97,6 +97,7 @@ nav:
       - 数据访问 EF Core:
           - EF Core 10: dotnet/ef-core/ef-core-10.md
           - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
+          - 分页查询与动态排序: dotnet/ef-core/pagination.md
           - 迁移 Migrations: dotnet/ef-core/migrations.md
           - 关系建模: dotnet/ef-core/modeling-relationships.md
           - 查询性能: dotnet/ef-core/query-performance.md

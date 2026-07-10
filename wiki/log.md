@@ -13,6 +13,16 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-10 **大规模 Ingest（六方向扩建，26 新页）**：按微软官方文档补齐常用主题。
+    - 后端核心（9）：`dotnet/fundamentals/` 测试/可观测性/配置Options/HttpClient/弹性/缓存/后台服务，`dotnet/aspnet-core/` 认证授权/中间件。
+    - C# 深化（3）：`dotnet/csharp/` linq/collections/serialization。
+    - 数据访问（5）：`dotnet/ef-core/` migrations/relationships/query-performance/concurrency，`comparisons/ef-vs-ado`。
+    - 架构（6）：`architecture/` clean-architecture/vertical-slice/cqrs/ddd/microservices/event-driven。
+    - 云原生（3）：新增 `cloud-native/` aspire/containers/health-checks。
+    - 性能诊断（3）：新增 `performance/` benchmarking/gc-memory/diagnostics。
+    - 新增 **POLICY P10/P11/P12**（自学习）：只用微软/基金会包、其余手写；删旧换新为整理主线；不用需付费/云绑定组件（Azure/Orleans）。据此把 testing 去 Moq/FluentAssertions/Testcontainers 改手写、http-client 去 Flurl、observability 去 Application Insights、数据访问对比改 EF vs ADO.NET（弃 Dapper）、CQRS/事件驱动去 MediatR、Aspire/事件驱动保持厂商中立。
+    - 同步 `mkdocs.yml` nav、`index.md`、`思维导图.md`（+云原生/性能两色）、`sources/README.md`。`mkdocs build --strict` 通过（零死链）。
+
 - 2026-07-10 **Audit + Correct（全库）**：对照官方文档做一次全库自审，删旧换新。
     - 事实订正：`dotnet/csharp/async-await.md`「并行组合」原称 `(await GetA(), await GetB())` 为并发——实为串行（表达式从左到右求值），改为先发起 Task 再统一 await，并提示 `Task.WhenAll`。
     - 事实订正：`comparisons/list-vs-immutablearray.md` 对比表「空值」行：`List<T>` 变量可为 null；`default(ImmutableArray<T>)` 为未初始化态（访问抛异常），空集合须用 `ImmutableArray<T>.Empty`。

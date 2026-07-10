@@ -35,13 +35,29 @@ updated: 2026-07-10
     - [C# 现代语言特性](dotnet/csharp/modern-csharp.md) — record、可空引用、泛型、模式匹配、Span/Memory、ValueTask、源生成器
     - [C# 14 新特性](dotnet/csharp/csharp-14.md) — extension 成员、field 关键字、空条件赋值、nameof 非绑定泛型、隐式 Span 转换、lambda 参数修饰符
     - [异步编程](dotnet/csharp/async-await.md) — Task 模型与同步上下文
+    - [LINQ 查询](dotnet/csharp/linq.md) — 延迟执行、IEnumerable vs IQueryable、避免多次枚举
+    - [集合选型](dotnet/csharp/collections.md) — List/Dictionary/HashSet/Frozen/Concurrent 按用途选
+    - [JSON 序列化](dotnet/csharp/serialization.md) — System.Text.Json 与源生成器（替代 Newtonsoft）
 - **框架基础**：
     - [依赖注入](dotnet/fundamentals/dependency-injection.md) — DI 容器与生命周期
+    - [配置与 Options](dotnet/fundamentals/configuration-options.md) — 多源配置、强类型绑定与启动校验
+    - [测试](dotnet/fundamentals/testing.md) — xUnit、集成测试、手写测试替身
+    - [日志与可观测性](dotnet/fundamentals/observability.md) — 结构化日志、OpenTelemetry 三信号
+    - [HttpClient 与工厂](dotnet/fundamentals/http-client.md) — IHttpClientFactory、避免套接字耗尽
+    - [弹性与容错](dotnet/fundamentals/resilience.md) — 重试/熔断/超时（Polly）
+    - [缓存](dotnet/fundamentals/caching.md) — IMemoryCache/IDistributedCache/HybridCache
+    - [后台服务](dotnet/fundamentals/background-services.md) — BackgroundService / Worker
 - **Web / Minimal API**：
     - [ASP.NET Core 10](dotnet/aspnet-core/aspnet-core-10.md) — 最小 API 内置验证、原生 OpenAPI 3.1
+    - [认证与授权](dotnet/aspnet-core/auth.md) — 认证方案与基于策略的授权
+    - [中间件管道](dotnet/aspnet-core/middleware.md) — 请求管道与顺序
 - **数据访问（EF Core）**：
     - [EF Core 10](dotnet/ef-core/ef-core-10.md) — 复杂类型与 JSON 列、命名查询筛选器
     - [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) — 直接用 DbContext，不引入仓储/工作单元
+    - [迁移 Migrations](dotnet/ef-core/migrations.md) — 版本化演进架构、生产用脚本/bundle
+    - [关系建模](dotnet/ef-core/modeling-relationships.md) — 一对多/多对多、必需与可选
+    - [查询性能](dotnet/ef-core/query-performance.md) — 消灭 N+1、投影、AsNoTracking、拆分查询
+    - [并发控制](dotnet/ef-core/concurrency.md) — 乐观并发与 rowversion
 - **AOT 与部署**：
     - [原生 AOT](dotnet/aot/native-aot.md) — 提前编译、 trimming 与受限反射
     - [文件型应用](dotnet/aot/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
@@ -61,6 +77,24 @@ updated: 2026-07-10
 ### 架构
 
 - [模块化单体架构](architecture/modular-monolith.md) — 单进程内按模块解耦，兼顾单体的简单与微服务的边界
+- [整洁架构](architecture/clean-architecture.md) — 依赖向内、接口内定外实现
+- [垂直切片](architecture/vertical-slice.md) — 按功能而非技术分层组织代码
+- [CQRS](architecture/cqrs.md) — 读写分离，无需第三方中介库
+- [领域驱动设计 DDD](architecture/ddd.md) — 聚合、值对象、限界上下文、富领域模型
+- [微服务](architecture/microservices.md) — 自治独立部署；多数应用应先模块化单体
+- [事件驱动](architecture/event-driven.md) — 事件解耦、领域事件与发件箱模式
+
+### 云原生
+
+- [.NET Aspire](cloud-native/aspire.md) — 本地多服务编排与统一可观测性（开源免费、不绑定付费云）
+- [容器化](cloud-native/containers.md) — 多阶段 Dockerfile / 内置容器发布、chiseled 精简镜像
+- [健康检查](cloud-native/health-checks.md) — liveness / readiness 探针
+
+### 性能与诊断
+
+- [基准测试](performance/benchmarking.md) — BenchmarkDotNet，先测量再优化
+- [GC 与内存](performance/gc-memory.md) — 分代 GC、减少分配、Span/池化
+- [诊断与剖析](performance/diagnostics.md) — dotnet-counters/trace/dump 生产取证
 
 ### 工程规范
 
@@ -72,7 +106,7 @@ updated: 2026-07-10
 - [组合与架构模式](patterns/composition.md) — Options / 泛型主机 / 管道行为 / 最小 API 组织
 - [释放与 using](patterns/disposable-using.md) — IDisposable 与 using 声明
 - 反模式：[吞掉异常](anti-patterns/design-antipatterns.md#swallowing-exceptions) · [async void](anti-patterns/async-antipatterns.md#async-void) · [魔法数字](anti-patterns/design-antipatterns.md#magic-numbers) · [上帝方法](anti-patterns/design-antipatterns.md#god-methods) · [服务定位器](anti-patterns/design-antipatterns.md#service-locator) · [过度可变](anti-patterns/design-antipatterns.md#excessive-mutability) · [阻塞异步](anti-patterns/async-antipatterns.md#blocking-async) · [过早优化](anti-patterns/design-antipatterns.md#premature-optimization)
-- 对比：[record vs class](comparisons/record-vs-class.md) · [List vs ImmutableArray](comparisons/list-vs-immutablearray.md) · [RAG vs LLM Wiki](comparisons/rag-vs-llm-wiki.md) · [.NET 版本演进](comparisons/net-evolution.md)
+- 对比：[record vs class](comparisons/record-vs-class.md) · [List vs ImmutableArray](comparisons/list-vs-immutablearray.md) · [EF Core vs ADO.NET](comparisons/ef-vs-ado.md) · [RAG vs LLM Wiki](comparisons/rag-vs-llm-wiki.md) · [.NET 版本演进](comparisons/net-evolution.md)
 
 ### 治理
 
@@ -91,15 +125,17 @@ updated: 2026-07-10
   可直接用于判断与检索，**不必通读全文**。
 - **分类（目录即主题）**：
     - `dotnet/` —— .NET 平台知识树，按技术子域分文件夹：
-        - `dotnet/csharp/` —— C# 语言（现代特性、C# 14、异步编程）
-        - `dotnet/fundamentals/` —— 框架基础（依赖注入…）
-        - `dotnet/aspnet-core/` —— Web / Minimal API
-        - `dotnet/ef-core/` —— 数据访问（EF Core）
+        - `dotnet/csharp/` —— C# 语言（现代特性、C# 14、异步、LINQ、集合、序列化）
+        - `dotnet/fundamentals/` —— 框架基础（DI、配置、测试、可观测性、HttpClient、弹性、缓存、后台服务）
+        - `dotnet/aspnet-core/` —— Web / Minimal API（含认证授权、中间件）
+        - `dotnet/ef-core/` —— 数据访问（EF Core：迁移、关系、性能、并发）
         - `dotnet/aot/` —— AOT 与部署（Native AOT、文件型应用）
         - `dotnet/runtime/` —— 运行时（JIT…）
         - `dotnet/blazor/` —— Blazor
         - `dotnet/versions/` —— 各版本关键知识（net8 / net9…）
-    - `architecture/` —— 架构方向（模块化单体架构…）
+    - `architecture/` —— 架构方向（模块化单体、整洁架构、垂直切片、CQRS、DDD、微服务、事件驱动）
+    - `cloud-native/` —— 云原生（Aspire、容器化、健康检查）
+    - `performance/` —— 性能与诊断（基准测试、GC/内存、诊断工具）
     - `standards/` —— 工程规范（命名、异常、日志、配置、测试、API 设计…）
     - `patterns/` —— 推荐做法（Options、管道、泛型主机、最小 API 组织、释放）
     - `anti-patterns/` —— 反模式（含 ❌ 错误 / ✅ 正确 对比）

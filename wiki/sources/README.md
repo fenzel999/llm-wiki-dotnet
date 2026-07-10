@@ -31,6 +31,34 @@ updated: 2026-07-09
 - [What's new in .NET 7](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-7) — Microsoft Learn
 - [.NET 版本演进（LTS/STS 支持策略）](https://dotnet.microsoft.com/platform/support/policy/dotnet-core) — Microsoft
 
+### 后端核心工程
+- [.NET 测试](https://learn.microsoft.com/dotnet/core/testing/) · [ASP.NET Core 集成测试](https://learn.microsoft.com/aspnet/core/test/integration-tests) — Microsoft Learn
+- [.NET OpenTelemetry 可观测性](https://learn.microsoft.com/dotnet/core/diagnostics/observability-with-otel) · [日志记录](https://learn.microsoft.com/dotnet/core/extensions/logging) — Microsoft Learn
+- [配置](https://learn.microsoft.com/dotnet/core/extensions/configuration) · [Options 模式](https://learn.microsoft.com/dotnet/core/extensions/options) — Microsoft Learn
+- [HttpClient 准则](https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-guidelines) · [IHttpClientFactory](https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-factory) — Microsoft Learn
+- [.NET 弹性复原能力](https://learn.microsoft.com/dotnet/core/resilience/)（Polly，.NET 基金会）— Microsoft Learn
+- [ASP.NET Core 缓存](https://learn.microsoft.com/aspnet/core/performance/caching/overview) · [HybridCache](https://learn.microsoft.com/aspnet/core/performance/caching/hybrid) — Microsoft Learn
+- [托管服务 / Worker](https://learn.microsoft.com/dotnet/core/extensions/workers) — Microsoft Learn
+- [ASP.NET Core 安全性](https://learn.microsoft.com/aspnet/core/security/) · [中间件](https://learn.microsoft.com/aspnet/core/fundamentals/middleware/) — Microsoft Learn
+
+### C# 与标准库
+- [LINQ](https://learn.microsoft.com/dotnet/csharp/linq/) · [集合](https://learn.microsoft.com/dotnet/standard/collections/) — Microsoft Learn
+- [System.Text.Json](https://learn.microsoft.com/dotnet/standard/serialization/system-text-json/) — Microsoft Learn
+
+### 数据访问
+- [EF Core 迁移](https://learn.microsoft.com/ef/core/managing-schemas/migrations/) · [关系](https://learn.microsoft.com/ef/core/modeling/relationships) — Microsoft Learn
+- [EF Core 高效查询](https://learn.microsoft.com/ef/core/performance/efficient-querying) · [并发](https://learn.microsoft.com/ef/core/saving/concurrency) — Microsoft Learn
+- [ADO.NET 概述](https://learn.microsoft.com/dotnet/framework/data/adonet/) — Microsoft Learn
+
+### 架构
+- [常见 Web 应用体系结构](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures) — Microsoft Learn
+- [.NET 微服务架构](https://learn.microsoft.com/dotnet/architecture/microservices/) · [DDD/CQRS 模式](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/) — Microsoft Learn
+
+### 云原生与性能
+- [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/) — Microsoft Learn
+- [容器化 .NET 应用](https://learn.microsoft.com/dotnet/core/docker/build-container) · [健康检查](https://learn.microsoft.com/aspnet/core/host-and-deploy/health-checks) — Microsoft Learn
+- [.NET 垃圾回收](https://learn.microsoft.com/dotnet/standard/garbage-collection/) · [诊断工具](https://learn.microsoft.com/dotnet/core/diagnostics/) — Microsoft Learn
+
 ## 本地原始资料
 
 - `raw/` — 用户投放的不可变原始资料（文章 / 论文 / 素材）统一放此处，由 Agent 执行 Ingest 编译进 `wiki/`。

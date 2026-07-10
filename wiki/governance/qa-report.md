@@ -18,6 +18,11 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-10（六方向大规模 Ingest：26 新页，全部对照微软官方文档）
+- 范围：后端核心 9 + C# 深化 3 + 数据访问 5 + 架构 6 + 云原生 3 + 性能诊断 3。
+- 结论：**新增 POLICY P10/P11/P12 并全程遵守**——仅用微软/基金会包（xUnit/Polly/BenchmarkDotNet 属基金会），其余手写；删旧换新；不用付费/云绑定组件。
+- 落实：testing 用手写测试替身（弃 Moq/FluentAssertions/Testcontainers）；数据访问对比为 EF vs ADO.NET（弃第三方 Dapper）；CQRS/事件驱动不用 MediatR；observability 去 Application Insights；序列化以 System.Text.Json 取代 Newtonsoft。`mkdocs build --strict` 通过。
+
 - 日期：2026-07-10（全库 Audit + Correct：对照官方文档、删旧换新）
 - 范围：20 个内容页 + 治理页；对照 Microsoft 官方 .NET 文档常识逐页判 Q1–Q7。
 - 结论：**发现 2 处事实错误、2 个编码损坏文件，均已自修；其余 18 内容页通过**。

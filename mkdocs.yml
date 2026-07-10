@@ -71,13 +71,29 @@ nav:
           - C# 现代语言特性: dotnet/csharp/modern-csharp.md
           - C# 14 新特性: dotnet/csharp/csharp-14.md
           - 异步编程: dotnet/csharp/async-await.md
+          - LINQ 查询: dotnet/csharp/linq.md
+          - 集合选型: dotnet/csharp/collections.md
+          - JSON 序列化: dotnet/csharp/serialization.md
       - 框架基础:
           - 依赖注入: dotnet/fundamentals/dependency-injection.md
+          - 配置与 Options: dotnet/fundamentals/configuration-options.md
+          - 测试: dotnet/fundamentals/testing.md
+          - 日志与可观测性: dotnet/fundamentals/observability.md
+          - HttpClient 与工厂: dotnet/fundamentals/http-client.md
+          - 弹性与容错: dotnet/fundamentals/resilience.md
+          - 缓存: dotnet/fundamentals/caching.md
+          - 后台服务: dotnet/fundamentals/background-services.md
       - Web / Minimal API:
           - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
+          - 认证与授权: dotnet/aspnet-core/auth.md
+          - 中间件管道: dotnet/aspnet-core/middleware.md
       - 数据访问 EF Core:
           - EF Core 10: dotnet/ef-core/ef-core-10.md
           - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
+          - 迁移 Migrations: dotnet/ef-core/migrations.md
+          - 关系建模: dotnet/ef-core/modeling-relationships.md
+          - 查询性能: dotnet/ef-core/query-performance.md
+          - 并发控制: dotnet/ef-core/concurrency.md
       - AOT 与部署:
           - 原生 AOT: dotnet/aot/native-aot.md
           - 文件型应用: dotnet/aot/file-based-apps.md
@@ -94,6 +110,20 @@ nav:
           - .NET 9 / C# 13: dotnet/versions/net9.md
   - 架构:
       - 模块化单体架构: architecture/modular-monolith.md
+      - 整洁架构: architecture/clean-architecture.md
+      - 垂直切片: architecture/vertical-slice.md
+      - CQRS: architecture/cqrs.md
+      - 领域驱动设计 DDD: architecture/ddd.md
+      - 微服务: architecture/microservices.md
+      - 事件驱动: architecture/event-driven.md
+  - 云原生:
+      - .NET Aspire: cloud-native/aspire.md
+      - 容器化: cloud-native/containers.md
+      - 健康检查: cloud-native/health-checks.md
+  - 性能与诊断:
+      - 基准测试: performance/benchmarking.md
+      - GC 与内存: performance/gc-memory.md
+      - 诊断与剖析: performance/diagnostics.md
   - 工程规范:
       - 命名与 API 约定: standards/coding-conventions.md
       - 健壮性与工程质量: standards/quality-engineering.md
@@ -107,6 +137,7 @@ nav:
       - 对比:
           - record vs class: comparisons/record-vs-class.md
           - List vs ImmutableArray: comparisons/list-vs-immutablearray.md
+          - EF Core vs ADO.NET: comparisons/ef-vs-ado.md
           - RAG vs LLM Wiki: comparisons/rag-vs-llm-wiki.md
           - .NET 版本演进: comparisons/net-evolution.md
   - 治理:

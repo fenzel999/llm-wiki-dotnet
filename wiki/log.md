@@ -244,3 +244,10 @@ updated: 2026-07-09
 - 同步：mkdocs.yml、index.md、思维导图.md、policy.md、qa-report.md。
 - 待办：后续巡检为其余后端页补 P16 的 AOT 兼容性小节（auth 的 cookie/OIDC、signalr 等）。
 - 影响：wiki/dotnet/ef-core/pagination.md、wiki/dotnet/aspnet-core/exception-handling.md、wiki/architecture/solution-structure.md、wiki/architecture/modular-monolith.md、wiki/governance/policy.md、wiki/governance/qa-report.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。
+
+## 2026-07-10 · P17 深度标准 + DI 页深写 + AOT 矩阵入库
+- 新规则：POLICY **P17**（页面须自足、深度完整、能教会知识过时的 LLM 解决真实问题）。
+- Correct：`dotnet/fundamentals/dependency-injection.md` 按 P17 重写为深度自足页——修正"主构造函数非 DI 必选项（只是 C# 12 语法糖）"，补齐键控服务(net8+)/IEnumerable 多注册/TryAdd*/工厂/开放泛型/IServiceScopeFactory/释放语义/装饰器/启动期校验/ActivatorUtilities + AOT 小节。
+- Ingest：`dotnet/aot/aot-compatibility.md`（上一轮新建但漏挂导航）正式入 nav/index/思维导图，作为后端 AOT 规则中枢。
+- 同步：mkdocs.yml、index.md、思维导图.md、policy.md、qa-report.md。
+- 影响：wiki/governance/policy.md、wiki/dotnet/fundamentals/dependency-injection.md、wiki/dotnet/aot/aot-compatibility.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。

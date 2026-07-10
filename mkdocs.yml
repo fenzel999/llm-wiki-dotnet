@@ -104,6 +104,7 @@ nav:
           - 并发控制: dotnet/ef-core/concurrency.md
       - AOT 与部署:
           - 原生 AOT: dotnet/aot/native-aot.md
+          - AOT 兼容性矩阵与规则: dotnet/aot/aot-compatibility.md
           - 文件型应用: dotnet/aot/file-based-apps.md
       - 运行时:
           - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md

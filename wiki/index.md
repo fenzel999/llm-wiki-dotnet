@@ -68,6 +68,7 @@ updated: 2026-07-10
     - [并发控制](dotnet/ef-core/concurrency.md) — 乐观并发与 rowversion
 - **AOT 与部署**：
     - [原生 AOT](dotnet/aot/native-aot.md) — 提前编译、 trimming 与受限反射
+    - [AOT 兼容性矩阵与规则](dotnet/aot/aot-compatibility.md) — 后端严格 AOT 的落地清单与源生成替换
     - [文件型应用](dotnet/aot/file-based-apps.md) — .NET 10 单文件 `global using` 风格控制台应用
 - **运行时**：
     - [运行时 JIT 优化](dotnet/runtime/jit-optimizations.md) — .NET 10 JIT 性能改进

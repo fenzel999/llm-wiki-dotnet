@@ -146,6 +146,14 @@ nav:
       - 基准测试: performance/benchmarking.md
       - GC 与内存: performance/gc-memory.md
       - 诊断与剖析: performance/diagnostics.md
+      - AOT 性能工程: performance/aot-performance.md
+  - AOT 部署工程化:
+      - Minimal API AOT 源生成: dotnet/aspnet-core/minimal-api-aot.md
+      - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
+      - Chiseled 容器镜像: cloud-native/containers.md
+  - 部署与编排:
+      - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
+      - Chiseled 容器镜像最佳实践: cloud-native/containers.md
   - 工程规范:
       - 命名与 API 约定: standards/coding-conventions.md
       - 健壮性与工程质量: standards/quality-engineering.md

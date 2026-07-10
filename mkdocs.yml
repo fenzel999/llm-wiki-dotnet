@@ -128,6 +128,8 @@ nav:
           - 解决方案分层与项目引用: architecture/solution-structure.md
           - 垂直切片: architecture/vertical-slice.md
           - 微服务: architecture/microservices.md
+          - 架构决策记录 (ADR): architecture/adr.md
+          - API 设计模式: architecture/api-design.md
       - 模块内部（Module-Internal）:
           - 领域驱动设计 DDD: architecture/ddd.md
           - 领域服务与应用服务: architecture/domain-application-services.md
@@ -142,6 +144,10 @@ nav:
           - .NET Aspire: cloud-native/aspire.md
           - 容器化: cloud-native/containers.md
           - 健康检查: cloud-native/health-checks.md
+  - 云原生:
+      - .NET Aspire: cloud-native/aspire.md
+      - 容器化: cloud-native/containers.md
+      - 健康检查: cloud-native/health-checks.md
   - 性能与诊断:
       - 基准测试: performance/benchmarking.md
       - GC 与内存: performance/gc-memory.md
@@ -150,10 +156,11 @@ nav:
   - AOT 部署工程化:
       - Minimal API AOT 源生成: dotnet/aspnet-core/minimal-api-aot.md
       - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
-      - Chiseled 容器镜像: cloud-native/containers.md
-  - 部署与编排:
-      - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
       - Chiseled 容器镜像最佳实践: cloud-native/containers.md
+  - 部署与编排:
+      - .NET Aspire: cloud-native/aspire.md
+      - 容器化: cloud-native/containers.md
+      - 健康检查: cloud-native/health-checks.md
   - 工程规范:
       - 命名与 API 约定: standards/coding-conventions.md
       - 健壮性与工程质量: standards/quality-engineering.md

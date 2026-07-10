@@ -71,6 +71,10 @@ static void Main() { }   // ❌ 与顶层语句的隐式入口冲突
 === "net8"
     支持顶层语句与隐式 global using，但仍需项目文件，`dotnet run` 不能直接运行裸 `.cs`。
 
+### Native AOT 兼容性
+
+文件型应用本身支持 AOT 发布（`dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishAot=true`），生成单文件原生可执行文件。适合做 CLI 小工具、脚本替代。注意：隐式 global using 不影响 AOT；若用到 JSON 序列化/正则/Logging，仍需显式源生成（见 [源生成器](../csharp/source-generators.md)）。
+
 ## 参考资料
 
 - 相关：[.NET 10 主题地图](../overview.md)

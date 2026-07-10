@@ -26,6 +26,14 @@ updated: 2026-07-09
 - 结论：无死链、无编码错误，已提交。
 - 待你判定：无。
 
+- 日期：2026-07-11（**薄页 P17 深写 Round B：comparisons + dotnet/csharp 基础**）
+- 触发：用户"继续"指令——把剩余薄页按 P17 深写（决策表 + 误区含 why + AOT 小节）。
+- comparisons/ 4 页（ef-vs-ado、record-vs-class、list-vs-immutablearray、rag-vs-llm-wiki）+ dotnet/csharp/ 4 页（async-await、collections、linq、serialization）按 P17 深写。
+- 修复链接深度：dotnet/csharp/ 下引用 dotnet/* 用 `../`（误写为 `../dotnet/`）、governance 用 `../../governance/`。
+- 校验：`mkdocs build --strict` 通过。
+- 结论：已提交并 push。
+- 待你判定：无。
+
 - 日期：2026-07-10（**Ingest/Correct #5** — HTTP 状态码约定 + 分页 + 组合性 + AOT 约束）
 - 触发：人工反馈——① API 用真实 HTTP 状态码（404/400/422）而非 Result 包装；② 需要动态分页知识；③ 解决方案应支持自定义工具（规约父类/分页）与清晰层级分工；④ 模块要能像成熟企业框架那样自由组合（单体模块↔独立微服务）；⑤ **不支持 AOT 的模式不用**（后端严格 AOT，前端豁免）。
 - 新增规则：**P15**（API 用真实 HTTP 状态码、不用 Result 信封）、**P16**（后端代码必须 Native AOT 兼容、前端豁免）。

@@ -294,3 +294,11 @@ updated: 2026-07-09
 - 性能：benchmarking（定位 + 何时做基准决策表 + 读结果 + AOT 也要基准 + AOT 小节）。
 - 严格校验：mkdocs build --strict 通过；中途修复（1）policy.md 相对路径深度（architecture 用 ../、cloud-native 用 ../../）；（2）composition.md 实际位于 patterns/ 而非 dotnet/fundamentals/，全部链接改正；（3）auditing-soft-delete 接口声明补分号。
 - 影响：wiki/architecture/*.md（14 页）、wiki/cloud-native/aspire.md、wiki/cloud-native/containers.md、wiki/performance/benchmarking.md、wiki/log.md。
+
+## 2026-07-11 · 薄页 P17 深写（Round B：comparisons + dotnet/csharp 基础）
+- comparisons/ 4 页按 P17 深写：每页补决策表 + ≥3 误区（含 why）+ AOT 小节。
+  - ef-vs-ado（何时下沉 ADO.NET 决策表 + 参数化示例 + EF/ADO 各自 AOT 说明）、record-vs-class（class vs record 选型表 + record struct + AOT 安全）、list-vs-immutablearray（构建期 Builder + .Empty vs default + AOT 安全）、rag-vs-llm-wiki（选型决策表 + 混合用法 + 与本库约束关系；source 改为 karpathy/llm-wiki 仓库）。
+- dotnet/csharp/ 基础 4 页按 P17 深写：async-await（ConfigureAwait 决策表 + CancellationToken + async void/伪并行误区 + AOT 安全）、collections（选型决策表 + Frozen/Concurrent + AOT 安全）、linq（IEnumerable vs IQueryable 表 + 物化决策表 + 多次枚举误区 + AOT 说明）、serialization（反射 vs 源生成表 + AOT 必须源生成 + 路径修复）。
+- 链接深度修复：dotnet/csharp/ 下引用 dotnet/aot、dotnet/ef-core、dotnet/fundamentals 应用 `../`（非 `../dotnet/`）；governance 用 `../../governance/`。
+- mkdocs build --strict 通过。
+- 影响：wiki/comparisons/*.md（4 页）、wiki/dotnet/csharp/async-await.md、collections.md、linq.md、serialization.md、wiki/log.md。

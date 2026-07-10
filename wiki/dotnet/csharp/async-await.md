@@ -1,64 +1,87 @@
 ---
 title: 异步编程（async/await）
-summary: 基于 Task 的异步模型与 await 状态机，理解 ConfigureAwait 与同步上下文以避免死锁。
+summary: 基于 Task 的异步模型与 await 状态机；理解 ConfigureAwait、避免阻塞死锁、用 WhenAll 并发；AOT 友好。
 tags: [async, await, task, csharp]
 introduced-in: csharp5
-applies-to: [all]
+applies-to: [net8, net9, net10]
 status: stable
 source: https://learn.microsoft.com/dotnet/csharp/asynchronous-programming
-updated: 2026-07-10
+updated: 2026-07-11
 ---
+
+# 异步编程（async/await）
 
 > **要点速览**
 > - `await` 挂起而不阻塞线程，释放线程去干别的活。
-> - 库代码用 `ConfigureAwait(false)` 避免捕获同步上下文。
-> - 别用 `.Result`/`.Wait()` 阻塞（死锁风险）；并发要先发起任务再一起 await。
+> - 别用 `.Result`/`.Wait()` 阻塞（死锁风险）；并发要先发起任务再一起 `await`（或 `Task.WhenAll`）。
+> - `async void` 只用于事件处理；别"点火就忘"忘了 `await`。
+> - 现代 ASP.NET Core **没有**同步上下文，`ConfigureAwait(false)` 主要是历史/库代码习惯（见下）；加 `CancellationToken` 支持取消。
 
 ## 概述
 
-写异步代码，本质上是在回答一个问题：当一段操作（网络请求、文件读写、延时等待）需要时间，程序凭什么不卡在那里干等？C# 给出的答案是 `Task` 与 `Task<T>`——它们代表“一个将来会完成的操作”。当你在一个方法上写下 `async`，编译器并不会真的让线程空转，而是悄悄把这个方法改写成一个状态机：遇到 `await` 时，方法在此挂起并把控制权交还调用方，等被等待的操作完成后再从挂起点继续（这一步叫“延续”，continuation）。
+`Task`/`Task<T>` 代表"一个将来会完成的操作"。`async` 方法被编译器改写成状态机：遇到 `await` 时挂起并把控制权交还调用方，操作完成后从挂起点继续（延续 continuation）。`await` 的好处是**不阻塞线程**——线程在等待期间可以去处理别的请求。
 
-这里有个关键细节：延续默认会被调度回“原始的同步上下文”（`SynchronizationContext`）。在桌面 UI 或旧版 ASP.NET 这类“只有一个上下文线程”的环境里，这本来是为了方便你安全地更新界面；但也正是它，制造了 .NET 世界里最经典的死锁——当你在某个上下文线程上用 `.Result` 或 `.Wait()` 去等一个异步方法时，那个方法的延续却在等你腾出上下文。要打破这个循环，库代码（或任何不需要回到原上下文的场景）应当用 `ConfigureAwait(false)` 显式说“我不在乎回到哪个线程”。而当你追求热路径上的零分配异步时，还可以进一步去看 [ValueTask](modern-csharp.md#value-task) 的思路。
+延续默认调度回原始 `SynchronizationContext`。在桌面 UI 这类"只有一个上下文线程"的环境里，这是为方便更新界面，但也制造了经典死锁（见误区）。在 **ASP.NET Core** 中**不存在**同步上下文，延续在线程池上继续，所以传统"必须 `ConfigureAwait(false)` 防死锁"在 Web 后端基本不成立；但它仍是库代码的良好习惯（库不应假定调用方上下文）。
 
 ## 正确做法
 
-把思路落到实处：在库代码、或不需要回到 UI 线程的调用链上，对每个 `await` 都加上 `ConfigureAwait(false)`，避免把延续强行塞回原始上下文，从而释放并发能力。下面这个例子在 `HttpClient` 的整条调用链上保持一致，同时展示了如何用并行 `await` 把两个互不依赖的任务组合起来一起等：
+### 1. 并发：先发起再一起等
 
 ```csharp
-public async Task<string> FetchAsync(HttpClient client, string url)
+public async Task<string> FetchAsync(HttpClient client, string url, CancellationToken ct)
 {
-    using var resp = await client.GetAsync(url).ConfigureAwait(false);
-    return await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
+    using var resp = await client.GetAsync(url, ct).ConfigureAwait(false);
+    return await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
 }
 
-// 并行组合：先发起，再一起等
-var tA = GetA();               // 立即发起，不 await
-var tB = GetB();               // 立即发起，不 await
+// 真正并发：先各自发起，再统一 await
+var tA = GetA(ct);   // 立即拿到 Task，不 await
+var tB = GetB(ct);
 var (a, b) = (await tA, await tB);
+// 或等待一组：
+var results = await Task.WhenAll(GetA(ct), GetB(ct));
 ```
 
-注意第二段的写法：想让两个异步操作**真正并发**，必须先各自发起任务（`GetA()` / `GetB()` 拿到 `Task`），再统一 `await`。常见的坑是写成 `var (a, b) = (await GetA(), await GetB());`——由于表达式从左到右求值，它会先完整 `await` 完 `GetA()` 再去调用 `GetB()`，实际上是**串行**执行，只是看起来像并行。需要等待一组任务时也可以用 `await Task.WhenAll(tA, tB)`。这是异步代码里最常被误写的地方。
+### 2. ConfigureAwait 何时用？
+
+| 场景 | 用 `ConfigureAwait(false)`？ | 理由 |
+|------|------------------------------|------|
+| 库代码（被任意调用方复用） | ✅ 习惯上用 | 不假定调用方上下文，释放并发 |
+| ASP.NET Core 后端 | 非必须 | 无同步上下文，延续在线程池 |
+| 桌面 UI 代码（要回 UI 线程更新） | ❌ 不要 | 需回到 UI 上下文 |
+| `async void` 事件处理 | 不用 | 见误区 |
+
+### 3. 支持取消
+
+异步 API 几乎都接受 `CancellationToken`；自己写的异步方法也应把它一路透传，让调用方能中止长时间操作（见 [弹性与容错](../fundamentals/resilience.md)）。
 
 ## 常见误区
 
-❌ 在单一同步上下文（UI / 旧版 ASP.NET）里，用 `.Result` 或 `.Wait()` 去阻塞一个异步调用，会让延续死等被占用的上下文，从而死锁：
-
+❌ **用 `.Result`/`.Wait()` 阻塞异步调用**（尤其 UI/旧 ASP.NET），让延续死等被占用的上下文 → 死锁：
 ```csharp
 var html = FetchAsync(client, url).Result; // 可能死锁
 ```
+应一路 `async/await` 到顶层。
 
-除了死锁，还有几个常被忽略的坑：
+❌ **`async void` 用于普通方法**。异常无法被 `catch`、难组合；`async void` 只应出现在事件处理程序。
 
-- `async void` 只能用于事件处理程序。一旦用在普通方法上，方法里抛出的异常无法被 `catch`，也很难和别的操作组合。
-- 忘了 `await` 时，任务会被悄悄“点火就忘”（fire-and-forget），常常引发资源泄漏和竞态，而且你连出错了都无从知晓。
-- 在库代码里保留 `ConfigureAwait(true)`（即不带 `false`），会不必要地限制调用方的并发度——库通常没有“必须回原线程”的理由。
+❌ **"点火就忘"忘了 `await`**。任务悄悄 fire-and-forget，出错无从知晓、易资源泄漏。若要后台跑，用 `Task.Run` + 显式 `await` 或 [后台服务](../fundamentals/background-services.md)。
+
+❌ **误写"伪并行"**：`var (a,b) = (await GetA(), await GetB());` 因左到右求值，会先等完 `GetA` 再调用 `GetB`，实际串行。先发起再统一 `await` 或用 `Task.WhenAll`。
+
+❌ **库代码保留 `ConfigureAwait(true)` 限制并发**。库通常没有"必须回原线程"的理由，用 `false` 释放调用方。
 
 ## 适用版本
 
-所有受支持版本通用，无差异。
+`async/await` C# 5+；ASP.NET Core 无同步上下文自 netcore 起。示例面向 net8+。
+
+### Native AOT 兼容性
+
+`Task`/`async/await` 与状态机是运行时特性，**AOT 安全**（[AOT 矩阵](../aot/aot-compatibility.md)）。注意：`CancellationToken`、委托均无反射；若异步结果需 JSON 序列化，走 `System.Text.Json` **源生成**（见 [序列化](serialization.md)）。
 
 ## 参考资料
 
-- [ValueTask 与零分配异步](modern-csharp.md#value-task)
-- [Span 与 Memory 零拷贝](modern-csharp.md#span)
+- [ValueTask 与零分配异步](modern-csharp.md#value-task) · [Span 与 Memory 零拷贝](modern-csharp.md#span)
+- [弹性与容错（取消/超时/重试）](../fundamentals/resilience.md) · [后台服务](../fundamentals/background-services.md)
+- [AOT 兼容性矩阵](../aot/aot-compatibility.md)
 - 官方文档：[异步编程（C#）](https://learn.microsoft.com/dotnet/csharp/asynchronous-programming)

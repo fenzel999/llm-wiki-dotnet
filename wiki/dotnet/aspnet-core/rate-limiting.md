@@ -1,7 +1,7 @@
 ---
 title: 限流（内置 Rate Limiting）
 summary: 用 net7+ 内置限流中间件保护服务，四种算法按场景选，配合 429 与 Retry-After。
-tags: [rate-limiting, throttling, 限流, 保护]
+tags: [rate-limiting, throttling]
 introduced-in: net7
 applies-to: [net7, net8, net9, net10]
 status: stable

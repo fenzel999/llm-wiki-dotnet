@@ -67,7 +67,7 @@ await chart.SetValueAsync("title", "新标题");          // 写入属性
 
 这几处改动单独看不大，但累积起来，Blazor 组件里和 JS 打交道的代码会干净很多，也不再需要那些 `eval` 魔法字符串。
 
-## 反例（常见错误）
+## 常见误区
 
 JS 互操作的坑大多集中在“时机”和“清理”上。第一，忘了释放 `IJSObjectReference` / 模块引用，JS 侧的对象就一直挂着，组件反复创建销毁几次，内存就慢慢漏了——所以务必实现 `IAsyncDisposable`。第二，在 `OnInitialized` 阶段就去调 JS：这一阶段 DOM 还没渲染好，尤其服务端预渲染（prerendering）时 `IJSRuntime` 根本不可用，必须挪到 `OnAfterRenderAsync` 里、并用 `firstRender` 判断只初始化一次。第三，别在互操作调用之间传递大对象而忽略序列化开销——跨边界传的可不是引用，是实打实序列化过去的数据，体积大了就是性能账单。
 

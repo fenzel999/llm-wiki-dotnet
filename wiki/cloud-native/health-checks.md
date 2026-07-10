@@ -1,7 +1,7 @@
 ---
 title: 健康检查（Health Checks）
 summary: 用内置健康检查暴露 liveness/readiness 端点，让编排器判断实例存活与是否可接流量。
-tags: [health-checks, liveness, readiness, kubernetes, 探针]
+tags: [health-checks, liveness, readiness, kubernetes]
 introduced-in: general
 applies-to: [all]
 status: stable

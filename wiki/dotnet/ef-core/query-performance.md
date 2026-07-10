@@ -1,7 +1,7 @@
 ---
 title: EF Core 查询性能
 summary: 消灭 N+1、按需投影、只读查询关闭跟踪、大结果集用分页与拆分查询。
-tags: [ef-core, performance, n+1, tracking, projection, 查询]
+tags: [ef-core, performance, n+1, tracking, projection]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

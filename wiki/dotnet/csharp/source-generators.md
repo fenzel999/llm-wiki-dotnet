@@ -1,7 +1,7 @@
 ---
 title: 源生成器实战（Source Generators）
 summary: 编译期生成代码替代运行时反射，用增量生成器（IIncrementalGenerator）实现零反射、AOT 友好。
-tags: [source-generator, roslyn, incremental, aot, 元编程]
+tags: [source-generator, roslyn, incremental, native-aot]
 introduced-in: net5
 applies-to: [net6, net7, net8, net9, net10]
 status: stable

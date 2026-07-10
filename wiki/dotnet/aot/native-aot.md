@@ -52,7 +52,7 @@ static void ScanPlugins()
 
 有了这个特性，构建时只要扫到这段代码被调用，就会弹出 `IL2xxx` 级别的警告，提醒你“这里在 AOT 下不安全”。
 
-## 反例（常见错误）
+## 常见误区
 
 踩坑的重灾区几乎都和“被裁掉”有关。比如用 `System.Text.Json` 做序列化时图省事直接 `JsonSerializer.Serialize(obj)`——在 AOT 下 `obj` 的类型可能被剪掉，运行时才会失败。正确做法是用源生成器（source generator），通过 `[JsonSerializable]` 标注一个 `JsonSerializerContext`：
 

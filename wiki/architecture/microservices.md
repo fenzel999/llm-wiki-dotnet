@@ -1,7 +1,7 @@
 ---
 title: 微服务架构（Microservices）
 summary: 按业务能力拆成自治、独立部署的小服务；先想清代价，多数应用应从模块化单体起步。
-tags: [architecture, microservices, 分布式, 独立部署]
+tags: [architecture, microservices]
 introduced-in: general
 applies-to: [all]
 status: stable

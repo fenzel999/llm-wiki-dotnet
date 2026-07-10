@@ -1,7 +1,7 @@
 ---
 title: 输出缓存（Output Caching）
 summary: 用 net7+ 内置输出缓存把响应缓存在服务端，按查询/头分键并支持标签失效，区别于响应缓存。
-tags: [output-caching, response-caching, 缓存, 性能]
+tags: [output-caching, response-caching]
 introduced-in: net7
 applies-to: [net7, net8, net9, net10]
 status: stable

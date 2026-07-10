@@ -1,7 +1,7 @@
 ---
 title: 容器化（Docker / 内置容器发布）
 summary: 用多阶段 Dockerfile 或 dotnet publish 内置容器支持产出精简镜像，非 root 运行。
-tags: [docker, container, publish, chiseled, 部署]
+tags: [docker, container, publish, chiseled]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

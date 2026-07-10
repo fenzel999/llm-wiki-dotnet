@@ -1,7 +1,7 @@
 ---
 title: record 与 class 对比
 summary: record 提供值语义与不可变建模，class 提供引用语义与可变状态；按相等性与生命周期选型。
-tags: [comparison, record, class, 值语义, 引用语义]
+tags: [comparison, record, class]
 introduced-in: general
 applies-to: [all]
 status: stable

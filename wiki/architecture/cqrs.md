@@ -1,7 +1,7 @@
 ---
 title: CQRS（命令查询职责分离）
 summary: 把"写"（命令）和"读"（查询）拆成两条独立路径，各自优化；不必引入中介库即可实现。
-tags: [architecture, cqrs, command, query, 读写分离]
+tags: [architecture, cqrs, command, query]
 introduced-in: general
 applies-to: [all]
 status: stable

@@ -251,3 +251,10 @@ updated: 2026-07-09
 - Ingest：`dotnet/aot/aot-compatibility.md`（上一轮新建但漏挂导航）正式入 nav/index/思维导图，作为后端 AOT 规则中枢。
 - 同步：mkdocs.yml、index.md、思维导图.md、policy.md、qa-report.md。
 - 影响：wiki/governance/policy.md、wiki/dotnet/fundamentals/dependency-injection.md、wiki/dotnet/aot/aot-compatibility.md、mkdocs.yml、wiki/index.md、wiki/思维导图.md。
+
+## 2026-07-10 · 全局清理 Round 1（分类/规范一致化）
+- 小节名统一：7 页 反例（常见错误）→ 常见误区；AGENTS.md/CLAUDE.md 模板同步。
+- tag 归一：30 页移除 tags 中的中文 tag，aspnetcore→aspnet-core、efcore→ef-core、裸 aot→native-aot。
+- 修孤立链接：output-caching↔caching、rate-limiting/output-caching 入 middleware、data-protection 入 auth、concurrency/pagination/ef-vs-ado 入 ef-data-access。
+- 迁移决策待定：patterns/composition.md 是否移到 dotnet/fundamentals/（内容属基础/Web），本轮保留，记于 qa-report。
+- 影响：7 页正文、30 页 frontmatter、AGENTS.md、CLAUDE.md、middleware/auth/ef-data-access/caching 参考资料、qa-report。

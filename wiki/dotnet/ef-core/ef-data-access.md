@@ -66,7 +66,7 @@ public sealed class Order
 
 需要跨多个聚合保持一致时，也在同一个 `DbContext` 内一次性 `SaveChangesAsync` 即可——工作单元语义天然具备，不需要你手动去“刷盘”或“提交事务”。对绝大多数 EF Core 场景，这套“直接注入 DbContext + 用 DbSet 查询 + 用 SaveChangesAsync 提交”就足够了。
 
-## 反例（常见错误）
+## 常见误区
 
 最常见的错误，就是在 `DbContext` 之上再包一层 Repository / Unit of Work：
 
@@ -88,4 +88,5 @@ public interface IOrderRepository { Task<Order?> GetAsync(OrderId id); }
 - 相关：[最小 API 组织](../../patterns/composition.md#minimal-api-organization)
 - 相关：[依赖注入](../fundamentals/dependency-injection.md)
 - 相关：[释放与 using](../../patterns/disposable-using.md)
+- 相关：[并发控制](concurrency.md) · [分页查询与动态排序](pagination.md) · [EF Core vs ADO.NET](../../comparisons/ef-vs-ado.md)
 - 官方文档：[EF Core 文档](https://learn.microsoft.com/ef/core/)

@@ -1,7 +1,7 @@
 ---
 title: 输入验证（DataAnnotations / 内置验证）
 summary: 用内置 DataAnnotations 与 IValidatableObject 做模型验证；net10 最小 API 内置验证，弃第三方库。
-tags: [validation, dataannotations, ivalidatableobject, minimal-api, 校验]
+tags: [validation, dataannotations, ivalidatableobject, minimal-api]
 introduced-in: general
 applies-to: [all]
 status: stable

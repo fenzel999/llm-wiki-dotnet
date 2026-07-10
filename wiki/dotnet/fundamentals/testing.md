@@ -1,7 +1,7 @@
 ---
 title: 测试（单元测试与集成测试）
 summary: 用 xUnit 写单元测试，用 WebApplicationFactory 做集成测试，用内置 Microsoft.Data.Sqlite 跑真实依赖。
-tags: [testing, xunit, integration-test, 质量]
+tags: [testing, xunit, integration-test]
 introduced-in: general
 applies-to: [all]
 status: stable

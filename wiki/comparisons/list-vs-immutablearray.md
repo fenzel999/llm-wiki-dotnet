@@ -1,7 +1,7 @@
 ---
 title: List 与 ImmutableArray 对比
 summary: List<T> 可变灵活、ImmutableArray<T> 不可变且零额外分配、缓存友好；按线程安全与性能取舍。
-tags: [comparison, list, immutablearray, 集合, 性能, 线程安全]
+tags: [comparison, list, immutablearray]
 introduced-in: general
 applies-to: [all]
 status: stable

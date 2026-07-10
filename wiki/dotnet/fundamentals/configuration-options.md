@@ -1,7 +1,7 @@
 ---
 title: 配置与 Options 模式
 summary: 多源合并的配置系统，配合强类型 Options 模式把配置绑定成对象并做启动期校验。
-tags: [configuration, options, settings, 校验]
+tags: [configuration, options, settings]
 introduced-in: general
 applies-to: [all]
 status: stable

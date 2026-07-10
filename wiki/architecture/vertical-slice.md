@@ -1,7 +1,7 @@
 ---
 title: 垂直切片架构（Vertical Slice）
 summary: 按功能而非技术分层组织代码，一个功能的请求/处理/响应聚在一个切片里，降低跨层跳转。
-tags: [architecture, vertical-slice, feature-folder, 组织]
+tags: [architecture, vertical-slice, feature-folder]
 introduced-in: general
 applies-to: [all]
 status: stable

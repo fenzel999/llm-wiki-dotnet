@@ -1,7 +1,7 @@
 ---
 title: ASP.NET Core 10 Web 特性
 summary: .NET 10 / ASP.NET Core 10 的关键 Web 特性——最小 API 内置验证（自动 400）、原生 OpenAPI 3.1 文档。
-tags: [aspnetcore, minimal-api, validation, openapi, net10]
+tags: [aspnet-core, minimal-api, validation, openapi, net10]
 introduced-in: net10
 applies-to: [net10]
 status: stable

@@ -1,7 +1,7 @@
 ---
 title: EF Core 迁移（Migrations）
 summary: 用迁移把模型变更以可版本化、可回滚的方式演进数据库架构，生产用脚本或 bundle 部署。
-tags: [ef-core, migrations, 数据库, schema]
+tags: [ef-core, migrations, schema]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

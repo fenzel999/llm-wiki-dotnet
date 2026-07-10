@@ -1,7 +1,7 @@
 ---
 title: RAG 与 LLM Wiki 对比
 summary: RAG 在查询时检索外部语料，LLM Wiki 在摄入时编译为结构化知识；本仓库采用 LLM Wiki 策略。
-tags: [comparison, rag, llm-wiki, retrieval, 知识库]
+tags: [comparison, rag, llm-wiki, retrieval]
 introduced-in: general
 applies-to: [all]
 status: stable

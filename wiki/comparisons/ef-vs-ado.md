@@ -1,7 +1,7 @@
 ---
 title: EF Core vs 原生 ADO.NET
 summary: ORM 的开发效率 vs 手写 SQL 的极致控制；按场景选，二者可在同一项目共存。
-tags: [ef-core, ado-net, orm, sql, 对比]
+tags: [ef-core, ado-net, orm, sql]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

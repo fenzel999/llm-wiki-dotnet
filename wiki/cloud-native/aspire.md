@@ -1,7 +1,7 @@
 ---
 title: .NET Aspire（本地编排与可观测性）
 summary: 用 C# AppHost 编排多服务本地开发，统一注入配置/发现/遥测，自带仪表盘；开源免费、不绑定云。
-tags: [aspire, cloud-native, orchestration, observability, 开发体验]
+tags: [aspire, cloud-native, orchestration, observability]
 introduced-in: net8
 applies-to: [net8, net9, net10]
 status: stable

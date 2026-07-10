@@ -1,7 +1,7 @@
 ---
 title: 实时通信（SignalR）
 summary: 用内置 SignalR 实现服务器主动推送，Hub 抽象自动协商 WebSocket 等传输，强类型 Hub 更安全。
-tags: [signalr, realtime, websocket, hub, 推送]
+tags: [signalr, realtime, websocket, hub]
 introduced-in: general
 applies-to: [all]
 status: stable

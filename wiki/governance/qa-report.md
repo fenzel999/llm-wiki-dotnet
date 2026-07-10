@@ -30,6 +30,17 @@ updated: 2026-07-09
 - 待你判定：无。
 
 ### 待办（后续巡检）：P16 全库 AOT 合规扫描
+- 待分类决策：`patterns/composition.md` 是否物理迁移到 `dotnet/fundamentals/`（其内容为 Options/Host/Pipeline/Minimal API，属基础/Web 而非"实践/模式"）。本轮先保留在 patterns，待后续按重排方案决定（迁移会改 ~10 处跨页链接与内部相对路径深度）。
+
+- 日期：2026-07-10（**全局清理 Round 1** — 分类/规范一致化）
+- 触发：全库分析（子树）+ 人工反馈"重新分析、整理、调优、分类"。
+- 小节名统一：7 页 `## 反例（常见错误）`→`## 常见误区`（与 POLICY P13 一致）；`AGENTS.md`/`CLAUDE.md` 模板同步改为 `## 常见误区`。
+- tag 归一：30 页清理 `tags:` 中的中文 tag（探针/部署/校验/缓存/集合…），并将 `aspnetcore`→`aspnet-core`、`efcore`→`ef-core`、裸 `aot`→`native-aot`。
+- 修孤立链接：给 5 个仅被 index 链接的页面补入站交叉链接——`output-caching`↔`caching`、`rate-limiting`/`output-caching` 入 `middleware`、`data-protection` 入 `auth`、`concurrency`/`pagination`/`ef-vs-ado` 入 `ef-data-access`。
+- 结论：`mkdocs build --strict` 待跑通过后提交。
+- 待你判定：无。
+
+### 待办（后续巡检）：P16 全库 AOT 合规扫描
 P16 要求每个**后端主题页**补 `### Native AOT 兼容性` 小节。本轮仅覆盖新增/改动页，后续巡检需为其余后端页补齐并标注限制，重点：
 - `dotnet/aspnet-core/auth.md`：cookie/OpenID Connect **不支持 AOT**，应显式标注并推荐 AOT 后端用 JWT Bearer（现主例已是 JWT）。
 - `dotnet/aspnet-core/signalr.md`：AOT **部分支持**，需标注。

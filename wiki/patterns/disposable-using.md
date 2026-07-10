@@ -77,7 +77,7 @@ await tx.CommitAsync(ct);
 
 这种「把资源交出去、作用域结束自动收回」的写法，也正好被[组合与架构模式](composition.md)里的[管道行为](composition.md#pipeline-behavior)和[泛型主机](composition.md#generic-host)用作事务、通道等资源的可靠清理手段。
 
-## 反例（常见错误）
+## 常见误区
 
 ❌ 下面是最朴素的错误：在 `Dispose` 里直接释放，却没有 `_disposed` 守卫。一旦被释放两次，第二次就会抛异常，而释放路径上抛异常是最难处理的：
 

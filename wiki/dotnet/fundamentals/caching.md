@@ -1,7 +1,7 @@
 ---
 title: 缓存（IMemoryCache / IDistributedCache / HybridCache）
 summary: 本地内存缓存、分布式缓存与 net9 引入的 HybridCache 两级缓存及其防击穿能力。
-tags: [caching, memorycache, distributedcache, hybridcache, 性能]
+tags: [caching, memorycache, distributedcache, hybridcache]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable
@@ -59,6 +59,7 @@ var options = new HybridCacheEntryOptions { Expiration = TimeSpan.FromMinutes(10
 ## 参考资料
 
 - [配置与 Options](configuration-options.md)
+- [输出缓存（HTTP 响应缓存，区别于应用级缓存）](../aspnet-core/output-caching.md)
 - [性能基准测试](../../performance/benchmarking.md)
 - 官方文档：[ASP.NET Core 缓存概述](https://learn.microsoft.com/aspnet/core/performance/caching/overview)
 - 官方文档：[HybridCache](https://learn.microsoft.com/aspnet/core/performance/caching/hybrid)

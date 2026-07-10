@@ -1,7 +1,7 @@
 ---
 title: JSON 序列化（System.Text.Json）
 summary: 用内置 System.Text.Json 高性能序列化，配合源生成器实现零反射、AOT 友好。
-tags: [json, serialization, system-text-json, source-generator, aot]
+tags: [json, serialization, system-text-json, source-generator, native-aot]
 introduced-in: netcore3
 applies-to: [net8, net9, net10]
 status: stable

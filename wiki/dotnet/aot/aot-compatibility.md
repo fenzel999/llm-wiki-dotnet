@@ -1,7 +1,7 @@
 ---
 title: Native AOT 兼容性矩阵与规则
 summary: 后端严格 AOT 的落地清单——哪些特性支持/部分/不支持，以及反射、JSON、DI、EF Core 的 AOT 写法。
-tags: [aot, native-aot, trimming, source-generators, backend]
+tags: [native-aot, trimming, source-generators, backend]
 introduced-in: net8
 applies-to: [net8, net9, net10]
 status: stable

@@ -1,7 +1,7 @@
 ---
 title: 整洁架构（Clean Architecture）
 summary: 依赖只能向内指向领域核心，基础设施与 UI 都是可替换的外层，用接口在内层定义、外层实现。
-tags: [architecture, clean-architecture, 分层, 依赖倒置]
+tags: [architecture, clean-architecture]
 introduced-in: general
 applies-to: [all]
 status: stable

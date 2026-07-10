@@ -1,7 +1,7 @@
 ---
 title: 基准测试（BenchmarkDotNet）
 summary: 用 .NET 基金会的 BenchmarkDotNet 做可靠微基准，先测量再优化，避免凭感觉调优。
-tags: [performance, benchmark, benchmarkdotnet, 测量]
+tags: [performance, benchmark, benchmarkdotnet]
 introduced-in: general
 applies-to: [all]
 status: stable

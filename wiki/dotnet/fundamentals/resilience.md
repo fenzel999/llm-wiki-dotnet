@@ -1,7 +1,7 @@
 ---
 title: 弹性与容错（Resilience / Polly）
 summary: 用 Microsoft.Extensions.Resilience（基于 Polly）为网络调用加重试、熔断、超时、隔离。
-tags: [resilience, polly, retry, circuit-breaker, 容错]
+tags: [resilience, polly, retry, circuit-breaker]
 introduced-in: net8
 applies-to: [net8, net9, net10]
 status: stable

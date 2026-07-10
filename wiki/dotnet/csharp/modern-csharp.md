@@ -1,7 +1,7 @@
 ---
 title: C# 现代语言特性
 summary: 把 record、可空引用类型、泛型、模式匹配、Span/Memory、ValueTask 与源生成器串成一篇连贯的现代 C# 语言特性导览。
-tags: [csharp, record, nullable, generics, pattern-matching, span, memory, valuetask, source-generators, 性能]
+tags: [csharp, record, nullable, generics, pattern-matching, span, memory, valuetask, source-generators]
 introduced-in: general
 applies-to: [all]
 status: stable

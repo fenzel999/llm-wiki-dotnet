@@ -1,7 +1,7 @@
 ---
 title: 认证与授权（Authentication & Authorization）
 summary: 认证确认"你是谁"，授权决定"你能做什么"；JWT/Cookie 认证配合基于策略的授权。
-tags: [auth, authentication, authorization, jwt, policy, 安全]
+tags: [auth, authentication, authorization, jwt, policy]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -57,6 +57,7 @@ app.MapGet("/admin/stats", () => "secret")
 ## 参考资料
 
 - [中间件管道](middleware.md)
+- [安全加固与机密（Data Protection）](../fundamentals/data-protection.md)
 - [ASP.NET Core 10](aspnet-core-10.md)
 - 官方文档：[ASP.NET Core 安全性](https://learn.microsoft.com/aspnet/core/security/)
 - 官方文档：[基于策略的授权](https://learn.microsoft.com/aspnet/core/security/authorization/policies)

@@ -1,7 +1,7 @@
 ---
 title: EF Core 10 数据特性
 summary: .NET 10 / EF Core 10 的关键数据特性——复杂类型与 JSON 列映射、命名查询筛选器。
-tags: [efcore, complex-types, query-filter, net10]
+tags: [ef-core, complex-types, query-filter, net10]
 introduced-in: net10
 applies-to: [net10]
 status: stable

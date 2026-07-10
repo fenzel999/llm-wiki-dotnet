@@ -1,7 +1,7 @@
 ---
 title: EF Core 并发控制
 summary: 用乐观并发（并发令牌 / rowversion）检测冲突更新，捕获 DbUpdateConcurrencyException 处理。
-tags: [ef-core, concurrency, optimistic, rowversion, 并发]
+tags: [ef-core, concurrency, optimistic, rowversion]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

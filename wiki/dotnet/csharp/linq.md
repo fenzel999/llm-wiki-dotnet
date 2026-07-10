@@ -1,7 +1,7 @@
 ---
 title: LINQ（语言集成查询）
 summary: 延迟执行的查询算子链，理解何时枚举、避免多次枚举与内存/数据库端执行的区别。
-tags: [linq, ienumerable, iqueryable, 延迟执行, 查询]
+tags: [linq, ienumerable, iqueryable]
 introduced-in: general
 applies-to: [all]
 status: stable

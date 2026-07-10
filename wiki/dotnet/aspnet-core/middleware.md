@@ -1,7 +1,7 @@
 ---
 title: 中间件管道（Middleware Pipeline）
 summary: 请求经过一条有序的中间件管道，每个中间件可短路或调用 next 继续，顺序决定行为。
-tags: [middleware, pipeline, aspnetcore, 请求管道]
+tags: [middleware, pipeline, aspnet-core]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -66,6 +66,7 @@ app.Use(async (context, next) =>
 
 - [全局异常处理与统一错误响应](exception-handling.md)
 - [认证与授权](auth.md)
+- [限流](rate-limiting.md) · [输出缓存](output-caching.md)
 - [ASP.NET Core 10](aspnet-core-10.md)
 - 官方文档：[ASP.NET Core 中间件](https://learn.microsoft.com/aspnet/core/fundamentals/middleware/)
 - 官方文档：[中间件顺序](https://learn.microsoft.com/aspnet/core/fundamentals/middleware/#middleware-order)

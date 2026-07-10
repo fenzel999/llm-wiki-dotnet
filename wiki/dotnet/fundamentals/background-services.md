@@ -1,7 +1,7 @@
 ---
 title: 后台服务（BackgroundService / Worker）
 summary: 用 BackgroundService 与 IHostedService 跑长时任务，Worker Service 模板构建无 Web 的托管进程。
-tags: [background-service, hosted-service, worker, 后台任务]
+tags: [background-service, hosted-service, worker]
 introduced-in: general
 applies-to: [all]
 status: stable

@@ -1,7 +1,7 @@
 ---
 title: HttpClient 与 IHttpClientFactory
 summary: 用 IHttpClientFactory 管理生命周期避免套接字耗尽，配合命名/类型化客户端按用途配置。
-tags: [http, httpclient, httpclientfactory, 网络, sockets]
+tags: [http, httpclient, httpclientfactory, sockets]
 introduced-in: general
 applies-to: [all]
 status: stable

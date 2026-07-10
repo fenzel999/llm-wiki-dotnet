@@ -1,7 +1,7 @@
 ---
 title: 安全加固（Data Protection 与机密管理）
 summary: 用内置 Data Protection 加密敏感数据、共享密钥环，用 user-secrets/环境变量管理机密，杜绝硬编码。
-tags: [security, data-protection, secrets, 加密, 机密]
+tags: [security, data-protection, secrets]
 introduced-in: general
 applies-to: [all]
 status: stable

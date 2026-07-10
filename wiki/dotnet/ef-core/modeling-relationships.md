@@ -1,7 +1,7 @@
 ---
 title: EF Core 关系建模
 summary: 用导航属性与外键表达一对多/多对多/一对一，理解必需与可选关系及级联删除。
-tags: [ef-core, relationships, 建模, 外键, navigation]
+tags: [ef-core, relationships, navigation]
 introduced-in: general
 applies-to: [net8, net9, net10]
 status: stable

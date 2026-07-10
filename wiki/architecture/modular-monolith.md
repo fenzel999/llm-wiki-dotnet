@@ -1,7 +1,7 @@
 ---
 title: 模块化单体架构
 summary: 单进程部署、内部按业务模块强边界解耦的架构——兼顾单体的运维简单与微服务的清晰边界。
-tags: [architecture, modular-monolith, ddd, aspnetcore, net10]
+tags: [architecture, modular-monolith, ddd, aspnet-core, net10]
 introduced-in: general
 applies-to: [all]
 status: stable
@@ -199,7 +199,7 @@ services.AddScoped<Billing.Contracts.IInvoiceService, Billing.Infrastructure.Inv
 
 这就是"先模块化单体、边界稳定后按需抽取微服务"能低成本落地的原因：边界从第一天就用契约划死，抽取只是替换接缝，不是重写。
 
-## 反例（常见错误）
+## 常见误区
 
 - **按技术分层当模块**：把 `Controllers` / `Services` / `Repositories` 当成「模块」。这是分层，不是模块化；业务改一处仍要横跨所有层，耦合毫无改善。模块必须按**业务能力**切。
 - **共享一个大 `DbContext` 与跨模块 join**：所有模块的实体挤在一个 `DbContext` 里互相 join，边界名存实亡，未来无法拆分。应每模块独立 `DbContext` / schema。

@@ -83,6 +83,10 @@ var all = await db.Posts
 === "net8"
     引入复杂类型但功能范围较小；每个实体仅一个匿名筛选器，`IgnoreQueryFilters()` 全禁用。
 
+### Native AOT 兼容性
+
+复杂类型与 JSON 列映射、命名查询筛选器均为模型/查询定义，**AOT 下需启用 EF 编译模型**（见 [EF AOT](ef-data-access.md) + [AOT 矩阵](../aot/aot-compatibility.md)）。注意 JSON 列（`ToJson()`）序列化走 `System.Text.Json`，AOT 下同样需**源生成**（见 [序列化](../csharp/serialization.md)）。
+
 ## 参考资料
 
 - 相关：[EF Core 数据访问](ef-data-access.md)

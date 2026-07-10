@@ -302,3 +302,8 @@ updated: 2026-07-09
 - 链接深度修复：dotnet/csharp/ 下引用 dotnet/aot、dotnet/ef-core、dotnet/fundamentals 应用 `../`（非 `../dotnet/`）；governance 用 `../../governance/`。
 - mkdocs build --strict 通过。
 - 影响：wiki/comparisons/*.md（4 页）、wiki/dotnet/csharp/async-await.md、collections.md、linq.md、serialization.md、wiki/log.md。
+
+## 2026-07-11 · 薄页 P17 深写（Round C：dotnet/ef-core 基础）
+- ef-core/ 基础 5 页按 P17 深写：query-performance（问题→解法决策表 + ToQueryString + AOT 需预编译查询）、migrations（本地 vs 生产部署对比表 + AOT 无关/设计期工具）、modeling-relationships（关系类型表 + OnDelete 显式 + AOT 需编译模型）、concurrency（乐观 vs 悲观表 + PostgreSQL xmin + 重试前 reload + AOT 安全）、ef-core-10（补 AOT 小节：JSON 列需源生成）。
+- mkdocs build --strict 通过。
+- 影响：wiki/dotnet/ef-core/query-performance.md、migrations.md、modeling-relationships.md、concurrency.md、ef-core-10.md、wiki/log.md。

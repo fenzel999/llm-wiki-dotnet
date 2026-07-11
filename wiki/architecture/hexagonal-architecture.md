@@ -28,7 +28,7 @@ updated: 2026-07-11
 
 核心规则：**依赖只向内**。应用核心只引用自己定义的端口接口，或（按本库 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 约定）直接注入 `AppDbContext`——绝不手写额外的仓储/工作单元包装。这是依赖倒置原则（DIP）的直接应用，与 [依赖注入](../dotnet/fundamentals/dependency-injection.md) 天然契合——运行时由 DI 容器把具体适配器“注入”到端口背后。
 
-> 为什么持久化不单独抽象成端口？因为 **EF Core 的 `DbContext` 本身就是 Unit of Work、`DbSet<T>` 本身就是 Repository**——它已经实现了仓储模式，再包一层 `IOrderRepository` / `EfOrderRepository` 属于多余抽象（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。所以本库约定：持久化直接注入 `AppDbContext`、扩展对应的 `DbSet` 即可；**只有真正跨进程边界的关注点（通知、第三方 HTTP 等）才定义端口**。六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
+> 为什么持久化不单独抽象成端口？因为 **EF Core 的 `DbContext` 本身就是 Unit of Work、`DbSet<T>` 本身就是 Repository**，再包一层 `IOrderRepository` / `EfOrderRepository` 属于多余抽象（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。所以本库约定：持久化直接注入 `AppDbContext`、用静态扩展方法补 `DbSet` 缺的能力、**坚决不写仓储类**。此外 **EF Core 自身就是适配器模式**：换数据库只换 `UseXxx` 一行（如 `UseSqlServer` ↔ `UseNpgsql`），领域与抽象不受影响，因此持久化层不需要你再手写适配器。只有真正跨进程边界的关注点（通知、第三方 HTTP 等）才定义端口。六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
 
 ## 正确做法
 
@@ -77,17 +77,30 @@ public sealed class ConfirmOrderUseCase(
 
 ### 2. 基础设施：扩展 AppDbContext 的 DbSet（新语法）
 
-本库约定：**EF Core 的 `DbContext` 已经是 Unit of Work、`DbSet<T>` 已经是 Repository**，所以不要再加 `IOrderRepository` / `EfOrderRepository` 这类包装。直接**扩展 `AppDbContext` 对应的 `DbSet`** 即可——`AppDbContext` 本身就算“仓储模式”的落地，无需任何额外抽象。
+本库约定：**EF Core 的 `DbContext` 已经是 Unit of Work、`DbSet<T>` 已经是 Repository**，所以**坚决不另写 `IOrderRepository` / `EfOrderRepository` 这类仓储类**。直接**注入 `AppDbContext`、扩展对应的 `DbSet`** 即可——`AppDbContext` 本身就算“仓储模式”的落地。
+
+`DbSet<T>` / `IQueryable<T>` 自带的能力（增删改查、`Where`、`Include` 等）够用时直接用；**它“没有的功能”用静态扩展方法补**，而不是再起一个仓储类：
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using Wiki.AppCore;
 
 // AppDbContext：用 C# 12 主构造函数把 DbContextOptions 声明在类型参数上（AOT 友好）。
-// 扩展对应的 DbSet<Order> 即获得该实体的仓储能力，这就是“套壳 AppDbContext”的全部所需。
+// 扩展对应的 DbSet<Order> 即获得该实体的持久化能力，这就是“套壳 AppDbContext”的全部所需。
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Order> Orders => Set<Order>();
+}
+
+// 给 DbSet<Order> 补它“没有的”查询能力：用静态扩展方法（挂在 IQueryable<T> 上）。
+// 不在 DbContext 里堆方法，也不建仓储类；扩展方法组合成表达式树，由 EF 提供程序翻译，AOT 安全。
+public static class OrderQueries
+{
+    public static IQueryable<Order> ByProduct(this IQueryable<Order> source, string product)
+        => source.Where(o => o.Product == product);
+
+    public static IQueryable<Order> ConfirmedOnly(this IQueryable<Order> source)
+        => source.Where(o => o.IsConfirmed);
 }
 
 // 只有真正跨进程边界的关注点才做端口 + 适配器，例如用内置 HttpClient 发通知
@@ -100,6 +113,8 @@ public sealed class HttpNotifier(HttpClient http) : INotifier, IDisposable
 }
 ```
 
+> **EF Core 本身就是适配器模式（Adapter）。** 它把“领域/用例的持久化意图”翻译到具体数据库：`UseSqlServer` 是 SQL Server 适配器、`UseNpgsql` 是 Postgres 适配器——**更换数据库只换一行 `UseXxx`，领域与抽象完全不受影响**。这正是六边形“次适配器”想表达的边界，所以持久化这一层**不需要你再手写一个 `EfOrderRepository` 适配器**，EF Core 的提供程序（Provider）已经充当了那个适配器。
+
 ### 3. 通过 DI 接线（依赖倒置的落地点）
 
 ```csharp
@@ -108,7 +123,9 @@ using Wiki.AppCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 持久化：直接注册 AppDbContext（它就是内置的仓储 + 工作单元）
+// 持久化：直接注册 AppDbContext（它就是内置的仓储 + 工作单元）。
+// 换数据库只换 UseXxx 一行 —— EF Core 本身就是适配器：UseSqlServer / UseNpgsql / UseSqlite
+// 互不影响领域与抽象（六边形“次适配器”的边界由提供程序充当）。
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("Orders")));
 // 跨进程边界的端口才需要显式注册到适配器

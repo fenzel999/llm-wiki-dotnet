@@ -27,9 +27,9 @@ AOT 不是银弹。**JIT（动态 PGO）** 在长周期、高吞吐服务中仍�
 | 评估维度 | 推荐 JIT（长周期高吞吐） | 推荐 AOT（冷启动/内存密度/边缘） |
 |----------|--------------------------|----------------------------------|
 | 应用类型 | 长周期 Web API、后台服务、高吞吐计算 | CLI 工具、Sidecar、Job Worker、Serverless、边缘 |
-| 部署环境 | 长期运行 VM、K8s 长驻 Pod | AWS Lambda、Azure Container Apps、Edge Devices |
+| 部署环境 | 长期运行 VM、K8s 长驻 Pod | Serverless（函数计算）/ 边缘容器 / Edge Devices |
 | 性能目标 | 极致峰值吞吐量 (RPS) | 极致冷启动速度、低内存占用 |
-| 依赖库 | 现代库、System.Text.Json、Dapper、Minimal API | 同上（遗留库 Newtonsoft/旧版 AutoMapper/EF6 红灯） |
+| 依赖库 | 微软官方库、System.Text.Json、Minimal API、原生 ADO.NET / EF Core（编译模型） | 同上（遗留库 Newtonsoft / 旧版 AutoMapper / EF6 红灯） |
 | 调试需求 | 托管调试器全支持 | 仅原生调试器（WinDbg/lldb），无托管即时窗口 |
 
 > ⚠️ **长周期高吞吐服务默认选 JIT**。AOT 的静态 PGO 尚未超越 JIT 动态 PGO 的运行时自适应优化。
@@ -108,6 +108,13 @@ AOT 生成的代码段是**只读**的，操作系统可在多个容器实例间
 | 长跑 24h 吞吐 | **最优** | ±5% | JIT 微优 |
 
 > 数据来源：.NET 10 Performance Improvements 官方博客、PowerToys 迁移案例。
+
+### Native AOT 兼容性
+
+- AOT 是一种**部署选择**，不是语言特性——是否用 AOT 取决于冷启动/内存密度/边缘场景，而非代码写法；页面已覆盖 JIT vs AOT 的性能取舍。
+- AOT 后端须用 **Minimal API**（非 MVC/控制器）、**System.Text.Json 源生成**、避免运行期反射、依赖显式注册；EF Core 须启用**编译模型 / 预编译查询**才能 AOT 发布。
+- 静态 PGO、SIMD 指令集等优化都建立在 `PublishAot=true` 之上，需配合警告清零与两阶段构建。
+- 详见 [AOT 兼容性矩阵与规则](../dotnet/aot/aot-compatibility.md)。
 
 ## 参考资料
 

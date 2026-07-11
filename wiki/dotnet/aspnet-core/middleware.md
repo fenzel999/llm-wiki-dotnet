@@ -38,7 +38,8 @@ app.UseRouting();
 app.UseRateLimiter();             // ③ 限流在认证/授权前后皆可，通常在路由后
 app.UseAuthentication();          // ④ 认证在授权之前
 app.UseAuthorization();           // ⑤
-app.MapControllers();             // ⑥ 终结点在最后
+// ⑥ 终结点在最后（用 Minimal API，不用 MVC/控制器，后者不兼容 AOT，见 aspnet-core-10.md）
+app.MapGet("/health", () => Results.Ok("ok"));
 app.Run();
 ```
 

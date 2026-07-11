@@ -103,7 +103,7 @@ app.UseExceptionHandler();                                  // 最外层，兜�
 返回给客户端的统一响应：
 
 ```json
-{ "type": "...", "title": "订单已提交，不能修改", "status": 400, "code": "order.already_submitted", "traceId": "00-..." }
+{ "type": "...", "title": "订单已提交，不能修改", "status": 422, "code": "order.already_submitted", "traceId": "00-..." }
 ```
 
 ## 常见误区

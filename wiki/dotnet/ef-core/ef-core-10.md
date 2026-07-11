@@ -139,7 +139,7 @@ dotnet publish -c Release -r linux-x64 -p:PublishAot=true
 
 ❌ **以为能替代所有 EF Core 查询** —— 仅作用于“编译期已知结构的 LINQ”；动态报表、用户自定义筛选等场景仍需运行时查询管道（需保留 JIT 回退或接受不兼容）。
 
-### AOT 兼容性补充
+### Native AOT 兼容性
 
 - 预编译查询**仅在 `PublishAot=true` 时生效**；JIT 发布忽略生成的拦截器。
 - 仍需**启用 EF 编译模型**（`dotnet ef dbcontext optimize`）与 **JSON 源生成**（见 [序列化](../csharp/serialization.md)）。

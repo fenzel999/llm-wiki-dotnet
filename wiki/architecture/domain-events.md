@@ -29,7 +29,20 @@ updated: 2026-07-10
 
 ```csharp
 public interface IDomainEvent { }
-public interface IDomainEventHandler<in T> where T : IDomainEvent { Task Handle(T e, CancellationToken ct); }
+
+// 处理器基类：编译期已知处理的事件类型（EventType），分发器据此过滤，无运行期反射
+public interface IDomainEventHandler
+{
+    Type EventType { get; }
+    Task Handle(object domainEvent, CancellationToken ct);
+}
+public abstract class DomainEventHandler<TEvent> : IDomainEventHandler where TEvent : IDomainEvent
+{
+    public Type EventType => typeof(TEvent);
+    Task IDomainEventHandler.Handle(object domainEvent, CancellationToken ct)
+        => Handle((TEvent)domainEvent, ct);
+    protected abstract Task Handle(TEvent domainEvent, CancellationToken ct);
+}
 
 public abstract class Entity                                  // 实体基类：收集事件
 {
@@ -63,9 +76,10 @@ public sealed class DomainEventInterceptor(IServiceProvider sp) : SaveChangesInt
             entity.ClearDomainEvents();
             foreach (var e in events)                         // 手写派发，不用 MediatR
             {
-                var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(e.GetType());
-                foreach (var h in sp.GetServices(handlerType))
-                    await (Task)handlerType.GetMethod("Handle")!.Invoke(h, [e, ct])!;
+                // 闭包泛型 GetServices<IDomainEventHandler>() + 编译期已知的 EventType 过滤，
+                // 无 MakeGenericType / GetMethod / Invoke 反射，Native AOT 安全
+                foreach (var h in sp.GetServices<IDomainEventHandler>().Where(h => h.EventType == e.GetType()))
+                    await h.Handle(e, ct);
             }
         }
         return await base.SavingChangesAsync(data, result, ct);
@@ -89,7 +103,7 @@ public sealed class DomainEventInterceptor(IServiceProvider sp) : SaveChangesInt
 
 ### Native AOT 兼容性
 
-领域事件分发器靠 DI 解析处理器、`OfType` 过滤，无运行期反射，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。注意：若事件携带类型信息做反序列化，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
+领域事件分发器靠闭包泛型 `GetServices<IDomainEventHandler>()` + 编译期已知的 `EventType` 过滤，无 `MakeGenericType`/`GetMethod`/`Invoke` 反射，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。注意：若事件携带类型信息做反序列化，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
 ## 参考资料
 

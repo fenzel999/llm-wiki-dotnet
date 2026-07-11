@@ -62,8 +62,8 @@ AOT 下最常见的坑是**反射式序列化/绑定**。逐项替换：
 
 EF Core 查询管道历史上重度依赖运行期表达式编译，故**仅部分支持 AOT**。AOT 发布需要：
 
-- **编译模型**：`dotnet ef dbcontext optimize` 预生成模型，避免运行期用反射构建。
-- **预编译查询**（net9+ 引入、net10 完善）：把 LINQ 查询在编译期转成拦截器代码。
+- **编译模型**：`dotnet ef dbcontext optimize` 预生成模型（net8+ 可用），避免运行期用反射构建。
+- **预编译查询**（net10 引入、实验性预览）：把 LINQ 查询在编译期转成拦截器代码。
 - 应用侧查询逻辑本身**不要靠反射**（如[动态排序用编译期表达式白名单](../ef-core/pagination.md)，不按字符串反射属性名）。
 
 ### 验证
@@ -91,7 +91,7 @@ dotnet publish -c Release   # 项目已设 PublishAot=true
 
 ## 适用版本
 
-ASP.NET Core Native AOT 支持自 **net8** 引入，net9/net10 覆盖面持续扩大（EF Core 预编译查询 net9+）。上表为官方 net10 兼容性快照。
+ASP.NET Core Native AOT 支持自 **net8** 引入，net9/net10 覆盖面持续扩大（EF Core 预编译查询 **net10+ 实验性**）。上表为官方 net10 兼容性快照。
 
 ## 参考资料
 

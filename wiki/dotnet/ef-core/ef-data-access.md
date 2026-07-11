@@ -83,6 +83,13 @@ public interface IOrderRepository { Task<Order?> GetAsync(OrderId id); }
 === "net8 / net9 / net10"
     适用于所有受支持版本：`DbContext` 即工作单元 + 仓储，无需额外 Repository / Unit of Work 抽象。此约定为通用工程实践，与具体 .NET 版本无关。
 
+### Native AOT 兼容性
+
+- 后端数据访问在 AOT 发布下**必须**改造查询管道：`DbContext`/`SaveChanges` 默认依赖运行期表达式编译，AOT 不可用；需启用 **EF 编译模型**（`dotnet ef dbcontext optimize`，net8+），或 **预编译查询**（net10 实验性、需显式 opt-in）。
+- 本库直接注入 `AppDbContext`、不套 Repository/Unit of Work 的约定在 AOT 下依然成立，只是查询须改用上述编译期手段。
+- 动态排序/筛选用**编译期表达式白名单**而非按属性名反射（见[分页查询与动态排序](pagination.md)），避免运行期反射破坏 AOT。
+- 详见 [AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
+
 ## 参考资料
 
 - 相关：[最小 API 组织](../../patterns/composition.md#minimal-api-organization)

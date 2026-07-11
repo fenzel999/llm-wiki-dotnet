@@ -13,6 +13,19 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **全库 Audit + Correct（一致性巡检，人类反馈"内容要重新整理/分类，已目测到旧知识未统一"）**。
+    - 触发：人类指出"学会了分页，其他地方没按最新方式做"等陈旧/不一致处，要求**全面分析、重新分类、清旧换新**。
+    - **分页漂移修复**（用户点名案例）：`architecture/dto.md` 此前用**自创的** `PagedResult<T>(Items,TotalCount)` 2 参 + `PagedQuery` + `OrderByWhitelist`，与权威页 `dotnet/ef-core/pagination.md`（`PagedResult<T>(Items,TotalCount,Page,PageSize)` + `PageRequest` + `DynamicOrderByAllowList`/`WithDynamicOrderBy`/`WithOffsetPaging`）不一致。已统一为权威形状。同时修 `pagination.md` 内部 bug：`PageRequest` 定义 `SortBy/Descending` 但示例使用 `req.Sorting` —— 补 `Sorting` 计算属性。
+    - **P16 反射违规**：`domain-events.md` 分发器用 `MakeGenericType`/`GetMethod`/`Invoke` 运行期反射却标"AOT 安全"——替换为闭包泛型 `GetServices<IDomainEventHandler>()` + 编译期 `EventType` 过滤（无反射）。`specification-pattern.md` 的 `IsSatisfiedBy` 用 `ToExpression().Compile()`（Reflection.Emit，AOT 失败）却标 AOT 友好——更正：仅 `ToExpression()` 查询下推路径 AOT 安全，`IsSatisfiedBy` 内存路径不在 AOT 后端使用。
+    - **P10 违规/事实错误**：`clean-architecture.md` 把 **Dapper** 当可替换存储示例 → 改为"原生 ADO.NET / `FromSql`"；`aot-performance.md` 决策矩阵含 Dapper 且部署环境写 **Azure Container Apps**（付费/云绑定，违 P12）→ 改为微软官方库 + Serverless/边缘容器等厂商中立表述。
+    - **P16 MVC 残留**：`middleware.md` 末行 `app.MapControllers()` → 改为 Minimal API 端点；`serialization.md` `AddControllers().AddJsonOptions` → `ConfigureHttpJsonOptions`。`exception-handling.md` 示例响应 `status:400` 与代码（业务校验默认 422）矛盾 → 改为 422。`api-design.md` 分页 JSON 用 camelCase 与权威 `PagedResult` PascalCase 不符 → 对齐并补 `totalPages`；其推荐的 `prometheus-net`/`Refit`/`PactNet`（第三方、非 MS/基金会）与自身"不引第三方"声明矛盾 → 加 P10/P12 豁免说明。
+    - **命名矛盾**：`entities.md` 的审计/软删除接口（`ICreationAudited`/`IModificationAudited`、getter-only `ISoftDelete`）与权威 `auditing-soft-delete.md`（`IAuditedEntity`、可变 `ISoftDelete`）不一致 → 统一到权威页。
+    - **版本事实修正**：预编译查询是 **net10 实验性**（权威 `ef-core-10.md`），但 `aot-compatibility.md` 误写"net9+、net10 完善"、`query-performance.md` 误并到"net8+" → 均修正为"编译模型 net8+ / 预编译查询 net10 实验性"。
+    - **P17 AOT 小节补齐**：为缺 `### Native AOT 兼容性` 的页补小节——`ef-data-access`、`aot-performance`、`aot-ci-cd`、`minimal-api-aot`、`modern-csharp`、`csharp-14`、`source-generators`；`ef-core-10` 的 `### AOT 兼容性补充` 重命名为规范标题。
+    - **重新分类（nav 去重）**：`mkdocs.yml` 原 `云原生`/`部署与编排`(顶层)/`AOT 部署工程化` 三处重复罗列 aspire/containers/health-checks → 合并为单一归属 `架构 › 部署与编排`（含 `aot-ci-cd`）；`minimal-api-aot` 归入 `Web / Minimal API`。`index.md`/`思维导图.md` 同步去重并补 `adr`/`api-design`/`aot-performance`/`aot-ci-cd`。
+    - 验证：`mkdocs build --strict` 通过（0 警告/错误）。
+    - 影响：dto.md、ef-core/pagination.md、domain-events.md、specification-pattern.md、clean-architecture.md、performance/aot-performance.md、aspnet-core/middleware.md、aspnet-core/serialization.md、aspnet-core/exception-handling.md、architecture/api-design.md、architecture/entities.md、aot/aot-compatibility.md、ef-core/query-performance.md、ef-core/ef-data-access.md、ef-core/ef-core-10.md、deployment/aot-ci-cd.md、aspnet-core/minimal-api-aot.md、csharp/modern-csharp.md、csharp/csharp-14.md、csharp/source-generators.md、mkdocs.yml、index.md、思维导图.md。
+
 - 2026-07-11 **样式改版 + 文件夹结构增补**（人类反馈：页面凌乱、想要更清爽 + 模块化单体文件夹更细）。
     - **样式**：重写 `wiki/extra/theme.css`——从暖色纸张/棕色改为**干净中性灰 + 单一克制蓝**（浅/深两套）；正文更通透（行高/留白/字号微调）；**表格去外框重边**改为轻分隔行、提示框/引用块更轻，降低视觉噪音。
     - **交互**：移除右下角悬浮圆按钮（删 `extra/modes.css`、`extra/modes.js` 及引用），改用 Material **原生顶部浅/深切换**；不再默认专注模式隐藏导航。

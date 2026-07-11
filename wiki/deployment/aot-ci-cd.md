@@ -242,6 +242,13 @@ RUN ldd /app/publish/MyApp | grep "not found" && exit 1 || true
 | 端点遍历 | 逐个端点 `curl` | 全部 200/预期码，JSON 正常 |
 | 负载 | `wrk -t4 -c100 -d30s` | 无崩溃、内存稳定、RPS 达标 |
 
+### Native AOT 兼容性
+
+- AOT 发布是**一次独立的构建**：设置 `PublishAot=true`（或 `dotnet publish -p:PublishAot=true`），产出不依赖 .NET 运行时的原生可执行文件，与 JIT 的 `dotnet run` 是两条路径。
+- 发布前必须**清零全部 trim/AOT 警告**（IL2xxx/IL3xxx）；残留警告意味着运行期可能缺失类型/方法。
+- 推荐**两阶段 CI**：先正常构建（保留 JIT 热重载开发体验），再单独 `publish` 原生产物；交叉编译 Linux 须走 Docker。
+- 详见 [原生 AOT 部署](../dotnet/aot/native-aot.md)。
+
 ## 参考资料
 
 - [Native AOT 部署概述](https://learn.microsoft.com/dotnet/core/deploying/native-aot)

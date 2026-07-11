@@ -51,10 +51,10 @@ public partial class AppJsonContext : JsonSerializerContext { }
 string json = JsonSerializer.Serialize(order, AppJsonContext.Default.Order);
 ```
 
-在 ASP.NET Core 中让 Minimal API 用该上下文（实现 `JsonSerializerContext` 的类型传给 `AddJsonOptions` 或直接标注）：
+在 ASP.NET Core 中让 Minimal API 用该上下文（AOT 后端不用 MVC/控制器，用 `ConfigureHttpJsonOptions`）：
 
 ```csharp
-builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.TypeInfoResolver = AppJsonContext.Default);
+builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.TypeInfoResolver = AppJsonContext.Default);
 ```
 
 ### 3. 何时用哪种？决策表

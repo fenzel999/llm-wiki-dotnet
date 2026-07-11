@@ -193,6 +193,13 @@ if (parse("10", out int r))
 === "net8"
     仅支持传统 `this` 参数扩展方法；属性需手写私有字段；`nameof` 需提供类型实参；多数 Span 场景需显式 `.AsSpan()`；lambda 修饰符需写出完整参数类型。
 
+### Native AOT 兼容性
+
+- C# 14 新特性均为**编译期**语法糖，全部 AOT 安全：`extension` 块（静态分发，非反射）、属性访问器内 `field` 关键字、空条件赋值 `?.=`、`nameof(List<>)` 非绑定泛型、数组/字符串到 Span 的隐式转换、lambda 上的 `ref`/`in`/`out` 修饰符都不引入运行期反射。
+- 注意隐式 Span 转换产出的 `ReadOnlySpan<char>`/`Span<T>` 是 `ref struct`，仍受栈约束（不能跨 `await`、不能进字段），与 AOT 无关但写 AOT 服务时需一并遵守。
+- 避免用运行期反射替代这些编译期能力；序列化用 [System.Text.Json 源生成](serialization.md)。
+- 详见 [AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
+
 ## 参考资料
 
 - 相关：[.NET 10 主题地图](../overview.md)

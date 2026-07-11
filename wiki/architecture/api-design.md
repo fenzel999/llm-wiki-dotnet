@@ -110,9 +110,12 @@ GET /api/v1/users?page=2&pageSize=20
   "items": [...],
   "page": 2,
   "pageSize": 20,
-  "totalCount": 1045
+  "totalCount": 1045,
+  "totalPages": 53
 }
 ```
+
+> 字段名与 [DTO 分页载体 `PagedResult<T>`](dto.md)（PascalCase `Items/TotalCount/Page/PageSize/TotalPages`）对应；序列化用 `System.Text.Json` 源生成时默认保留 PascalCase 属性名。
 
 ### 游标分页（大数据/高并发）
 
@@ -229,6 +232,8 @@ app.MapGet("/users/{id}", async (int id, AppDbContext db) =>
 | 分布式追踪 | `ActivitySource` + `OpenTelemetry` → Jaeger/Zipkin |
 | 关联 ID | `TraceId` 透传 Header `X-Correlation-ID`，日志/追踪/错误自动关联 |
 
+> 观测性**导出走 OTLP + 开源后端**（Prometheus / Grafana / Jaeger，见 [可观测性](../dotnet/fundamentals/observability.md)），符合 [P12](../governance/policy.md)。表中 `prometheus-net` 是**可选社区库、非微软/.NET 基金会**（[P10](../governance/policy.md)），非必需；用内置 `ActivitySource` + OTLP 即可满足。
+
 ## 文档与契约测试
 
 | 工具 | 用途 |
@@ -237,11 +242,23 @@ app.MapGet("/users/{id}", async (int id, AppDbContext db) =>
 | 契约测试 | `PactNet` (Provider 验证) / `Refit` (Client 生成) |
 | 示例生成 | `dotnet-openapi` 生成 Client SDK（TS/C#/Python） |
 
+> `PactNet` / `Refit` 是**可选社区工具、非微软/.NET 基金会**（[P10](../governance/policy.md)），非本库推荐基线；核心契约用内置 `AddOpenApi()` + `MapOpenApi()` 生成 OpenAPI 文档即可。
+
 ## 常见误区
 
 ❌ **URL 放动词** `/api/v1/getUsers` → `/api/v1/users`  
 ❌ **以为 `EnableOpenApi` 就能生成完整文档** —— 需在端点上显式 `.Produces()`、`.WithName()`、`.WithTags()` 等元数据，否则生成文档空洞  
 ❌ **以为 AOT 下 `MapControllers()` 也能用源生成** —— **MVC/Controller 完全不支持 AOT**，必须用 Minimal API  
+
+### Native AOT 兼容性
+
+API 设计本身与 AOT 不冲突，关键在于**落地手段**必须选 AOT 友好路径（[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）：
+
+- **端点用 Minimal API**（不用 MVC/控制器，完全不支持 AOT）——见 [ASP.NET Core 10](../dotnet/aspnet-core/aspnet-core-10.md)。
+- **认证用 JWT Bearer**（✅ AOT）；Cookie / OIDC ❌ 不兼容 AOT，非 AOT 前端才能用——见 [认证与授权](../dotnet/aspnet-core/auth.md)。
+- **错误响应走 `ProblemDetails`**（源生成），不用统一 `Result<T>` 信封——见 [全局异常处理](../dotnet/aspnet-core/exception-handling.md)。
+- **JSON 序列化用 `System.Text.Json` 源生成**（`JsonSerializerContext`），不用反射序列化——见 [序列化](../dotnet/csharp/serialization.md)。
+- **分页/排序用编译期表达式白名单**（[分页](../dotnet/ef-core/pagination.md)），不按字符串反射属性名。
 
 ## 参考资料
 - [ASP.NET Core Native AOT 支持](https://learn.microsoft.com/aspnet/core/fundamentals/native-aot)

@@ -71,7 +71,7 @@ nav:
   - 思维导图: 思维导图.md
   - 操作日志: log.md
   - .NET:
-      - dotnet/overview.md
+      - 概述: dotnet/overview.md
       - C# 语言:
           - C# 现代语言特性: dotnet/csharp/modern-csharp.md
           - C# 14 新特性: dotnet/csharp/csharp-14.md
@@ -101,6 +101,7 @@ nav:
           - 限流: dotnet/aspnet-core/rate-limiting.md
           - 输出缓存: dotnet/aspnet-core/output-caching.md
           - 实时通信 SignalR: dotnet/aspnet-core/signalr.md
+          - Minimal API AOT 源生成: dotnet/aspnet-core/minimal-api-aot.md
       - 数据访问 EF Core:
           - EF Core 10: dotnet/ef-core/ef-core-10.md
           - EF Core 数据访问: dotnet/ef-core/ef-data-access.md
@@ -109,11 +110,10 @@ nav:
           - 关系建模: dotnet/ef-core/modeling-relationships.md
           - 查询性能: dotnet/ef-core/query-performance.md
           - 并发控制: dotnet/ef-core/concurrency.md
-      - AOT 与部署:
+      - AOT 与运行时:
           - 原生 AOT: dotnet/aot/native-aot.md
           - AOT 兼容性矩阵与规则: dotnet/aot/aot-compatibility.md
           - 文件型应用: dotnet/aot/file-based-apps.md
-      - 运行时:
           - 运行时 JIT 优化: dotnet/runtime/jit-optimizations.md
       - Blazor:
           - Blazor JS 改进: dotnet/blazor/javascript-improvements.md
@@ -152,23 +152,12 @@ nav:
           - .NET Aspire: cloud-native/aspire.md
           - 容器化: cloud-native/containers.md
           - 健康检查: cloud-native/health-checks.md
-  - 云原生:
-      - .NET Aspire: cloud-native/aspire.md
-      - 容器化: cloud-native/containers.md
-      - 健康检查: cloud-native/health-checks.md
+          - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
   - 性能与诊断:
       - 基准测试: performance/benchmarking.md
       - GC 与内存: performance/gc-memory.md
       - 诊断与剖析: performance/diagnostics.md
       - AOT 性能工程: performance/aot-performance.md
-  - AOT 部署工程化:
-      - Minimal API AOT 源生成: dotnet/aspnet-core/minimal-api-aot.md
-      - AOT CI/CD 与交叉编译: deployment/aot-ci-cd.md
-      - Chiseled 容器镜像最佳实践: cloud-native/containers.md
-  - 部署与编排:
-      - .NET Aspire: cloud-native/aspire.md
-      - 容器化: cloud-native/containers.md
-      - 健康检查: cloud-native/health-checks.md
   - 工程规范:
       - 命名与 API 约定: standards/coding-conventions.md
       - 健壮性与工程质量: standards/quality-engineering.md

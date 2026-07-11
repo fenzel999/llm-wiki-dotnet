@@ -68,6 +68,13 @@ public class MyGenerator : IIncrementalGenerator
 
 源生成器 net5+；增量生成器（`IIncrementalGenerator`）net6+ 起为推荐方式；`GeneratedRegex` net7+，`LibraryImport` net7+。
 
+### Native AOT 兼容性
+
+- 源生成器是 **AOT 友好的反射替代**：它在编译期生成静态 C# 代码，天然可被 Native AOT 完整编译，无运行期反射/动态代码生成开销。
+- 框架自带生成器（JSON `JsonSerializerContext`、[`LoggerMessage`](modern-csharp.md#source-generators)、[`GeneratedRegex`](modern-csharp.md#source-generators)、`LibraryImport`）即为对应反射写法的现代替代，AOT 后端应优先使用。
+- 自己写生成器务必用增量生成器（`IIncrementalGenerator`），避免旧的 `ISourceGenerator` 全量重跑；管道里只传轻量可比较模型，别传 `ISymbol`/`Compilation`。
+- 详见 [AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
+
 ## 参考资料
 
 - [C# 现代语言特性（源生成器概述）](modern-csharp.md#source-generators)

@@ -18,6 +18,13 @@ updated: 2026-07-09
 
 ## 最近一次自审
 
+- 日期：2026-07-11（**全库一致性 Audit + Correct（重新整理/分类，清旧换新）**）
+- 触发：人工反馈"内容要重新分析、重新分类，已目测到旧知识未统一——学会了分页，其他地方没按最新方式做"。
+- 方法：两路子代理并行扫描 `wiki/dotnet/*` 与 `wiki/architecture/* + 其余`（矛盾/旧惯用法/缺 AOT 小节/分类重复），Agent 亲自修高风险项（P10/P16 反射违规、事实错误、命名矛盾），子代理补齐 AOT 小节 + 重分类 nav + 同步 index/思维导图。
+- 结论：`mkdocs build --strict` 通过（0 警告/错误）。无 `⚠️` 遗留。
+- 已修（要点）：① 分页形状统一到 `pagination.md`（修 `dto.md` 漂移 + `pagination.md` 内部 `Sorting` bug）；② `domain-events.md` 反射分发器→AOT 安全闭包泛型；③ `specification-pattern.md` 标清 `IsSatisfiedBy` 非 AOT；④ `clean-architecture`/`aot-performance` 去 Dapper、去 Azure 付费云绑定（P10/P12）；⑤ `middleware`/`serialization` 去 `MapControllers`/`AddControllers`（P16）；⑥ `exception-handling` 示例 400→422；⑦ `api-design` 分页 JSON 对齐 + 第三方工具加 P10 豁免说明；⑧ `entities` 审计接口对齐权威 `auditing-soft-delete`；⑨ 预编译查询版本事实修正（net10 实验性）；⑩ 7 页补 `### Native AOT 兼容性` 小节、1 页重命名；⑪ `mkdocs.yml` 去重（云原生/部署与编排/AOT 部署工程化 合并）、index/思维导图同步。
+- 待你判定：无。
+
 - 日期：2026-07-11（**架构分类重构 + 薄页 P17 深写（Round A）**）
 - 触发：人工反馈——架构顶级分类按"四分组"重组（系统形态 / 模块内部 / 横切能力 / 部署与编排），且 architecture/ 薄页按 P17 深写（自足、深度完整、能教会旧知识模型）。
 - 分类重构：mkdocs.yml 架构段改四分组；Aspire/容器/健康检查归入"部署与编排"；index.md、思维导图.md 同步；solution-structure.md 补 `#arch-levels`/`#two-mode-deploy` 显式锚点，各架构页统一引用"三种架构不在同一层级"定位。
@@ -160,6 +167,15 @@ P16 要求每个**后端主题页**补 `### Native AOT 兼容性` 小节。本�
 | 2026-07-09 | dotnet/aspnet-core/aspnet-core-10.md | 删除不存在的 `.WithValidation()`；改为 `AddValidation()` 自动启用 + `.DisableValidation()` 关闭 | Microsoft Learn / 社区资料核实 |
 | 2026-07-09 | dotnet/blazor/javascript-improvements.md | 补全 .NET 10 新增 JS 互操作 API：`InvokeConstructorAsync`、JS 对象属性读写 | ASP.NET Core 10 发行说明 |
 | 2026-07-09 | 11 个 .NET 10 页 | 移除全部 `⚠️ needs-your-call` 标记（语法/API 均已确认） | 官方文档联网核实 |
+| 2026-07-11 | architecture/dto.md | 分页载体由自创 `PagedResult(Items,TotalCount)`+`PagedQuery`+`OrderByWhitelist` 统一为权威 `pagination.md` 形状（`PagedResult(Items,TotalCount,Page,PageSize)`+`PageRequest`+`DynamicOrderByAllowList`） | 与 `dotnet/ef-core/pagination.md` 对齐（Q3） |
+| 2026-07-11 | dotnet/ef-core/pagination.md | 补 `PageRequest.Sorting` 计算属性，修示例 `req.Sorting` 与 `SortBy/Descending` 字段不符的内部 bug | 自审发现不一致 |
+| 2026-07-11 | architecture/domain-events.md | 反射分发器（`MakeGenericType`/`GetMethod`/`Invoke`）→ 闭包泛型 `GetServices<IDomainEventHandler>()` + `EventType` 过滤，真正 AOT 安全（P16） | P16 + modular-monolith.md 同款写法 |
+| 2026-07-11 | architecture/specification-pattern.md | 标清 `IsSatisfiedBy` 的 `Compile()` 走 Reflection.Emit、非 AOT；仅 `ToExpression()` 查询下推路径 AOT 安全 | P16 |
+| 2026-07-11 | architecture/clean-architecture.md、performance/aot-performance.md | 去掉 Dapper 作为可替换存储/AOT 推荐（P10 违禁且反射）；aot-performance 部署环境去 Azure Container Apps（P12 付费云绑定） | P10/P12 |
+| 2026-07-11 | dotnet/aspnet-core/middleware.md、dotnet/csharp/serialization.md | `MapControllers()`/`AddControllers().AddJsonOptions` → Minimal API + `ConfigureHttpJsonOptions`（P16 禁 MVC） | P16 |
+| 2026-07-11 | dotnet/aspnet-core/exception-handling.md | 示例响应 `status:400` 改为 `422`，与代码（业务校验默认 422）一致 | 自审矛盾 |
+| 2026-07-11 | architecture/api-design.md、architecture/entities.md | 分页 JSON 字段对齐权威 `PagedResult`（PascalCase+totalPages）；审计接口统一到权威 `auditing-soft-delete.md`（`IAuditedEntity`/可变 `ISoftDelete`） | Q3 一致性 |
+| 2026-07-11 | dotnet/aot/aot-compatibility.md、dotnet/ef-core/query-performance.md | 预编译查询版本事实修正：编译模型 net8+ / 预编译查询 net10 实验性（原误写 net9+/net8+） | 对照 `ef-core-10.md` |
 
 ## 待你判定（⚠️ needs-your-call）
 

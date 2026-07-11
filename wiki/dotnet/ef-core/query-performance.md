@@ -69,7 +69,7 @@ Console.WriteLine(db.Orders.Where(o => o.Total > 100).ToQueryString());
 
 ## 适用版本
 
-各版本通用；`AsSplitQuery` net5+；`ToQueryString()` net5+；net8+ 编译模型/预编译查询优化冷启动。
+各版本通用；`AsSplitQuery` net5+；`ToQueryString()` net5+；net8+ **编译模型**（`dotnet ef dbcontext optimize`）优化冷启动；**预编译查询 net10 实验性**（见 [EF Core 10](../ef-core/ef-core-10.md#precompiled-queries)）。
 
 ### Native AOT 兼容性
 

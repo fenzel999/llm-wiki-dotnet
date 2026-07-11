@@ -40,6 +40,10 @@ public sealed record PageRequest
 
     public int SafePage => Page < 1 ? 1 : Page;
     public int SafeSize => Math.Clamp(PageSize, 1, 100);   // 上限防止一次拉全表
+
+    // 由 SortBy/Descending 合成供 WithDynamicOrderBy 消费的排序串（单字段）
+    public string? Sorting =>
+        string.IsNullOrWhiteSpace(SortBy) ? null : SortBy + (Descending ? " desc" : "");
 }
 
 // 分页结果：纯数据载体

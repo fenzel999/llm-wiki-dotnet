@@ -69,6 +69,7 @@ public abstract class Specification<T>
     public abstract Expression<Func<T, bool>> ToExpression();
 
     // 内存单对象判定：守卫校验用（如领域方法里 if (!spec.IsSatisfiedBy(x)) throw ...）
+    // 注意：Compile() 走 Reflection.Emit，Native AOT 下不可用——仅用于非 AOT 宿主或不发布 AOT 的路径
     public bool IsSatisfiedBy(T candidate) => ToExpression().Compile()(candidate);
     // ... And/Or/Not 同前
 }
@@ -102,7 +103,7 @@ public abstract class Specification<T>
 
 ### Native AOT 兼容性
 
-规约产生的 `Expression` 在 AOT 下**安全**：它被 EF Core 的查询管道编译为 SQL，不经过 `System.Reflection.Emit` 生成运行期代码。规约类是普通 C#、无反射，AOT 友好（[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。注意最终查询结果若跨进程返回，DTO 序列化走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
+规约的**查询下推路径**（`ToExpression()` + `Where`）在 AOT 下**安全**：表达式被 EF Core 查询管道编译为 SQL，不经过 `Reflection.Emit`。规约类是普通 C#、无反射，AOT 友好（[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。**但**内存判定 `IsSatisfiedBy` 里的 `ToExpression().Compile()` 依赖 `Reflection.Emit`，Native AOT 发布下会失败——AOT 后端只走查询下推，不要调用 `IsSatisfiedBy`；需要内存守卫时，把同一条件写成普通 `if` 或 `Func<T,bool>`。最终查询结果跨进程返回时，DTO 序列化走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
 ## 参考资料
 

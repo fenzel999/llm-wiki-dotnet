@@ -297,6 +297,13 @@ public class Old : ISourceGenerator
 
 把上面七块串起来看，它们其实是现代 C# 的一条主线：用 [`record`](#records) 和[可空引用类型](#nullable)把数据描述得既准确又安全，用[泛型](#generics)和[模式匹配](#pattern-matching)把逻辑写得既通用又清晰，再用[Span 与 Memory](#span)、[ValueTask](#value-task)和[源生成器](#source-generators)把性能与样板消灭在编译期。理解了这条线，再去读[异步编程](async-await.md)与[依赖注入](../fundamentals/dependency-injection.md)那两篇，会顺理成章得多。
 
+### Native AOT 兼容性
+
+- 本页所讲的现代 C# 特性几乎都是**编译期**构造，天然 AOT 安全：`record`/`record struct` 的值相等、`field` 关键字、`extension` 块、集合表达式、模式匹配、可空引用类型、泛型约束均不依赖运行期反射。
+- 唯一需要警惕的是 **Span/ValueTask 的栈约束**（`ref struct` 不能跨 `await`/进字段）与源生成器的缓存模型——这些与 AOT 无关，但写 AOT 服务时同样要遵守。
+- 避免运行期反射（如按名取属性、动态 `Activator.CreateInstance`），改用源生成器或编译期表达式；序列化优先 [System.Text.Json 源生成](serialization.md)。
+- 详见 [AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
+
 ## 参考资料
 
 - 官方文档：[C# 语言指南](https://learn.microsoft.com/dotnet/csharp/)

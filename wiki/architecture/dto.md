@@ -64,45 +64,52 @@ public sealed record CreateProductDto(
 
 ### 3. 列表与分页载体
 
-返回列表时，直接返回 `List<ProductDto>` 也没错；但包一层**分页载体**便于将来**加字段不破坏客户端**（如加 `TotalCount`）。这是承载数据的模型，**不是**"永远 200 + `{success,data,error}`"的统一信封（[P15](../governance/policy.md) 明确允许分页载体）。
+返回列表时，直接返回 `List<ProductDto>` 也没错；但用统一**分页载体** `PagedResult<T>` 便于将来加字段不破坏客户端（如加 `TotalPages`）。这是承载数据的模型，**不是**"永远 200 + `{success,data,error}`"的统一信封（[P15](../governance/policy.md) 明确允许分页载体）。通用定义与可复用扩展放在 `SharedKernel`（实现详见 [EF Core 分页](../dotnet/ef-core/pagination.md)）：
 
 ```csharp
-// 可复用的分页载体（放 SharedKernel）
-public sealed record PagedResult<T>(IReadOnlyList<T> Items, long TotalCount);
-
-// 分页 + 排序请求 DTO：带上限校验，防滥用
-public sealed record PagedQuery
+// 分页载体（放 SharedKernel）：纯数据模型，携带这一页 + 元数据
+public sealed record PagedResult<T>(IReadOnlyList<T> Items, int TotalCount, int Page, int PageSize)
 {
-    private const int MaxPageSize = 1000;
-    public int Skip { get; init; }
-    private readonly int _take = 10;                 // 默认页大小
-    public int Take
-    {
-        get => _take;
-        init => _take = value is > 0 and <= MaxPageSize
-            ? value
-            : throw new ArgumentOutOfRangeException(nameof(Take), $"Take 必须在 1..{MaxPageSize}");
-    }
-    public string? Sort { get; init; }               // 如 "name" / "-createdAt"，服务端按白名单解析
+    public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+}
+
+// 分页请求 DTO（放 SharedKernel / Contracts）：构造时夹紧非法值，带硬上限防滥用
+public sealed record PageRequest
+{
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 20;
+    public string? SortBy { get; init; }
+    public bool Descending { get; init; }
+
+    public int SafePage => Page < 1 ? 1 : Page;
+    public int SafeSize => Math.Clamp(PageSize, 1, 100);   // 上限防一次拉全表
+    public string? Sorting =>
+        string.IsNullOrWhiteSpace(SortBy) ? null : SortBy + (Descending ? " desc" : "");
 }
 ```
 
-应用服务里用**投影**直接查出 DTO，连实体都不必物化：
+应用服务里用**投影**直接查出 DTO；排序走**编译期表达式白名单**（`DynamicOrderByAllowList`，不反射、AOT 友好），分页下推数据库：
 
 ```csharp
-public async Task<PagedResult<ProductDto>> GetListAsync(PagedQuery q, CancellationToken ct)
+// 模块内声明可排序白名单（键即前端可传的字段名，见分页页完整实现）
+private static readonly DynamicOrderByAllowList<Product> Sortable = new()
+    .Map(p => p.Name)
+    .Map(p => p.Price);
+
+public async Task<PagedResult<ProductDto>> GetListAsync(PageRequest req, CancellationToken ct)
 {
-    var query = db.Products.OrderByWhitelist(q.Sort);          // 白名单排序，见分页页
-    var total = await query.LongCountAsync(ct);
+    var query = db.Products
+        .WithDynamicOrderBy(req.Sorting, Sortable)          // 白名单排序，"Name desc"
+        .WithOffsetPaging((req.Page - 1) * req.PageSize, req.PageSize);
+    var total = await query.CountAsync(ct);
     var items = await query
-        .Skip(q.Skip).Take(q.Take)
-        .Select(p => new ProductDto(p.Id, p.Name, p.Price))    // 投影成 DTO
+        .Select(p => new ProductDto(p.Id, p.Name, p.Price)) // 投影成 DTO
         .ToListAsync(ct);
-    return new PagedResult<ProductDto>(items, total);
+    return new(items, total, req.Page, req.PageSize);
 }
 ```
 
-> **请求上限**：客户端不传时用默认页大小（如 10）；超过硬上限（如 1000）直接**校验失败（422）**，避免一次拉爆服务端。排序字段务必走**编译期白名单**，不要按字符串反射属性名（AOT 友好，见 [分页](../dotnet/ef-core/pagination.md)）。
+> `DynamicOrderByAllowList` / `WithDynamicOrderBy` / `WithOffsetPaging` 的完整实现见 [EF Core 分页](../dotnet/ef-core/pagination.md)；本页只讲 DTO 边界怎么用。注意 `PageRequest.PageSize` 必须服务端夹紧上限，客户端传超大值直接 **422**（见 [验证](../dotnet/aspnet-core/validation.md)）。
 
 ### 4. 映射：手写 / 投影优先
 

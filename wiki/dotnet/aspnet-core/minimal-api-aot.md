@@ -122,6 +122,12 @@ api.MapGet("/orders/{id:int}", GetOrder)
 
 ❌ **以为 AOT 下 `MapControllers()` 也能用源生成** —— **MVC/Controller 完全不支持 AOT**，必须用 Minimal API。
 
+### Native AOT 兼容性
+
+- 本页整篇即围绕 AOT 展开：Minimal API 是 AOT 路径的**唯一** Web 框架，MVC/控制器不支持 AOT（[P16](../../governance/policy.md)）。
+- 要点重申：**JsonSerializerContext 源生成**（禁用反射式 `JsonSerializer.Serialize(obj)`）、**RDG 编译期请求委托**、**OpenAPI 静态生成**、**显式 DI 注册**——四者缺一不可。
+- 复杂绑定/动态 `IQueryable` 构建仍需手写委托，无法被源生成器覆盖。
+
 ## 参考资料
 
 - [ASP.NET Core Native AOT 支持](https://learn.microsoft.com/aspnet/core/fundamentals/native-aot)

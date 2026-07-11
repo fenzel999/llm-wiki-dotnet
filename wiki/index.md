@@ -93,19 +93,14 @@ updated: 2026-07-10
 - **模块内部（Module-Internal）**：[DDD](architecture/ddd.md) · [实体与聚合根](architecture/entities.md)（标识/UUIDv7/一致性边界） · [值对象](architecture/value-objects.md)（不可变/按值相等/record） · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
 - **横切能力（Cross-Cutting）**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md)
 - **架构决策记录 (ADR)**: [ADR 模板与实践](architecture/adr.md) · [API 设计模式](architecture/api-design.md)
-- **部署与编排（Deployment）**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md)
-
-### 云原生
-
-- [.NET Aspire](cloud-native/aspire.md) — 本地多服务编排与统一可观测性（开源免费、不绑定付费云）
-- [容器化](cloud-native/containers.md) — 多阶段 Dockerfile / 内置容器发布、chiseled 精简镜像
-- [健康检查](cloud-native/health-checks.md) — liveness / readiness 探针
+- **部署与编排（Deployment）**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md) · [AOT CI/CD 与交叉编译](deployment/aot-ci-cd.md)
 
 ### 性能与诊断
 
 - [基准测试](performance/benchmarking.md) — BenchmarkDotNet，先测量再优化
 - [GC 与内存](performance/gc-memory.md) — 分代 GC、减少分配、Span/池化
 - [诊断与剖析](performance/diagnostics.md) — dotnet-counters/trace/dump 生产取证
+- [AOT 性能工程](performance/aot-performance.md) — JIT vs AOT 决策矩阵、静态 PGO、SIMD、COW 内存共享
 
 ### 工程规范
 

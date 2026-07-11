@@ -131,14 +131,14 @@ public Guid CustomerId { get; private set; }   // ✅ 跨聚合按 Id 引用
 
 | 能力 | 做法 | 详见 |
 |------|------|------|
-| 审计字段 | 实现 `ICreationAudited`/`IModificationAudited` 接口，用 EF Core **拦截器 / `SaveChanges` 重写**自动填充 `CreationTime`、`CreatorId` 等 | [审计与软删除](auditing-soft-delete.md) |
+| 审计字段 | 实现 `IAuditedEntity` 接口（`CreatedAt`/`ModifiedAt`），用 EF Core **拦截器 / `SaveChanges` 重写**自动填充时间戳 | [审计与软删除](auditing-soft-delete.md) |
 | 软删除 | 实现 `ISoftDelete { bool IsDeleted }`，配 EF Core **全局查询筛选器** 自动过滤 | [审计与软删除](auditing-soft-delete.md) |
 | 乐观并发 | 加并发令牌（SQL Server `rowversion` / PostgreSQL `xmin`），冲突时抛 `DbUpdateConcurrencyException` | [并发控制](../dotnet/ef-core/concurrency.md) |
 
 ```csharp
-public interface ISoftDelete { bool IsDeleted { get; } }
-public interface ICreationAudited { DateTimeOffset CreationTime { get; } Guid? CreatorId { get; } }
-// 领域实体实现这些接口；填充与过滤由 Infrastructure 统一做，领域不感知。
+// 标记接口（定义以 auditing-soft-delete.md 为准）：填充与过滤由 Infrastructure 统一做，领域不感知
+public interface IAuditedEntity { DateTimeOffset CreatedAt { get; set; } DateTimeOffset? ModifiedAt { get; set; } }
+public interface ISoftDelete { bool IsDeleted { get; set; } }
 ```
 
 ### 6. 复合键与"简单实体"

@@ -13,6 +13,17 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **全库 POLICY 合规巡检（P1–P19）**（人类指令：所有内容都不能违反 POLICY，检查一遍）。
+    - **P3 source**：全页 `source` 非空，均为官方 MS Learn URL 或 `AGENTS.md`/本地 `sources/`。
+    - **P10 只用 MS/基金会包**：全库命中的 MediatR/AutoMapper/Dapper/Newtonsoft/Moq/Ocelot/FluentValidation/Swashbuckle/Refit/PactNet/Testcontainers/NetArchTest 等**全部为"不推荐/不用"语境**（配 `P10` 链接），无任何第三方推荐。
+    - **P12 不用付费/云绑定**：命中的 `azure` 均为 Microsoft Learn 文档域名（`modern-web-apps-azure` 是文档站，非付费服务）；`event-driven.md` 提及 RabbitMQ/NATS 明确标"自托管开源、避免云绑定 `[P12]`"；`policy.md` 以 Azure/Orleans/Application Insights 作"应避免"示例。无违规推荐。
+    - **P14 不提 ABP**：`ABP`/`abp.io`/`Volo` 仅出现在 `policy.md` 的 P14 规则正文，无任何知识页出现。
+    - **P15 真实 HTTP 状态码、禁 Result 信封**：发现 `event-sourcing.md` 在领域/命令层用了名为 `Result<T>` 的结果类型——与 P15 字面点名的禁用词 `Result<T>` 冲突（虽属领域 Railway-Oriented 结果、非 HTTP 信封）。已重命名为 `Outcome<T>` 并加注释说明其与 P15 禁止的 HTTP 信封是两回事；其余页均正确以 `ProblemDetails` 表达错误、以 `PagedResult<T>` 作合法分页载体。
+    - **P16 Native AOT**：所有后端知识页均含 `### Native AOT 兼容性` 小节；运行期反射（domain-events 分发器、specification `IsSatisfiedBy`）此前审计已改为编译期/源生成路径。
+    - **P13 结构**：标准内容页齐备 `要点速览 / 概述 / 正确做法 / 常见误区 / 适用版本 / 参考资料` 与 ✅/❌；反模式页用 P2 的 ❌/✅ 结构、对比页用「概述/取舍/结论」、版本页为版本注记——均属既有既定模板（见历史巡检记录），非违规。
+    - 结论：除 P15 的 `Result<T>` 命名冲突已修正外，全库符合 POLICY。
+    - 影响：architecture/event-sourcing.md、log.md。
+
 - 2026-07-11 **纠正全库 + 新增 6 篇架构页 + 架构导航重排**（人类指令：纠正所有内容、已有知识不得重复添加、检查分类过臃肿需纠正、提升阅读/审美、去掉圆圈叹号 ``）。
     - **去全库警告符号（圆圈叹号）与 `needs-your-call` 约定**：全库页面与 `policy.md`（P5/P10/P16）移除该符号与 `needs-your-call` 字样；矛盾与待判定改写入 `log.md` 并先问人类（[P5](governance/policy.md)）。`index.md`「给 AI 说明」同步去除引用。
     - **新增 POLICY 自学习规则**：[P18](governance/policy.md) 新增知识不得重复已有内容（优先扩充既有页、必新建时标明增量）；[P19](governance/policy.md) 分类臃肿/混杂必须重排（按抽象层与关切拆组，阈值≥10 或混入异类即拆）。

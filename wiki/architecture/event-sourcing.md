@@ -71,24 +71,24 @@ public sealed class Account
     }
 
     // 命令：返回新事件（不抛异常，用结果表达拒绝）
-    public Result<AccountEvent> Open(string owner, decimal openingBalance)
+    public Outcome<AccountEvent> Open(string owner, decimal openingBalance)
     {
-        if (Version != 0) return Result<AccountEvent>.Fail("账户已存在");
-        return Result<AccountEvent>.Ok(
+        if (Version != 0) return Outcome<AccountEvent>.Fail("账户已存在");
+        return Outcome<AccountEvent>.Ok(
             new AccountOpened(Id, Version + 1, owner, openingBalance));
     }
 
-    public Result<AccountEvent> Deposit(decimal amount)
+    public Outcome<AccountEvent> Deposit(decimal amount)
     {
-        if (amount <= 0) return Result<AccountEvent>.Fail("金额必须为正");
-        return Result<AccountEvent>.Ok(new MoneyDeposited(Id, Version + 1, amount));
+        if (amount <= 0) return Outcome<AccountEvent>.Fail("金额必须为正");
+        return Outcome<AccountEvent>.Ok(new MoneyDeposited(Id, Version + 1, amount));
     }
 
-    public Result<AccountEvent> Withdraw(decimal amount)
+    public Outcome<AccountEvent> Withdraw(decimal amount)
     {
-        if (amount <= 0) return Result<AccountEvent>.Fail("金额必须为正");
-        if (Balance < amount) return Result<AccountEvent>.Fail("余额不足");
-        return Result<AccountEvent>.Ok(new MoneyWithdrawn(Id, Version + 1, amount));
+        if (amount <= 0) return Outcome<AccountEvent>.Fail("金额必须为正");
+        if (Balance < amount) return Outcome<AccountEvent>.Fail("余额不足");
+        return Outcome<AccountEvent>.Ok(new MoneyWithdrawn(Id, Version + 1, amount));
     }
 
     private void Apply(AccountEvent e) => Apply((dynamic)e);
@@ -98,14 +98,16 @@ public sealed class Account
     private void Apply(MoneyWithdrawn e) { Balance -= e.Amount; Version = e.Version; }
 }
 
-public readonly struct Result<T>
+// 注意：这是「领域/命令层」的 Railway-Oriented 结果类型，与 POLICY P15 禁止的
+// HTTP 层 `Outcome<T>` 信封（永远 200 + { success, data, error }）是两回事。
+public readonly struct Outcome<T>
 {
     public bool IsOk { get; }
     public T? Value { get; }
     public string? Error { get; }
-    private Result(bool ok, T? value, string? error) => (IsOk, Value, Error) = (ok, value, error);
-    public static Result<T> Ok(T v) => new(true, v, null);
-    public static Result<T> Fail(string e) => new(false, default, e);
+    private Outcome(bool ok, T? value, string? error) => (IsOk, Value, Error) = (ok, value, error);
+    public static Outcome<T> Ok(T v) => new(true, v, null);
+    public static Outcome<T> Fail(string e) => new(false, default, e);
 }
 ```
 
@@ -187,7 +189,7 @@ public sealed class AccountService
     public AccountService(IEventStore store, IProjection projection)
         => (_store, _projection) = (store, projection);
 
-    public async Task<Result<AppendResult>> HandleAsync(Command cmd)
+    public async Task<Outcome<AppendResult>> HandleAsync(Command cmd)
     {
         var current = Account.Load(cmd.AccountId, await _store.LoadAsync(cmd.AccountId));
         var result = cmd switch
@@ -195,18 +197,18 @@ public sealed class AccountService
             Open c    => current.Open(c.Owner, c.OpeningBalance),
             Deposit c => current.Deposit(c.Amount),
             Withdraw c => current.Withdraw(c.Amount),
-            _ => Result<AccountEvent>.Fail("未知命令")
+            _ => Outcome<AccountEvent>.Fail("未知命令")
         };
         if (!result.IsOk)
-            return Result<AppendResult>.Fail(result.Error!);
+            return Outcome<AppendResult>.Fail(result.Error!);
 
         var events = new[] { result.Value! };
         var append = await _store.AppendAsync(cmd.AccountId, current.Version, events);
         if (!append.Success)
-            return Result<AppendResult>.Fail(append.ConflictReason!);
+            return Outcome<AppendResult>.Fail(append.ConflictReason!);
 
         await _projection.ApplyAsync(events);   // 更新读模型（见下）
-        return Result<AppendResult>.Ok(append);
+        return Outcome<AppendResult>.Ok(append);
     }
 }
 

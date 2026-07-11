@@ -94,6 +94,16 @@ EF Core 全局查询筛选器 net(core) 全版本；`AsyncLocal` 全版本；示
 
 多租户机制**兼容 AOT**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）：`AsyncLocal`、中间件、`HasQueryFilter` 均 AOT 安全；`ResolveTenant` 用 `HttpContext`/JWT 声明读取无反射。注意租户 id 若经 JSON 序列化，响应走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 何时使用
+
+- 一套部署服务多租户、需要**数据隔离**（行级 tenant 过滤）时叠加；解析租户靠中间件 + `AsyncLocal`。
+
+## 与其他模式的关系
+
+- 用 [EF Core](../dotnet/ef-core/ef-data-access.md) 全局查询筛选器实现；与 [审计与软删除](auditing-soft-delete.md) 同为 `SaveChanges` 拦截器模式的横切能力。
+- 可叠加在任意形态（[模块化单体](modular-monolith.md)/[微服务](microservices.md)）之上。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 12 步。
+
 ## 参考资料
 
 - [审计与软删除（同类筛选机制）](auditing-soft-delete.md) · [认证与授权](../dotnet/aspnet-core/auth.md)

@@ -217,6 +217,18 @@ public sealed class InventoryGateway
 internal sealed partial class CatalogJsonContext : JsonSerializerContext { }
 ```
 
+## 何时使用
+
+- 当模型开始互相污染、跨库耦合，或不同团队对同一词有不同理解时 → 划限界上下文、用通用语言隔离。
+- 需要连接外部/遗留系统时 → 用防腐层（ACL）在边界处翻译，而非直接耦合外部模型。
+
+## 与其他模式的关系
+
+- 战略 DDD 的核心边界单元；与 [DDD](ddd.md) 战略部分咬合。
+- 在 [模块化单体](modular-monolith.md) 中"模块=上下文"，在 [微服务](microservices.md) 中"服务=上下文"。
+- 对外暴露稳定契约用 [API 设计](api-design.md)；连接用 [API 网关与 BFF](api-gateway-bff.md)。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 9 步。
+
 ## 参考资料
 
 - Microsoft — DDD, CQRS, and microservices architecture guidance（本文 `source` 字段）: <https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/>

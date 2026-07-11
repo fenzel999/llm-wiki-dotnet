@@ -147,6 +147,17 @@ DTO 本身是普通类型，**AOT 安全**（✅，[P16](../governance/policy.md
 - 映射用 LINQ 投影 / 手写，不用反射映射库。
 - 排序等动态逻辑走**编译期白名单表达式**，不按字符串反射属性名（[分页](../dotnet/ef-core/pagination.md)）。
 
+## 在体系中的位置（何时引入）
+
+- 任何跨层/跨边界传递数据都经 DTO，隔离领域层与表现层；输入 DTO 与输出 DTO 分离、列表用 `PagedResult<T>`、请求带上限校验。
+- 映射用手写/投影，不引 AutoMapper（[POLICY P10](../governance/policy.md)）。
+
+## 与其他模式的关系
+
+- 在 [领域服务与应用服务](domain-application-services.md)、[API 设计](api-design.md)、[API 网关与 BFF](api-gateway-bff.md) 间传递。
+- JSON 用源生成（[Native AOT](../dotnet/aot/native-aot.md) 友好）；分页载体与 [规约模式](specification-pattern.md)/[CQRS](cqrs.md) 查询侧配合。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [领域服务与应用服务（DTO 手写映射）](domain-application-services.md) · [领域驱动设计](ddd.md) · [API 设计模式](api-design.md) · [CQRS](cqrs.md)

@@ -132,6 +132,17 @@ wiki/architecture/adr/
 ❌ **无替代方案对比** —— 必须列出至少 2 个备选，否则不是决策是默认  
 ❌ **不写后果/风险** —— 必须写正面/负面/风险/缓解，否则无法事后复盘  
 
+## 何时使用
+
+- 任何重大架构取舍：选单体还是微服务、引不引 CQRS/事件溯源、定 API 版本策略……都应写 ADR 留痕。
+- 决策需要被后人理解"为什么这么定、有无替代、何时废弃"时。
+
+## 与其他模式的关系
+
+- 贯穿所有架构决策，不是最后才做；与 [架构测试](architecture-tests.md) 配合（把决策变成可执行规则）。
+- 记录的对象即本区各页的选择：[模块化单体](modular-monolith.md) vs [微服务](microservices.md)、[CQRS](cqrs.md)、[事件溯源](event-sourcing.md) 等。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 14 步。
+
 ## 参考资料
 - [ADR GitHub 组织](https://adr.github.io/) —— 标准化倡议
 - [Michael Nygard: Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)

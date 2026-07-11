@@ -419,6 +419,18 @@ Native AOT 会在编译期裁剪未直接引用的类型与反射元数据，ES 
 
 原则：**让事件类型集合在编译期封闭可见**，序列化与分派全部走源生成 + 显式分支，AOT 即可零警告发布。
 
+## 何时使用
+
+- 需要**完整审计轨迹、时间旅行（回放任意时刻状态）、强一致事件流**时，用事件流作为唯一事实来源。
+- 通常叠在 [CQRS](cqrs.md) 之上；不是"默认选型"，成本高于普通 CRUD。
+
+## 与其他模式的关系
+
+- 建立在 [CQRS](cqrs.md) 之上；状态重建消费 [领域事件](domain-events.md)；读模型投影成 [DTO](dto.md)。
+- 跨进程发布用 [事件驱动](event-driven.md)（集成事件 + 发件箱）；[微服务](microservices.md) 中常见。
+- AOT 注意事件类型用源生成 JSON（[Native AOT](../dotnet/aot/native-aot.md)）。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 10 步。
+
 ## 参考资料
 
 - Microsoft — Event Sourcing pattern: <https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing>

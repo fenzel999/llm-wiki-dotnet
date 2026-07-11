@@ -195,6 +195,17 @@ app.Run();
 
 这套布局**天然利于后端 AOT**（[P16](../governance/policy.md)）：Host 用 Minimal API（AOT 支持）、模块**显式注册**不做程序集扫描、SharedKernel 里的工具（规约表达式、分页扩展）都是编译期已知、无运行期反射。EF Core 在 AOT 发布下需编译模型/预编译查询。前端（Blazor）项目不在此约束内。
 
+## 何时使用
+
+- 需要把架构边界用**编译期项目引用**钉死，让"不允许的依赖"根本编不过时。
+- 多模块项目、希望物理边界比文档更可靠时。
+
+## 与其他模式的关系
+
+- 是实现 [整洁架构](clean-architecture.md) / [六边形架构](hexagonal-architecture.md) 物理边界的手段；服务于 [模块化单体](modular-monolith.md) / [微服务](microservices.md)。
+- 引用方向与分层规则由 [架构测试](architecture-tests.md) 进一步校验。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 2 步。
+
 ## 参考资料
 
 - [模块化单体（模块边界/通信/架构测试）](modular-monolith.md) · [整洁架构（模块内依赖方向）](clean-architecture.md) · [垂直切片](vertical-slice.md)

@@ -87,6 +87,19 @@ app.MapPost("/orders", CreateOrder.Handle);          // 端点就注册在切片
 
 切片里是普通类/静态方法 + 构造注入，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。端点注册用 `MapPost("/orders", CreateOrder.Handle)`（编译期已知方法，非反射），响应 DTO 走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 何时使用
+
+- 功能多、一次改动常常横穿"控制器—服务—仓储"整条用例，而不只是某一层时。
+- 不想为"跨切面"的用例去改多个技术分层、希望改动局限在切片内时。
+- 与 [整洁架构](clean-architecture.md) / [六边形架构](hexagonal-architecture.md) **互补而非互斥**：切片内部仍可分层、仍可用 DDD 战术。
+
+## 与其他模式的关系
+
+- 同处 [模块化单体](modular-monolith.md) 内部，是"按功能而非技术分层"的组织视角。
+- 每切片内部仍可用 [实体与聚合根](entities.md)、[领域事件](domain-events.md)、[DTO](dto.md) 等构件。
+- 与 [CQRS](cqrs.md) 天然契合（一个命令/查询即一个切片）。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 5 步。
+
 ## 参考资料
 
 - [整洁架构（切片内可分层）](clean-architecture.md) · [CQRS（切片内命令/查询）](cqrs.md)

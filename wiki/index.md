@@ -94,6 +94,7 @@ updated: 2026-07-11
 
 ### 架构
 
+- **[架构总览与决策指南](architecture/overview.md)** — 先读这篇：三层心智模型、模式地图、何时用何种、推荐技术栈组合、由浅入深学习路径，把下面这些页串成一套体系而非一堆文章。
 - [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
 - **系统形态（System-Level）**：[模块化单体](architecture/modular-monolith.md) · [整洁架构（模块内分层）](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md) · [六边形架构（端口与适配器）](architecture/hexagonal-architecture.md) · [API 网关与 BFF](architecture/api-gateway-bff.md) · [组合与架构模式](patterns/composition.md)
 - **战略设计与边界（Strategic）**：[限界上下文](architecture/bounded-context.md) · [DDD](architecture/ddd.md) · [API 设计模式](architecture/api-design.md) · [架构决策记录 (ADR)](architecture/adr.md)

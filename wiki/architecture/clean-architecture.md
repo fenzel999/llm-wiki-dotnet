@@ -121,6 +121,19 @@ OrderModule/
 - 用例处理器用普通类 + 构造注入，编译期类型已知。
 - 唯一注意：EF Core 实现侧启用编译模型/预编译查询（见 [EF AOT](../dotnet/ef-core/ef-data-access.md)）；表现层用 [Minimal API](../dotnet/aspnet-core/aspnet-core-10.md) 而非 MVC。
 
+## 何时使用
+
+- 想要"依赖只向内指向领域核心"、易替换存储、易测试的分层方式时。
+- 团队对分层有共识、希望把框架/基础设施挡在外层时。
+- 与 [六边形架构](hexagonal-architecture.md) 目标一致，可按偏好二选一或混用。
+
+## 与其他模式的关系
+
+- 落在 [模块化单体](modular-monolith.md) / [微服务](microservices.md) 内部，是"模块内部结构"层的选择。
+- 物理边界靠 [解决方案分层与项目引用](solution-structure.md) 落地；依赖方向由 [架构测试](architecture-tests.md) 守护。
+- 内部构件即 DDD 战术：[实体与聚合根](entities.md)、[值对象](value-objects.md)、[领域服务与应用服务](domain-application-services.md) 等。
+- 见 [架构总览与决策指南](overview.md) 的默认技术栈。
+
 ## 参考资料
 
 - [模块化单体架构（模块间边界）](modular-monolith.md) · [解决方案分层（层级定位）](solution-structure.md)

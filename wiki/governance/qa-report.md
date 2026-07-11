@@ -11,7 +11,7 @@ updated: 2026-07-11
 
 # qa-report — 自审报告
 
-按 [AGENTS.md](../../AGENTS.md) 的 Audit / Correct 流程维护。每次全库巡检后更新。
+按 AGENTS.md（仓库根）的 Audit / Correct 流程维护。每次全库巡检后更新。
 
 ## 最近一次：2026-07-11 全库内容巡检
 

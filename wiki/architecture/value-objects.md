@@ -148,6 +148,17 @@ public abstract class ValueObject
 
 值对象是普通 C#/`record`，**完全兼容 AOT**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）：值相等由编译器生成、无运行期反射。经 API 传输时随宿主 [DTO](dto.md) 用 `System.Text.Json` **源生成**序列化（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 在体系中的位置（何时引入）
+
+- 当概念**无标识、按值相等、不可变**（金额、地址、区间、规格）时，建模为值对象，用 `record` / `readonly record struct` 免费获得值相等。
+- 构造即校验；作为实体/聚合的属性组合存在。
+
+## 与其他模式的关系
+
+- 是 [实体与聚合根](entities.md) 的组成；整体在 [DDD](ddd.md) 战术内。
+- EF Core 用 Complex Type / Owned 映射（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [领域驱动设计（总览）](ddd.md) · [实体与聚合根](entities.md) · [领域服务与应用服务](domain-application-services.md) · [record vs class](../comparisons/record-vs-class.md)

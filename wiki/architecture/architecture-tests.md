@@ -320,6 +320,17 @@ steps:
 - 对于**需要 Native AOT 发布的后端程序集**，不要在其中依赖反射来做架构约束；改用 **Roslyn 分析器 / 源生成器** 在编译期完成校验。Roslyn 诊断器只在 `dotnet build` 阶段运行，**不会进入最终裁剪后的 AOT 镜像**，因此对运行时与 AOT 体积零成本、AOT 友好。
 - 决策指引：**测试期（xUnit + 反射）**适合覆盖"真实运行时的类型引用图"，实现快、调试直观；**编译期（Roslyn）**适合"写代码即拦截、必须硬性阻断"的高价值规则。两者并行，分别在 `dotnet test` 与 `dotnet build` 阶段把关。
 
+## 何时使用
+
+- 怕架构边界随时间腐化、要在 CI 把"分层/依赖方向/命名约定"变成可执行规则时叠加。
+- 不用 NetArchTest 等第三方（[POLICY P10](../governance/policy.md)）——用 xUnit + `System.Reflection` 或 Roslyn 手写。
+
+## 与其他模式的关系
+
+- 守护 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md)/[解决方案分层](solution-structure.md)/[模块化单体](modular-monolith.md) 的边界。
+- 把 [ADR](adr.md) 的决策变成可自动校验的规则；是 [架构总览与决策指南](overview.md) 默认栈的"锁"。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 6 步。
+
 ## 参考资料
 
 - [.NET 测试总览（官方文档）](https://learn.microsoft.com/en-us/dotnet/core/testing/)

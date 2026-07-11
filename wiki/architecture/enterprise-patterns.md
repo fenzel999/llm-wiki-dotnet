@@ -53,6 +53,16 @@ updated: 2026-07-10
 
 本页描述的架构模式（Minimal API、EF Core、`IExceptionHandler`、手写映射/仓储/分发器）均为 **AOT 友好**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。无运行期反射、程序集扫描、第三方重型框架依赖。
 
+## 何时使用
+
+- 想一站式看"企业级常见需求怎么用微软内置 + 手写 + Minimal API 表达"时，把本页当速查导览。
+- 它不引入新概念，只把各模式串到具体需求上。
+
+## 与其他模式的关系
+
+- 是上面各页的**导览**：链接 [模块化单体](modular-monolith.md)、[DDD](ddd.md)、[CQRS](cqrs.md)、[多租户](multi-tenancy.md)、[审计与软删除](auditing-soft-delete.md)、[事件驱动](event-driven.md) 等。
+- 配 [架构总览与决策指南](overview.md) 建立体系心智后，再回本页按需求取用。
+
 ## 参考资料
 
 - [领域服务与应用服务](domain-application-services.md) · [规约模式](specification-pattern.md) · [多租户](multi-tenancy.md) · [审计与软删除](auditing-soft-delete.md)

@@ -263,6 +263,17 @@ Saga 的核心是「持久化状态 + 对事件做反应」，要能在 Native A
 
 只要消息契约是静态已知类型、分发是编译期闭合的，Saga 状态机完全可以 Native AOT 发布。
 
+## 何时使用
+
+- 跨多个服务需要**最终一致**、又不能用分布式 2PC 时 → 用 Saga：一系列本地事务 + 补偿操作。
+- 有长流程、每步可能失败需回滚（补偿）的业务（下单→预留库存→冻结额度…）。
+
+## 与其他模式的关系
+
+- 建立在 [事件驱动](event-driven.md)（集成事件）之上；与 [微服务](microservices.md)、[限界上下文](bounded-context.md) 咬合。
+- 每步本地事务落 [领域事件](domain-events.md)/[审计与软删除](auditing-soft-delete.md)；[API 设计](api-design.md) 定义补偿端点契约。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 11 步。
+
 ## 参考资料
 
 - [Saga 模式（Microsoft Azure Architecture Patterns）](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga)

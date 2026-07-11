@@ -215,6 +215,19 @@ services.AddScoped<Billing.Contracts.IInvoiceService, Billing.Infrastructure.Inv
 
 本架构的运行期写法**兼容 Native AOT**（[P16](../governance/policy.md)）：模块用**显式 DI 注册**（不做运行期程序集扫描）、事件分发靠 DI 解析而非反射、Web 层用 Minimal API。上文的**架构测试**用到反射，但那是**测试时**执行、不进入 AOT 发布产物，不受影响；EF Core 在 AOT 发布下需启用编译模型/预编译查询。
 
+## 何时使用
+
+- 默认起点：单团队、部署简单、领域仍在演化，却又想要清晰模块边界时，**优先模块化单体**而非直接微服务。
+- 想用"微服务的清晰边界"但不愿承担多进程运维、分布式一致性的成本时。
+- 作为迈向微服务的过渡：把内部模块边界画清楚，将来要拆时边界已是现成的。
+
+## 与其他模式的关系
+
+- 与 [微服务](microservices.md) 是"同一模块代码的二态"——区别只在部署单元，模块划分方式一致。
+- 内部组织用 [整洁架构](clean-architecture.md) / [六边形架构](hexagonal-architecture.md)，物理边界用 [解决方案分层与项目引用](solution-structure.md)。
+- 模块边界即未来的 [限界上下文](bounded-context.md)；用 [架构测试](architecture-tests.md) 把边界锁进 CI。
+- 见 [架构总览与决策指南](overview.md) 的默认技术栈。
+
 ## 参考资料
 
 - 官方文档：[.NET Microservices — Architecture for Containerized .NET Applications](https://learn.microsoft.com/dotnet/architecture/microservices/) — Microsoft Learn（单体、模块化与微服务的取舍）

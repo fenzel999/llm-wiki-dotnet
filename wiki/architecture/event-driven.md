@@ -112,6 +112,18 @@ public sealed class OrderPlacedHandler(AppDbContext db)
 - **领域事件**：手写分发器靠 DI 解析处理器、`OfType` 过滤，无运行期反射，**AOT 安全**（见 [domain-events](domain-events.md)）。
 - **集成事件 / Outbox**：后台投递是普通 [BackgroundService](../dotnet/fundamentals/background-services.md)（AOT 安全）；消息客户端库若用 JSON 反序列化需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）；选 AOT 友好的开源中间件客户端。
 
+## 何时使用
+
+- 生产者不关心谁消费、需要**跨边界/跨进程解耦**与最终一致时 → 事件驱动。
+- 区分两类事件：**[领域事件](domain-events.md)**（进程内同事务）与**集成事件**（跨服务 + 发件箱）。
+- 消费者必须幂等（同事件可能重投）。
+
+## 与其他模式的关系
+
+- 跨服务一致由 [Saga](saga.md) 用补偿步骤保证；配合 [微服务](microservices.md) 与 [限界上下文](bounded-context.md)。
+- 写侧源自 [CQRS](cqrs.md)/[事件溯源](event-sourcing.md)；与 [API 设计](api-design.md)（同步契约）分工。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 8 步。
+
 ## 参考资料
 
 - [领域事件（进程内、同事务）](domain-events.md) · [微服务架构（跨服务）](microservices.md)

@@ -89,6 +89,17 @@ public sealed class SystemClock : IClock { public DateTime UtcNow => DateTime.Ut
 
 拦截器与全局筛选器**兼容 AOT**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）：拦截器靠 `ChangeTracker` + 标记接口，无运行期反射；`HasQueryFilter` 是编译期 Lambda。当前用户/租户经 `AsyncLocal` 或 DI 注入，AOT 安全。
 
+## 何时使用
+
+- 需要**统一审计字段（创建/修改人、时间）与软删除**，并让已删数据全局自动隐藏时叠加。
+- 实体实现审计接口即可，拦截器统一填充，业务代码无感。
+
+## 与其他模式的关系
+
+- 用 [EF Core](../dotnet/ef-core/ef-data-access.md) `SaveChanges` 拦截器；与 [多租户](multi-tenancy.md) 同机制（全局筛选器/拦截器）。
+- 审计接口由 [实体与聚合根](entities.md) 实现；可叠加在任意形态上。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 12 步。
+
 ## 参考资料
 
 - [多租户（同类筛选机制 + AsyncLocal）](multi-tenancy.md) · [认证与授权](../dotnet/aspnet-core/auth.md)

@@ -232,6 +232,18 @@ var json = JsonSerializer.Serialize(view, AppJsonContext.Default.DashboardView);
 - **避免反射式动态路由**：路由规则用配置或显式代码声明，不要运行时扫描程序集、用反射拼装管道。
 - Minimal API 的返回类型需可静态推断（如上面的 `Results.Ok(...)` 记录类型），保证裁剪器能保留所需类型。
 
+## 何时使用
+
+- 多类客户端（Web/iOS/小程序）需要**不同的聚合视图**，不想让后端领域模型随前端契约泄漏时 → 用 BFF。
+- 要在边缘统一做认证、限流、聚合，避免每个后端服务重复实现时 → 用网关。
+- 想避免"上帝网关"（一个网关懂所有领域）时，按客户端/边界拆多个 BFF。
+
+## 与其他模式的关系
+
+- 位于 [微服务](microservices.md) 边缘；仅用官方 YARP（反向代理），不引第三方网关。
+- 聚合依赖各服务的 [API 设计](api-design.md) 契约；写请求仍走命令/端点，与 [事件驱动](event-driven.md)（异步）分工。
+- 服务边界即 [限界上下文](bounded-context.md)；见 [架构总览与决策指南](overview.md) 进阶栈。
+
 ## 参考资料
 
 - 微服务架构（含网关模式）：<https://learn.microsoft.com/en-us/dotnet/architecture/microservices/>

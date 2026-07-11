@@ -13,6 +13,13 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **架构区体系化（人类反馈：架构像读小说、分散非连续、什么适合该用什么不明确）**：把 25 篇架构页串成一套体系。
+    - **新增 hub 页 `architecture/overview.md`（架构总览与决策指南）**：三层心智模型（部署形态→模块内部→战略边界→横切能力）、模式地图（全 25 页归类表）、「何时用何种」决策指南、推荐技术栈组合（默认栈 + 进阶跨进程栈）、由浅入深学习/采用路径（15 步），并链接全部架构页。
+    - **给每篇架构页补 `## 何时使用` + `## 与其他模式的关系`**（战术 DDD 构件用「在体系中的位置」表述），统一串起"该用什么 / 和谁组合 / 和谁区别"，并交叉链接，消除孤立感。
+    - **导航与索引**：`mkdocs.yml` 架构段顶部加入口 `架构总览与决策指南`；`index.md` 架构节首行加总览入口；治理段加入 `governance/qa-report.md`（消除 strict 的 not-in-nav 警告）。
+    - 修复本批新增链接的相对路径（`wiki/architecture/` 内应为 `../governance/...` 与 `../patterns`、`../anti-patterns`；`qa-report.md` 的 AGENTS 链接改为仓库根纯文本）。
+    - 影响：architecture/overview.md（新）、全部 25 篇 architecture/*.md、mkdocs.yml、index.md、governance/qa-report.md、log.md。
+
 - 2026-07-11 **全库内容巡检 + Correct（人类指令：继续检查所有内容）**：4 个并行子代理审计全库，定位并修复以下问题（全部 `mkdocs build --strict` 通过）。
     - **编译错误**：`auditing-soft-delete.md` 接口属性后多余 `;`；`caching.md` `IDCache`→`IDistributedCache`；`signalr.md` `OthersInGroup(Context.ConnectionId)`（connectionId 非 group）→`Clients.Others`；`aspnet-core-10.md` 非法插值 `$"/orders/{...}"`→`$"/orders/{cmd.Id}"`；`validation.md` 捏造的 `.WithValidationFilter()` 已删（net10 内置 `AddValidation` 全局生效）。
     - **P10 第三方库**：`aspnet-core-10.md` 移除 Scalar 推荐，仅说明内置 `AddOpenApi` 生成 JSON。

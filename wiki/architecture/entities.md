@@ -182,6 +182,17 @@ public interface ISoftDelete { bool IsDeleted { get; set; } }
 - 实体经 API 返回时映射为 [DTO](dto.md)，JSON 走 `System.Text.Json` **源生成**（不要直接序列化实体，见 [DTO](dto.md)）。
 - EF Core 在 AOT 发布下用**编译模型 / 预编译查询**；审计/软删除用拦截器与查询筛选器（编译期已知），AOT 安全。
 
+## 在体系中的位置（何时引入）
+
+- 当概念有**身份与生命周期**、需要一致性/事务边界时，建模为实体或聚合根；按标识相等，不经根不允许改内部。
+- 聚合根是事务边界：跨聚合只经 Id 引用，不持有对象引用。
+
+## 与其他模式的关系
+
+- 与 [值对象](value-objects.md) 互补（无标识描述用值对象）；状态变更通过 [领域事件](domain-events.md) 通知。
+- 审计字段/软删除见 [审计与软删除](auditing-soft-delete.md)；在 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md) 领域核心内定义。
+- 见 [DDD](ddd.md) 与 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [领域驱动设计（总览）](ddd.md) · [值对象](value-objects.md) · [领域服务与应用服务](domain-application-services.md) · [数据传输对象 (DTO)](dto.md)

@@ -100,6 +100,17 @@ DDD 领域模型**完全兼容 AOT**（✅，[P16](../governance/policy.md)、[A
 - 领域事件中若携带类型信息做反序列化，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 - 跨聚合最终一致走[领域事件分发器](domain-events.md)（DI 解析，非反射），AOT 安全。
 
+## 何时使用
+
+- 领域有丰富且易变的业务规则、需要富领域模型（而非贫血 CRUD）时。
+- 想用统一语言对齐业务与技术、降低"模型漂移"时。
+
+## 与其他模式的关系
+
+- 战术构件各自成页：[实体与聚合根](entities.md)、[值对象](value-objects.md)、[领域事件](domain-events.md)、[领域服务与应用服务](domain-application-services.md)、[DTO](dto.md)、[规约模式](specification-pattern.md)。
+- 战略边界见 [限界上下文](bounded-context.md)；落在 [整洁架构](clean-architecture.md) / [六边形架构](hexagonal-architecture.md) 内部。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [整洁架构（模块内分层）](clean-architecture.md) · [模块化单体（限界上下文=模块）](modular-monolith.md)

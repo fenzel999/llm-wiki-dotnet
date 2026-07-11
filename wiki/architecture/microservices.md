@@ -81,6 +81,20 @@ Aspire 把多个服务/容器编排成一个可一键启动的 App Host，统一
 
 微服务**后端可全量 AOT**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）：每个服务用 Minimal API + 显式 DI，typed HttpClient、`IHttpClientFactory` 均 AOT 安全；JSON 走源生成。注意 JWT Bearer 作认证（Cookie/OIDC 不兼容 AOT，见 [auth](../dotnet/aspnet-core/auth.md)）。
 
+## 何时使用
+
+- 仅在**部署/团队强制**时才选：多个团队需独立部署、或不同部分伸缩曲线差异巨大、或需独立技术栈/故障隔离。
+- 模块化单体已把边界画清仍不够承载时，再拆——不要一上来就微服务。
+- 记住：微服务是"更贵的部署形态"，用运维复杂度换独立部署与伸缩。
+
+## 与其他模式的关系
+
+- 与 [模块化单体](modular-monolith.md) 是二态；模块划分方式一致，只是部署单元变了。
+- 每个服务内部仍用 [整洁架构](clean-architecture.md) / [六边形架构](hexagonal-architecture.md) + DDD 战术构件。
+- 跨服务一致用 [事件驱动](event-driven.md)（集成事件 + 发件箱）+ [Saga](saga.md)；边缘聚合用 [API 网关与 BFF](api-gateway-bff.md)。
+- 服务边界即 [限界上下文](bounded-context.md)；重大取舍写 [ADR](adr.md)。
+- 见 [架构总览与决策指南](overview.md) 的进阶跨进程栈。
+
 ## 参考资料
 
 - [模块化单体架构（二态部署）](modular-monolith.md) · [整洁架构（模块内分层）](clean-architecture.md) · [解决方案分层](solution-structure.md)

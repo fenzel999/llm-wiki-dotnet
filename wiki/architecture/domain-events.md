@@ -105,6 +105,17 @@ public sealed class DomainEventInterceptor(IServiceProvider sp) : SaveChangesInt
 
 领域事件分发器靠闭包泛型 `GetServices<IDomainEventHandler>()` + 编译期已知的 `EventType` 过滤，无 `MakeGenericType`/`GetMethod`/`Invoke` 反射，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。注意：若事件携带类型信息做反序列化，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 在体系中的位置（何时引入）
+
+- 聚合内发生"已发生的事"需要通知同进程其他部分（更新读模型、发通知等）时，收集领域事件，在 `SaveChanges` 提交前随工作单元分发。
+- 副作用与业务变更在同一事务，保证一致。
+
+## 与其他模式的关系
+
+- 与 [事件驱动](event-driven.md) 的区别：这里是**进程内同事务**；跨进程要升级为集成事件 + 发件箱（见 [事件驱动](event-driven.md)/[微服务](microservices.md)）。
+- 处理器可触发 [领域服务与应用服务](domain-application-services.md)；写侧是 [CQRS](cqrs.md) 的一部分；[事件溯源](event-sourcing.md) 重建也靠事件。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 8 步。
+
 ## 参考资料
 
 - [领域驱动设计](ddd.md) · [领域服务与应用服务](domain-application-services.md)

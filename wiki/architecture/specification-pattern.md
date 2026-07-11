@@ -105,6 +105,17 @@ public abstract class Specification<T>
 
 规约的**查询下推路径**（`ToExpression()` + `Where`）在 AOT 下**安全**：表达式被 EF Core 查询管道编译为 SQL，不经过 `Reflection.Emit`。规约类是普通 C#、无反射，AOT 友好（[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。**但**内存判定 `IsSatisfiedBy` 里的 `ToExpression().Compile()` 依赖 `Reflection.Emit`，Native AOT 发布下会失败——AOT 后端只走查询下推，不要调用 `IsSatisfiedBy`；需要内存守卫时，把同一条件写成普通 `if` 或 `Func<T,bool>`。最终查询结果跨进程返回时，DTO 序列化走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 在体系中的位置（何时引入）
+
+- 查询条件需复用、组合、单元测试（尤其分页筛选的多字段动态排序）时，把条件封装成规约对象，返回 `Expression<Func<T,bool>>` 交给 EF Core 翻译成 SQL。
+- 手写零依赖，不引第三方规约库（[POLICY P10](../governance/policy.md)）。
+
+## 与其他模式的关系
+
+- 与 [DTO](dto.md) 投影、[CQRS](cqrs.md) 查询侧、[分页](../dotnet/ef-core/pagination.md) 配合。
+- 在 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md) 领域内定义；见 [DDD](ddd.md)。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [领域驱动设计（战术模式同级）](ddd.md) · [EF Core 查询性能](../dotnet/ef-core/query-performance.md) · [LINQ 延迟执行](../dotnet/csharp/linq.md)

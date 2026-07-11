@@ -92,6 +92,18 @@ app.MapPost("/orders", async (CreateOrderDto dto, OrderAppService svc) => Result
 
 应用服务/领域服务是普通 C#、构造注入，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。DTO 进出走 JSON，需 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）；查询投影（`Select` 到 DTO）在 AOT 下无反射问题。
 
+## 在体系中的位置（何时引入）
+
+- **领域服务**：逻辑跨越多个聚合、不属于任一实体时（如转账涉及两个账户）。
+- **应用服务**：编排用例、划定事务边界、做 DTO 边界与协调；不写业务逻辑。
+- 领域逻辑永远在 [实体](entities.md)/[值对象](value-objects.md)/[领域事件](domain-events.md)，不在应用服务里堆过程代码。
+
+## 与其他模式的关系
+
+- 应用服务接收/返回 [DTO](dto.md)；映射手写（不用 AutoMapper，[POLICY P10](../governance/policy.md)）。
+- 落在 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md) 内层；配合 [CQRS](cqrs.md) 的命令侧。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 4 步。
+
 ## 参考资料
 
 - [领域驱动设计](ddd.md) · [整洁架构](clean-architecture.md) · [垂直切片](vertical-slice.md) · [CQRS](cqrs.md)

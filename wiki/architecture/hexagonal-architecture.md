@@ -205,6 +205,18 @@ var useCase = new ConfirmOrderUseCase(db, notifier);
 - **适配器可 AOT 兼容**：`HttpNotifier` 用内置 `System.Text.Json` 源生成（`[JsonSerializable]`）替代运行时反射序列化；EF Core 编译模型可减少运行时反射。
 - **避免动态适配器发现 / 反射注册**：不要用程序集扫描或 `Activator.CreateInstance` 在运行时找适配器。`Native AOT` 下反射受限，应在 `Program.cs` 中**显式注册**每个端口到其适配器（如上面的 `AddHttpClient<INotifier, HttpNotifier>()`、直接 `AddDbContext<AppDbContext>`），保证裁剪器能保留类型并生成必要的封送代码。
 
+## 何时使用
+
+- 希望业务核心**完全不依赖任何基础设施**，所有 I/O（数据库、HTTP、消息）都经端口隔离时。
+- 测试时想轻松替换适配器（内存实现代替真实 DB/消息总线）时。
+- 与 [整洁架构](clean-architecture.md) 同源（都靠依赖倒置），六边形更强调"端口把 I/O 挡在外面"。
+
+## 与其他模式的关系
+
+- 位于 [模块化单体](modular-monolith.md) / [微服务](microservices.md) 内部；与 [整洁架构](clean-architecture.md) 互补。
+- 持久化适配器直接注入 `AppDbContext`（[EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)：DbContext 即工作单元，不套通用仓储）。
+- 依赖方向由 [架构测试](architecture-tests.md) 守护；见 [架构总览与决策指南](overview.md)。
+
 ## 参考资料
 
 - 端口与适配器 / 现代 Web 应用架构（Microsoft Learn）：<https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/>

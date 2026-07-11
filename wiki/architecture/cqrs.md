@@ -92,6 +92,19 @@ CQRS 常与[垂直切片](vertical-slice.md)搭配：每个"功能"自含自己�
 
 CQRS 处理器是普通类 + 构造注入，**AOT 安全**（✅，[P16](../governance/policy.md)、[AOT 矩阵](../dotnet/aot/aot-compatibility.md)）。查询用 `AsNoTracking` + 投影（`Select` 到 DTO）在 AOT 下无反射问题；若读模型序列化跨进程传，响应 JSON 走 `System.Text.Json` **源生成**（见 [序列化](../dotnet/csharp/serialization.md)）。
 
+## 何时使用
+
+- 读多写少、或读写负载不对称、读路径需独立优化/独立伸缩时 → 叠加 CQRS。
+- **先轻量同库分处理器**；只有极端负载不对称才上读写分库（重量版）。
+- 多数项目其实不需要 CQRS——别为"听起来高级"而引入。
+
+## 与其他模式的关系
+
+- 与 [垂直切片](vertical-slice.md) 天然契合（一个命令/查询即一个切片）。
+- 常配合 [事件溯源](event-sourcing.md)（事件流即写模型）；查询侧用 [规约模式](specification-pattern.md)/[DTO](dto.md)。
+- 写侧发 [领域事件](domain-events.md)，可升级为 [事件驱动](event-driven.md) 集成事件。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 7 步。
+
 ## 参考资料
 
 - [垂直切片](vertical-slice.md) · [领域驱动设计](ddd.md) · [领域事件](domain-events.md)

@@ -1,4 +1,4 @@
-﻿---
+---
 title: API 设计模式
 summary: RESTful 设计规范、版本控制、错误处理、分页/筛选/排序、幂等性、乐观并发、HATEOAS 取舍；仅用 Minimal API + 标准库。
 tags: [architecture, api-design, rest, http, versioning, pagination]
@@ -259,6 +259,18 @@ API 设计本身与 AOT 不冲突，关键在于**落地手段**必须选 AOT �
 - **错误响应走 `ProblemDetails`**（源生成），不用统一 `Result<T>` 信封——见 [全局异常处理](../dotnet/aspnet-core/exception-handling.md)。
 - **JSON 序列化用 `System.Text.Json` 源生成**（`JsonSerializerContext`），不用反射序列化——见 [序列化](../dotnet/csharp/serialization.md)。
 - **分页/排序用编译期表达式白名单**（[分页](../dotnet/ef-core/pagination.md)），不按字符串反射属性名。
+
+## 何时使用
+
+- 对外暴露 HTTP 能力、需要稳定契约、版本策略与一致错误模型时。
+- 需要分页/筛选/排序、幂等、乐观并发等标准契约时。
+
+## 与其他模式的关系
+
+- 契约服务于 [微服务](microservices.md) / [API 网关与 BFF](api-gateway-bff.md) / [模块化单体](modular-monolith.md) 的端点；错误模型用 ASP.NET Core 内建（[ASP.NET Core 10](../dotnet/aspnet-core/aspnet-core-10.md)）。
+- 与 [事件驱动](event-driven.md)（集成事件）分工：**同步契约 vs 异步事件**。
+- 仅用 Minimal API + 标准库，不引 Swashbuckle/Scalar（[POLICY P10](../governance/policy.md)）。
+- 见 [架构总览与决策指南](overview.md) 学习路径第 9 步。
 
 ## 参考资料
 - [ASP.NET Core Native AOT 支持](https://learn.microsoft.com/aspnet/core/fundamentals/native-aot)

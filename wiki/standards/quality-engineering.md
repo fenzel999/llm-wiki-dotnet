@@ -57,10 +57,13 @@ catch (HttpRequestException ex)
 ```csharp
 public static class ExceptionExtensions
 {
-    public static T AddData<T>(this T ex, string key, string value) where T : Exception
+    extension<T>(T ex) where T : Exception
     {
-        ex.Data[key] = value;
-        return ex;
+        public static T AddData(string key, string value)
+        {
+            ex.Data[key] = value;
+            return ex;
+        }
     }
 }
 ```

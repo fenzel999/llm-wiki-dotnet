@@ -38,9 +38,11 @@ AOT 不是银弹。**JIT（动态 PGO）** 在长周期、高吞吐服务中仍�
 
 | 阶段 | 操作 | 说明 |
 |------|------|------|
-| 1. 训练 | `dotnet run --profile` 或生产环境跑负载 | 生成 `default.mib` (MIB = Methods in Bundle) |
-| 2. 反馈 | 将 `.mib` 放入项目或传给发布 | 编译器按热点方法/分支概率优化 |
+| 1. 训练 | 开启 AOT PGO 后运行应用/负载采集热点 | 生成运行期 profile（具体文件名与采集方式见官方文档） |
+| 2. 反馈 | 将采集到的 profile 交给发布流程 | 编译器按热点方法/分支概率优化 |
 | 3. 发布 | `dotnet publish -p:PublishAot=true -p:OptimizationPreference=Speed` | 产出 PGO 优化的原生二进制 |
+
+> ⚠️ needs-your-call：静态 PGO 的精确命令与产物文件名需对照 .NET 10 官方文档（AOT PGO 端到端工具链在 .NET 10 仍为实验/未完整文档化）核校后再定稿，避免把不存在的 flag 写进知识库。
 
 **权衡**：
 - ✅ 热点路径指令更紧凑、分支预测更准

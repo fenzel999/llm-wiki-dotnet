@@ -218,7 +218,7 @@ public class DomainPurityTests
          .ToList();
 
         // 反射 IL 扫描较脆；更稳妥见下方 Roslyn 方案。
-        Assert.True(offenders.Count == 0 || true,
+            Assert.True(offenders.Count == 0,
             "领域层应注入时钟而非直接调用 DateTime.Now；建议改用 Roslyn 分析器精确拦截。");
     }
 }

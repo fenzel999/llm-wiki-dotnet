@@ -24,18 +24,18 @@ updated: 2026-07-10
 
 开启 AOT 很简单，在项目文件里把开关打开，顺手把不变全球化（invariant globalization）也开了——它能砍掉一部分和文化相关的数据表，进一步缩小体积：
 
-```csharp
-// MyApp.csproj
-// <PropertyGroup>
-//   <PublishAot>true</PublishAot>
-//   <InvariantGlobalization>true</InvariantGlobalization>
-// </PropertyGroup>
+```xml
+<!-- MyApp.csproj -->
+<PropertyGroup>
+  <PublishAot>true</PublishAot>
+  <InvariantGlobalization>true</InvariantGlobalization>
+</PropertyGroup>
 ```
 
 发布时指定目标运行时标识符（RID）即可：
 
-```csharp
-// dotnet publish -c Release -r win-x64
+```bash
+dotnet publish -c Release -r win-x64
 ```
 
 真正需要注意的，是那些会被 trimming 误伤的代码。最典型的就是反射：编译器在静态分析时看不出你“将来会在运行时通过名字去加载哪个类型”，于是可能把它裁掉，等到运行时才崩溃。应对办法是用特性把这类代码标注出来，让编译器在构建期就给你警告，逼你显式处理：

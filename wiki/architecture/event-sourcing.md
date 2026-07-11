@@ -91,7 +91,13 @@ public sealed class Account
         return Outcome<AccountEvent>.Ok(new MoneyWithdrawn(Id, Version + 1, amount));
     }
 
-    private void Apply(AccountEvent e) => Apply((dynamic)e);
+    private void Apply(AccountEvent e) => e switch
+    {
+        AccountOpened o => Apply(o),
+        MoneyDeposited o => Apply(o),
+        MoneyWithdrawn o => Apply(o),
+        _ => throw new InvalidOperationException($"未处理的事件类型：{e.GetType().Name}")
+    };
 
     private void Apply(AccountOpened e) { Owner = e.Owner; Balance = e.OpeningBalance; Version = e.Version; }
     private void Apply(MoneyDeposited e) { Balance += e.Amount; Version = e.Version; }

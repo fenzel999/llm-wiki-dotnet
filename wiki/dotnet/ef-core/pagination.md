@@ -69,36 +69,39 @@ public class DynamicOrderByAllowList<T> : Dictionary<string, Expression<Func<T, 
     }
 }
 
-// SharedKernel：可复用的 IQueryable 扩展（net14 可用 extension 成员；低版本写成普通 static class）
+// SharedKernel：可复用的 IQueryable 扩展（C# 14 extension 成员）
 public static class QueryableExpressions
 {
-    // 多字段动态排序（逗号分隔、支持 DESC），白名单过滤防注入
-    public static IQueryable<T> WithDynamicOrderBy<T>(
-        this IQueryable<T> source, string? sorting,
-        IReadOnlyDictionary<string, Expression<Func<T, object>>> sortMap)
+    extension<T>(IQueryable<T> source)
     {
-        if (string.IsNullOrWhiteSpace(sorting)) return source;
-        IOrderedQueryable<T>? ordered = null;
-        foreach (var part in sorting.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        // 多字段动态排序（逗号分隔、支持 DESC），白名单过滤防注入
+        public static IQueryable<T> WithDynamicOrderBy(
+            string? sorting,
+            IReadOnlyDictionary<string, Expression<Func<T, object>>> sortMap)
         {
-            var span = part.AsSpan();
-            var space = span.IndexOf(' ');
-            var field = (space > 0 ? span[..space] : span).Trim().ToString();
-            var isDesc = space > 0 && span[space..].TrimStart().Equals("DESC", StringComparison.OrdinalIgnoreCase);
-            if (!sortMap.TryGetValue(field, out var expr)) continue;   // 不在白名单→跳过
-            ordered = ordered is null
-                ? (isDesc ? source.OrderByDescending(expr) : source.OrderBy(expr))
-                : (isDesc ? ordered.ThenByDescending(expr)   : ordered.ThenBy(expr));
+            if (string.IsNullOrWhiteSpace(sorting)) return source;
+            IOrderedQueryable<T>? ordered = null;
+            foreach (var part in sorting.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            {
+                var span = part.AsSpan();
+                var space = span.IndexOf(' ');
+                var field = (space > 0 ? span[..space] : span).Trim().ToString();
+                var isDesc = space > 0 && span[space..].TrimStart().Equals("DESC", StringComparison.OrdinalIgnoreCase);
+                if (!sortMap.TryGetValue(field, out var expr)) continue;   // 不在白名单→跳过
+                ordered = ordered is null
+                    ? (isDesc ? source.OrderByDescending(expr) : source.OrderBy(expr))
+                    : (isDesc ? ordered.ThenByDescending(expr)   : ordered.ThenBy(expr));
+            }
+            return ordered ?? source;
         }
-        return ordered ?? source;
-    }
 
-    // 偏移分页，自动校正非法参数
-    public static IQueryable<T> WithOffsetPaging<T>(this IQueryable<T> source, int skipCount, int maxResultCount)
-    {
-        skipCount = Math.Max(0, skipCount);
-        maxResultCount = Math.Clamp(maxResultCount, 1, 1000);   // 上限防止一次拉全表
-        return source.Skip(skipCount).Take(maxResultCount);
+        // 偏移分页，自动校正非法参数
+        public static IQueryable<T> WithOffsetPaging(int skipCount, int maxResultCount)
+        {
+            skipCount = Math.Max(0, skipCount);
+            maxResultCount = Math.Clamp(maxResultCount, 1, 1000);   // 上限防止一次拉全表
+            return source.Skip(skipCount).Take(maxResultCount);
+        }
     }
 }
 ```

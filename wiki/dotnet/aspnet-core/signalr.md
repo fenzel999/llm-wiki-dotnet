@@ -79,8 +79,8 @@ public class DrawHub : Hub<IDrawClient>
 {
     public async Task Stroke(string color, int x, int y)
     {
-        // 把笔画推给同房间的其他人，自己已在本地画了
-        await Clients.OthersInGroup(Context.ConnectionId).ReceiveStroke(color, x, y);
+        // 把笔画推给其他连接，自己已在本地画了（Others = 除自己外的全部连接）
+        await Clients.Others.ReceiveStroke(color, x, y);
         // 仅向自己确认已收到
         await Clients.Caller.Ack();
     }

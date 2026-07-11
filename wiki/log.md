@@ -13,6 +13,15 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **全库内容巡检 + Correct（人类指令：继续检查所有内容）**：4 个并行子代理审计全库，定位并修复以下问题（全部 `mkdocs build --strict` 通过）。
+    - **编译错误**：`auditing-soft-delete.md` 接口属性后多余 `;`；`caching.md` `IDCache`→`IDistributedCache`；`signalr.md` `OthersInGroup(Context.ConnectionId)`（connectionId 非 group）→`Clients.Others`；`aspnet-core-10.md` 非法插值 `$"/orders/{...}"`→`$"/orders/{cmd.Id}"`；`validation.md` 捏造的 `.WithValidationFilter()` 已删（net10 内置 `AddValidation` 全局生效）。
+    - **P10 第三方库**：`aspnet-core-10.md` 移除 Scalar 推荐，仅说明内置 `AddOpenApi` 生成 JSON。
+    - **AOT 自相矛盾**：`event-sourcing.md` `Apply((dynamic)e)` 改为显式 `switch`（与自身 AOT 规则一致）；`bounded-context.md`/`api-gateway-bff.md` 反射式 `ReadFromJsonAsync<T>`/`GetFromJsonAsync<T>` 改为传入 `JsonSerializerContext` 源生成上下文；`native-aot.md` csproj/CLI 误用 ```csharp 围栏→```xml/```bash。
+    - **P1 旧惯用法**：`pagination.md`、`quality-engineering.md` 旧 `static class`+`this` 扩展方法改为 C# 14 `extension` 块；`net-evolution.md` 错写的 `extension X for Y` 改为正确 `extension(<Type> <p>)` 形式。
+    - **知识矛盾/缺陷**：`hexagonal-architecture.md` 常见误区示例仍用 `IOrderRepository`→改 `IPricingPort`（与"不用仓储模式"一致）；`architecture-tests.md` `Assert.True(... || true)` 恒真→`offenders.Count == 0`；`ef-data-access.md` 误导"InMemory 跑单测"→改为 SQLite/真实库（与测试页一致）；`auth.md` MVC `[Authorize(AuthenticationSchemes=...)]`→Minimal API 策略+`RequireAuthorization`；`bounded-context.md` 误称反射代码"源生成友好"已纠正；`saga.md` `IRepository`→`IInventoryStore`/`ICreditStore`（避开仓储模式命名）；`net-evolution.md` .NET 9 标 EOL（支持已于 2026-05 截止）。
+    - **待人类判定**：`aot-performance.md` 静态 PGO 的精确命令/产物名（`dotnet run --profile`、`.mib`、`EnableAotPgo`）在 .NET 10 仍为实验/未完整文档化，已软化并标 `⚠️ needs-your-call`，见 qa-report.md。
+    - 影响：上述全部页面 + log.md + 新建 governance/qa-report.md。
+
 - 2026-07-11 **Correct（六边形架构页，续）**：按人类纠正，补 `DbSet` 缺失能力改用 **C# 14 `extension` 块**（最新惯用法，对应 AGENTS.md P1「extension 块替代静态扩展类」），而非旧的 `static class` + `this` 参数写法；并明确「坚决不使用仓储模式」「EF Core 自身即适配器模式（换库只换 `UseXxx` 一行）」。同步在「适用版本」注明主构造函数（C# 12）/ extension 块（C# 14）的版本要求。
     - 影响：architecture/hexagonal-architecture.md、log.md。
 

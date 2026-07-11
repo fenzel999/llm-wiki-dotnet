@@ -76,7 +76,7 @@ public interface IOrderRepository { Task<Order?> GetAsync(OrderId id); }
 // ✅ 直接注入 AppDbContext 查询
 ```
 
-这层接口除了把 `db.Orders.FirstOrDefaultAsync(...)` 换个名字包起来，没有提供任何额外价值，反而让你多维护一套类型、多想一层依赖关系。另一个误区是把业务规则塞进数据访问层——领域行为属于实体或领域服务，不该和“怎么读数据库”混在一起。还有人担心“不写 Repository 就没法测试”，其实大多数情况下用 EF Core 的 `InMemory` 提供程序就足以跑单元测试，根本不需要为可测性额外造抽象层。
+这层接口除了把 `db.Orders.FirstOrDefaultAsync(...)` 换个名字包起来，没有提供任何额外价值，反而让你多维护一套类型、多想一层依赖关系。另一个误区是把业务规则塞进数据访问层——领域行为属于实体或领域服务，不该和“怎么读数据库”混在一起。还有人担心“不写 Repository 就没法测试”，其实 `AppDbContext` 注入即可直接测试——集成测试用 SQLite 内存库或真实库（见 [集成测试](../fundamentals/integration-testing.md)），纯领域逻辑可做单元测试，根本不需要为可测性额外造抽象层。
 
 ## 适用版本
 

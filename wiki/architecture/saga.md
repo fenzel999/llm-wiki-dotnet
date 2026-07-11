@@ -59,12 +59,12 @@ public record CreditFailed(Guid OrderId);
 public class InventoryHandler
 {
     private readonly IMessageBus _bus;
-    private readonly IRepository _repo;
+    private readonly IInventoryStore _store;
 
     public async Task Handle(OrderPlaced e, CancellationToken ct)
     {
         // 本地事务：预留库存
-        if (await _repo.TryReserveAsync(e.OrderId, e.Amount, ct))
+        if (await _store.TryReserveAsync(e.OrderId, e.Amount, ct))
         {
             await _bus.Publish(new OrderReserved(e.OrderId), ct);
         }
@@ -80,11 +80,11 @@ public class InventoryHandler
 public class CreditHandler
 {
     private readonly IMessageBus _bus;
-    private readonly IRepository _repo;
+    private readonly ICreditStore _store;
 
     public async Task Handle(OrderPlaced e, CancellationToken ct)
     {
-        if (await _repo.TryFreezeAsync(e.CustomerId, e.Amount, ct))
+        if (await _store.TryFreezeAsync(e.CustomerId, e.Amount, ct))
         {
             await _bus.Publish(new CreditReserved(e.OrderId), ct);
         }

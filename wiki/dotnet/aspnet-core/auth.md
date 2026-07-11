@@ -76,7 +76,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
 
 ### 4. 多方案并存（如 API 用 JWT、Web 用 Cookie）
 
-可注册多个 scheme，端点用 `Authorize(AuthenticationSchemes = "Bearer,Cookies")` 指定接受哪些；默认认证方案决定未显式指定时的行为。
+可注册多个 scheme，端点用策略 + `.RequireAuthorization(...)` 指定接受哪些（如 `builder.Services.AddAuthorization(o => o.AddPolicy("multi", p => p.AddAuthenticationSchemes("Bearer", "Cookies").RequireAuthenticatedUser()))` 后 `.RequireAuthorization("multi")`）；默认认证方案决定未显式指定时的行为。
 
 ## 常见误区
 

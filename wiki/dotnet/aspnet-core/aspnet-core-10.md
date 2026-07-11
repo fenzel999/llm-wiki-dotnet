@@ -53,7 +53,7 @@ app.MapGet("/orders/{id}", async (int id, OrdersDbContext db) =>
 
 // 多个结果时声明返回类型，便于 OpenAPI 与 AOT 源生成
 app.MapPost("/orders", (CreateOrder cmd) =>
-    Results.Created($"/orders/{...}", cmd))
+    Results.Created($"/orders/{cmd.Id}", cmd))
     .Produces<Order>(StatusCodes.Status201Created)
     .ProducesProblem(StatusCodes.Status400BadRequest);
 ```
@@ -67,7 +67,7 @@ app.MapOpenApi();                   // 暴露 /openapi/v1.json
 app.MapGet("/ping", () => "pong").WithSummary("健康检查");
 ```
 
-> 内置 `AddOpenApi` 只生成 JSON 文档，**不含**可交互 UI。需要浏览器试接口可接轻量替代（如 Scalar）指向该端点。本项目**不使用 Swashbuckle**。
+> 内置 `AddOpenApi` 只生成 JSON 文档（`/openapi/v1.json`），**不含**可交互 UI；是否再挂第三方 UI 由你决定，本库不引入 Swashbuckle / Scalar 等第三方包（见 [POLICY P10](../../governance/policy.md)）。
 
 ### 4. `MapGroup` 分组复用前缀/授权/过滤器
 

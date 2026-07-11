@@ -124,7 +124,7 @@ public sealed class CatalogClient(HttpClient http)
     {
         using var resp = await http.GetAsync($"/catalog/products/{id}", ct);
         if (!resp.IsSuccessStatusCode) return null;
-        return await resp.Content.ReadFromJsonAsync<CatalogProductDto>(cancellationToken: ct);
+        return await resp.Content.ReadFromJsonAsync<CatalogProductDto>(CatalogJsonContext.Default.CatalogProductDto, ct);
     }
 }
 
@@ -208,7 +208,7 @@ public sealed class InventoryGateway
 
 - 跨上下文集成时写的**防腐层 / 适配器 / 开放主机契约**必须遵守 [Native AOT](../dotnet/aot/native-aot.md) 规则：使用 `System.Text.Json` 的**源生成**（`[JsonSerializable(...)]` 上下文）而非运行时反射，否则 AOT 剪裁会丢类型。
 - 避免在 ACL 中使用 `Type.GetType`、`Activator.CreateInstance`、基于反射的泛型反序列化等不可静态分析的 API。
-- 若采用 `ReadFromJsonAsync<T>` 的源生成友好写法（如上例），在 `dotnet publish -r linux-x64 -p:PublishAot=true` 下可正常工作。
+- 若采用带 `JsonSerializerContext` 的源生成写法（如上例 `CatalogJsonContext.Default.CatalogProductDto`），在 `dotnet publish -r linux-x64 -p:PublishAot=true` 下可正常工作。
 
 ```csharp
 // AOT 安全的源生成 JSON 上下文（放在 ACL 所在程序集内）

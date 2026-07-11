@@ -125,9 +125,9 @@ app.MapGet("/bff/web/dashboard/{userId}", async (
     var client = factory.CreateClient();
     // 并发聚合，避免串行 chatty calls
     var profileTask = client.GetFromJsonAsync<Profile>(
-        $"http://profile-svc/users/{userId}", ct);
+        AppJsonContext.Default.Profile, $"http://profile-svc/users/{userId}", ct);
     var ordersTask = client.GetFromJsonAsync<Order[]>(
-        $"http://orders-svc/users/{userId}/recent", ct);
+        AppJsonContext.Default.OrderArray, $"http://orders-svc/users/{userId}/recent", ct);
 
     await Task.WhenAll(profileTask, ordersTask);
 
@@ -220,6 +220,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 
 [JsonSerializable(typeof(DashboardView))]
+[JsonSerializable(typeof(Profile))]
 [JsonSerializable(typeof(Order[]))]
 internal partial class AppJsonContext : JsonSerializerContext { }
 

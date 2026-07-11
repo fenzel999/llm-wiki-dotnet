@@ -76,7 +76,7 @@ public class CachedLookup(IMemoryCache mem)
 builder.Services.AddStackExchangeRedisCache(o => o.Configuration = "localhost:6379");
 // 或用 SQL/本库其它实现；AddDistributedMemoryCache 仅测试用
 
-public class Dist(IDCache dist)
+public class Dist(IDistributedCache dist)
 {
     public async Task SetAsync(string k, string v, CancellationToken ct)
         => await dist.SetStringAsync(k, v,

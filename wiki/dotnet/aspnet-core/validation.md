@@ -58,8 +58,7 @@ public sealed class NoSpacesAttribute : ValidationAttribute
 
 ```csharp
 builder.Services.AddValidation();   // net10+ 最小 API 内置验证
-app.MapPost("/orders", (CreateOrder o) => Results.Ok(o))   // 不合法自动 400
-    .WithValidationFilter();         // 挂内置验证过滤器（net10）
+    app.MapPost("/orders", (CreateOrder o) => Results.Ok(o));  // 不合法自动 400（AddValidation 已全局生效）
 ```
 
 ### 4. 失败时返回结构化错误（422）

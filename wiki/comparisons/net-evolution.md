@@ -34,7 +34,7 @@ updated: 2026-07-10
 | .NET 6 | 2021-11 | LTS | 2024-11（EOL） | C# 10 |
 | .NET 7 | 2022-11 | STS | 2024-05（EOL） | C# 11 |
 | .NET 8 | 2023-11 | LTS | 2026-11 | C# 12 |
-| .NET 9 | 2024-11 | STS | 2026-05 | C# 13 |
+| .NET 9 | 2024-11 | STS | 2026-05（EOL） | C# 13 |
 | .NET 10 | 2025-11-11 | LTS | 2028-11-14 | C# 14 |
 
 标了 **EOL** 的版本均已停止支持，不应用于新项目——它们的知识只作为"演进脉络"保留。当前只在两个仍受支持的 LTS（.NET 8 / .NET 10）之间选即可；中间的 .NET 9 只是个 STS 过渡。生产环境里绝大多数团队就在这两端之间选。各历史版本仍然有效的知识分别见 [.NET Core 3.0/3.1](../dotnet/versions/netcore3.md)、[.NET 5](../dotnet/versions/net5.md)、[.NET 6](../dotnet/versions/net6.md)、[.NET 7](../dotnet/versions/net7.md)。
@@ -81,7 +81,7 @@ public class Order
 
 // 选项卡（mkdocs-material 语法）表达版本差异
 // === "net10"
-// public extension StringExtensions for string { ... }   // C# 14 extension 块
+// public static class StringExtensions { extension(string s) { public int WordCount() => s.Split(' ').Length; } }   // C# 14 extension 块
 // === "net9"
 // 旧写法：静态扩展类 static class StringExtensions { ... }
 ```

@@ -29,7 +29,7 @@ updated: 2026-07-11
 ### 1. 标记接口 + 拦截器统一处理
 
 ```csharp
-public interface IAuditedEntity { DateTime CreatedAt { get; set; }; DateTime? ModifiedAt { get; set; } }
+public interface IAuditedEntity { DateTime CreatedAt { get; set; } DateTime? ModifiedAt { get; set; } }
 public interface ISoftDelete { bool IsDeleted { get; set; } }
 
 public sealed class AuditInterceptor(IClock clock, ICurrentUser user) : SaveChangesInterceptor

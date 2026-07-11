@@ -14,7 +14,7 @@ updated: 2026-07-11
 > - 端口（Port）是领域/核心定义的接口；适配器（Adapter）是端口两端的具体实现——主适配器（driving）驱动核心，次适配器（driven）被核心驱动。
 > - 依赖倒置：核心只依赖自己定义的端口接口，基础设施适配器反向依赖端口，从而把 HTTP、数据库、消息等 I/O 推到边界之外。
 > - 与[整洁架构](../architecture/clean-architecture.md)的区别：六边形强调“驱动端/被驱动端”的对称端口，整洁架构强调同心分层（实体→用例→接口适配→框架）。
-> - 可测试性来自“换适配器”：测试中用一个内存/桩适配器实现同一端口即可驱动或替身核心，无需启动真实数据库或网络。
+> - 可测试性来自“替换基础设施”：跨进程端口可用内存替身，持久化可用 EF Core 内存提供程序，无需真实数据库或网络即可驱动与断言核心。
 > - 小应用不必上六边形——端口过多会带来样板代码负担，见[常见误区](#common-pitfalls)。
 
 ## 概述
@@ -24,17 +24,17 @@ updated: 2026-07-11
 整体形状像一个六边形，每一“边”都是一个端口。端口分两类：
 
 - **主端口（Primary / Driving Port）**：核心对外暴露的能力（用例接口），由“主适配器”从外部驱动，例如 Minimal API 端点、命令行、集成测试。
-- **次端口（Secondary / Driven Port）**：核心需要向外调用的能力（出库接口），由“次适配器”实现，例如 EF Core 持久化、HttpClient 调用第三方、消息发送。
+- **次端口（Secondary / Driven Port）**：核心需要向外调用、且**跨越进程边界**的能力（出库接口），由“次适配器”实现，例如第三方 HTTP 调用、消息发送、通知。
 
-核心规则：**依赖只向内**。应用核心只引用自己定义的端口接口，绝不引用 `Microsoft.EntityFrameworkCore`、`System.Net.Http` 等基础设施类型。这是依赖倒置原则（DIP）的直接应用，与 [依赖注入](../dotnet/fundamentals/dependency-injection.md) 天然契合——运行时由 DI 容器把具体适配器“注入”到端口背后。
+核心规则：**依赖只向内**。应用核心只引用自己定义的端口接口，或（按本库 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 约定）直接注入 `AppDbContext`——绝不手写额外的仓储/工作单元包装。这是依赖倒置原则（DIP）的直接应用，与 [依赖注入](../dotnet/fundamentals/dependency-injection.md) 天然契合——运行时由 DI 容器把具体适配器“注入”到端口背后。
 
-六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，持久化**次端口**就是典型的端口——注意这是依赖倒置的窄接口，并非 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部直接用 `DbContext`。它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
+> 为什么持久化不单独抽象成端口？因为 **EF Core 的 `DbContext` 本身就是 Unit of Work、`DbSet<T>` 本身就是 Repository**——它已经实现了仓储模式，再包一层 `IOrderRepository` / `EfOrderRepository` 属于多余抽象（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）。所以本库约定：持久化直接注入 `AppDbContext`、扩展对应的 `DbSet` 即可；**只有真正跨进程边界的关注点（通知、第三方 HTTP 等）才定义端口**。六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
 
 ## 正确做法
 
-下面的例子演示完整闭环：定义端口（领域侧）→ 实现次适配器（EF Core / HttpClient）→ 用 DI 接线 → 用 Minimal API 作主适配器驱动核心。不依赖任何第三方库。
+下面的例子演示完整闭环：定义端口（领域侧）+ 用例 → 直接注入 `AppDbContext`（EF Core 内置的仓储/工作单元）与跨进程端口 → 用 DI 接线 → 用 Minimal API 作主适配器驱动核心。不依赖任何第三方库。
 
-### 1. 定义端口（在应用核心，不引用任何 I/O 类型）
+### 1. 定义端口与用例（应用核心）
 
 ```csharp
 namespace Wiki.AppCore;
@@ -42,14 +42,7 @@ namespace Wiki.AppCore;
 // 领域模型（核心，纯数据 + 行为，无基础设施依赖）
 public sealed record Order(Guid Id, string Product, decimal Amount, bool IsConfirmed);
 
-// 次端口（被核心调用的仓储接口，由外层适配器实现）
-public interface IOrderRepository
-{
-    Task<Order?> GetAsync(Guid id, CancellationToken ct = default);
-    Task SaveAsync(Order order, CancellationToken ct = default);
-}
-
-// 次端口（被核心调用，向外发通知）
+// 端口（只有跨越进程边界的关注点才需要）：向外发通知
 public interface INotifier
 {
     Task NotifyAsync(string message, CancellationToken ct = default);
@@ -61,62 +54,49 @@ public interface IConfirmOrderUseCase
     Task ConfirmAsync(Guid orderId, CancellationToken ct = default);
 }
 
-// 用例实现：只依赖端口接口，绝不知道 EF Core / HttpClient 的存在。
-// C# 12 主构造函数（primary constructor）直接把依赖声明在类型参数上，
-// 编译器自动生成私有只读字段，无需手写 `private readonly _x` + 构造函数体。
-// 主构造函数是编译期特性，天然 Native AOT 友好（见「Native AOT 兼容性」）。
-public sealed class ConfirmOrderUseCase(IOrderRepository orders, INotifier notifier)
-    : IConfirmOrderUseCase
+// 用例（应用服务）。持久化直接注入 EF Core 的 AppDbContext——
+// 它内置 Unit of Work + Repository（DbSet<T> 即仓储），按本库约定不再包一层 IOrderRepository。
+// C# 12 主构造函数把依赖声明在类型参数上（编译期生成只读字段，Native AOT 友好）。
+// 通知仍走端口 INotifier（外部关注点才需要显式端口）。
+public sealed class ConfirmOrderUseCase(
+    AppDbContext db,
+    INotifier notifier) : IConfirmOrderUseCase
 {
     public async Task ConfirmAsync(Guid orderId, CancellationToken ct = default)
     {
-        var order = await orders.GetAsync(orderId, ct)
+        var order = await db.Orders.FindAsync(new object[] { orderId }, ct)
             ?? throw new InvalidOperationException($"订单 {orderId} 不存在");
 
         var confirmed = order with { IsConfirmed = true };
-        await orders.SaveAsync(confirmed, ct);
+        db.Orders.Update(confirmed);
+        await db.SaveChangesAsync(ct);
         await notifier.NotifyAsync($"订单 {orderId} 已确认", ct);
     }
 }
 ```
 
-### 2. 实现次适配器（基础设施层，依赖端口 + 具体技术）
+### 2. 基础设施：扩展 AppDbContext 的 DbSet（新语法）
 
-下面的 **`IOrderRepository` 端口 + `EfOrderRepository` 适配器** 是六边形的「次端口」落地：用端口把 `AppDbContext` “套壳”起来，核心只认端口接口，永远不 `using Microsoft.EntityFrameworkCore`。注意：这里的端口是**依赖倒置的窄接口**，并不是 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 明确拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部**直接用一个 `DbContext`** 完成持久化，默认不套一层泛型仓储。
+本库约定：**EF Core 的 `DbContext` 已经是 Unit of Work、`DbSet<T>` 已经是 Repository**，所以不要再加 `IOrderRepository` / `EfOrderRepository` 这类包装。直接**扩展 `AppDbContext` 对应的 `DbSet`** 即可——`AppDbContext` 本身就算“仓储模式”的落地，无需任何额外抽象。
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using Wiki.AppCore;
 
-// 持久化适配器：实现次端口 IOrderRepository（窄接口，非通用 Repository<T>）。
-// C# 12 主构造函数把 AppDbContext 声明在类型参数上，编译器生成私有只读字段（AOT 友好）。
-// 适配器内部直接使用 DbContext，不引入仓储/工作单元包装。
-public sealed class EfOrderRepository(AppDbContext db) : IOrderRepository
+// AppDbContext：用 C# 12 主构造函数把 DbContextOptions 声明在类型参数上（AOT 友好）。
+// 扩展对应的 DbSet<Order> 即获得该实体的仓储能力，这就是“套壳 AppDbContext”的全部所需。
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public async Task<Order?> GetAsync(Guid id, CancellationToken ct = default)
-        => await db.Orders.FindAsync(new object[] { id }, ct);
-
-    public async Task SaveAsync(Order order, CancellationToken ct = default)
-    {
-        db.Orders.Update(order);
-        await db.SaveChangesAsync(ct);
-    }
+    public DbSet<Order> Orders => Set<Order>();
 }
 
-// HTTP 通知适配器：实现次端口 INotifier，用内置 HttpClient（主构造函数 + IDisposable）
+// 只有真正跨进程边界的关注点才做端口 + 适配器，例如用内置 HttpClient 发通知
 public sealed class HttpNotifier(HttpClient http) : INotifier, IDisposable
 {
     public async Task NotifyAsync(string message, CancellationToken ct = default)
         => await http.PostAsJsonAsync("/notify", new { message }, ct);
 
     public void Dispose() => http.Dispose();
-}
-
-// 套壳用的 AppDbContext：纯基础设施，不含任何业务规则，仅暴露 DbSet。
-// 同样用主构造函数把 DbContextOptions 声明在类型参数上。
-public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
-{
-    public DbSet<Order> Orders => Set<Order>();
 }
 ```
 
@@ -128,10 +108,10 @@ using Wiki.AppCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 次适配器注册到次端口
+// 持久化：直接注册 AppDbContext（它就是内置的仓储 + 工作单元）
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("Orders")));
-builder.Services.AddScoped<IOrderRepository, EfOrderRepository>();
+// 跨进程边界的端口才需要显式注册到适配器
 builder.Services.AddHttpClient<INotifier, HttpNotifier>();
 
 // 主端口（用例）注册
@@ -152,21 +132,19 @@ app.MapPost("/orders/{id:guid}/confirm", async (Guid id, IConfirmOrderUseCase us
 });
 ```
 
-### 5. 用换适配器来测试（可测试性的来源）
+### 5. 测试（可测试性的来源）
 
 ```csharp
+using Microsoft.EntityFrameworkCore;
 using Wiki.AppCore;
 
-// 测试用内存适配器，实现同一端口，无需数据库
-public sealed class InMemoryOrderRepository : IOrderRepository
-{
-    private readonly Dictionary<Guid, Order> _store = new();
-    public Task<Order?> GetAsync(Guid id, CancellationToken ct = default)
-        => Task.FromResult(_store.TryGetValue(id, out var o) ? o : null);
-    public Task SaveAsync(Order order, CancellationToken ct = default)
-    { _store[order.Id] = order; return Task.CompletedTask; }
-}
+// 持久化测试：用 EF Core 内存提供程序承载 AppDbContext，无需真实数据库即可驱动核心
+var options = new DbContextOptionsBuilder<AppDbContext>()
+    .UseInMemoryDatabase("confirm-test")
+    .Options;
+var db = new AppDbContext(options);
 
+// 跨进程端口仍可用内存替身换掉，无需真实 HTTP
 public sealed class SpyNotifier : INotifier
 {
     public List<string> Messages { get; } = new();
@@ -174,11 +152,9 @@ public sealed class SpyNotifier : INotifier
     { Messages.Add(message); return Task.CompletedTask; }
 }
 
-// 测试：直接驱动核心，完全不经过 HTTP / EF Core
-var repo = new InMemoryOrderRepository();
 var notifier = new SpyNotifier();
-var useCase = new ConfirmOrderUseCase(repo, notifier);
-// ... 安排 repo 数据后调用 ConfirmAsync 并断言 notifier.Messages
+var useCase = new ConfirmOrderUseCase(db, notifier);
+// ... 安排 db.Orders 数据后调用 ConfirmAsync 并断言 db / notifier.Messages
 ```
 
 ## 常见误区 {#common-pitfalls}
@@ -186,8 +162,8 @@ var useCase = new ConfirmOrderUseCase(repo, notifier);
 ❌ **把业务逻辑放进适配器（贫血端口）。** 适配器只做“翻译”（HTTP↔领域、行↔实体），业务规则应留在核心用例/领域里。
 ✅ WHY：如果规则散落在 EF Core 适配器或 Minimal API 里，核心就空了，换适配器时行为会不一致，测试也无法只测核心。端口应当是“富含行为”的契约，适配器只负责边界转换。
 
-❌ **让核心引用基础设施类型（如 `DbContext`、HTTP 状态码、`SqlException`）。**
-✅ WHY：这正是六边形要消除的反模式。一旦核心 `using Microsoft.EntityFrameworkCore`，依赖就向外泄漏，依赖倒置被破坏，核心无法脱离数据库单独测试与演进。核心只能通过自己定义的端口接口与外界通信。
+❌ **让核心引用与业务无关的基础设施类型（如 HTTP 状态码、`SqlException`、第三方 SDK 类型），或把业务规则写进适配器。**
+✅ WHY：这正是六边形要消除的反模式。一旦核心耦合具体基础设施，依赖倒置被破坏，核心难以演进与测试。本库的务实约定是：持久化直接注入 EF Core 的 `AppDbContext`（它已是内置的 Repository / Unit of Work，见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)），不再额外抽象；而真正跨进程的关注点（通知、第三方 HTTP）仍走端口，把 I/O 与协议细节挡在边界之外。
 
 ❌ **适配器直接调用另一个适配器（绕过核心）。** 比如通知适配器里直接去查数据库。
 ✅ WHY：适配器之间不应互相依赖，所有编排都应经由核心用例。否则数据流失去单一可控路径，核心不再“知道”完整业务，最终退化成散乱的脚本式胶水代码。
@@ -204,9 +180,9 @@ var useCase = new ConfirmOrderUseCase(repo, notifier);
 
 ### Native AOT 兼容性
 
-- **端口是接口，天然 AOT 友好**：`IOrderRepository`、`IConfirmOrderUseCase` 等只是抽象契约，不触发反射或动态代码生成。
-- **适配器可 AOT 兼容**：使用内置 `System.Text.Json` 源生成（`[JsonSerializable]`）替代运行时反射序列化；EF Core 编译模型（Compiled Model）可减少运行时反射。
-- **避免动态适配器发现 / 反射注册**：不要用程序集扫描或 `Activator.CreateInstance` 在运行时找适配器。`Native AOT` 下反射受限，应在 `Program.cs` 中**显式注册**每个适配器到其端口（如上面的 `AddScoped<IOrderRepository, EfOrderRepository>()`），保证裁剪器能保留类型并生成必要的封送代码。
+- **端口是接口，天然 AOT 友好**：`IConfirmOrderUseCase`、`INotifier` 等只是抽象契约，不触发反射或动态代码生成；`AppDbContext` 用内置 EF Core，配合编译模型（Compiled Model）减少运行时反射。
+- **适配器可 AOT 兼容**：`HttpNotifier` 用内置 `System.Text.Json` 源生成（`[JsonSerializable]`）替代运行时反射序列化；EF Core 编译模型可减少运行时反射。
+- **避免动态适配器发现 / 反射注册**：不要用程序集扫描或 `Activator.CreateInstance` 在运行时找适配器。`Native AOT` 下反射受限，应在 `Program.cs` 中**显式注册**每个端口到其适配器（如上面的 `AddHttpClient<INotifier, HttpNotifier>()`、直接 `AddDbContext<AppDbContext>`），保证裁剪器能保留类型并生成必要的封送代码。
 
 ## 参考资料
 

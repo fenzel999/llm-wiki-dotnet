@@ -13,6 +13,9 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **Correct（六边形架构页，续）**：按人类纠正，补 `DbSet` 缺失能力改用 **C# 14 `extension` 块**（最新惯用法，对应 AGENTS.md P1「extension 块替代静态扩展类」），而非旧的 `static class` + `this` 参数写法；并明确「坚决不使用仓储模式」「EF Core 自身即适配器模式（换库只换 `UseXxx` 一行）」。同步在「适用版本」注明主构造函数（C# 12）/ extension 块（C# 14）的版本要求。
+    - 影响：architecture/hexagonal-architecture.md、log.md。
+
 - 2026-07-11 **Correct（六边形架构页）**：按人类反馈修正 `hexagonal-architecture.md` 示例。
     - 改用 **C# 12 主构造函数（primary constructor）** 做依赖注入：`ConfirmOrderUseCase(IOrderRepository, INotifier)`、`EfOrderRepository(AppDbContext db)`、`HttpNotifier(HttpClient)`、`AppDbContext(DbContextOptions<...>)` 均改为主构造函数（编译期、AOT 友好），去掉手写 `private readonly _x` + 构造函数体。
     - 显式展示「用端口套壳 `AppDbContext`」的持久化次适配器，但**纠正命名**：该端口是依赖倒置的**窄接口**，不是 [EF Core 数据访问](dotnet/ef-core/ef-data-access.md) 拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部直接用一个 `DbContext` 完成持久化，不套泛型仓储。同步修正 概述 与 §2 的措辞（去掉"仓储模式落地"等说法），与 `ef-data-access.md` 一致。

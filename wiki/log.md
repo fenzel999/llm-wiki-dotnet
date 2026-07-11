@@ -13,6 +13,14 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **样式改版 + 文件夹结构增补**（人类反馈：页面凌乱、想要更清爽 + 模块化单体文件夹更细）。
+    - **样式**：重写 `wiki/extra/theme.css`——从暖色纸张/棕色改为**干净中性灰 + 单一克制蓝**（浅/深两套）；正文更通透（行高/留白/字号微调）；**表格去外框重边**改为轻分隔行、提示框/引用块更轻，降低视觉噪音。
+    - **交互**：移除右下角悬浮圆按钮（删 `extra/modes.css`、`extra/modes.js` 及引用），改用 Material **原生顶部浅/深切换**；不再默认专注模式隐藏导航。
+    - **导航**：`mkdocs.yml` 启用 `navigation.tabs`（顶级分类升为顶部标签）+ `navigation.prune`、去掉 `navigation.sections`，侧栏改为可折叠，解决"层级太深太长"。
+    - **文件夹结构**：`solution-structure.md` 增补「更细粒度的包拆分（可选）」——`Domain.Shared/Domain/Application.Contracts/Application/Infrastructure(EFCore)/HttpApi/HttpApi.Client/Web` 职责与依赖表 + 可复制目录树 + **按部署形态取包**矩阵（单体/微服务宿主/UI客户端/纯远程客户端/网关代理）；标注[P11](governance/policy.md) 克制：默认仍用 4 层。厂商中立（[P14](governance/policy.md)），无 ABP。
+    - 验证：`mkdocs build --strict` 通过。
+    - 影响：wiki/extra/theme.css、wiki/extra/modes.css(删)、wiki/extra/modes.js(删)、mkdocs.yml、architecture/solution-structure.md、log.md。
+
 - 2026-07-11 **Ingest（DDD 战术积木）**：吸收 6 篇企业级 DDD 文档思想（应用服务/实体与聚合根/值对象/领域服务/规约/模块架构）。
     - 评估：应用服务、领域服务已在 `domain-application-services.md`，规约已在 `specification-pattern.md`，模块架构分层已在 `solution-structure.md`（均深度充分）；缺口是**实体与值对象**只在 `ddd.md` 概览级出现。
     - 新增 `architecture/entities.md`（实体与聚合根）：标识与相等、顺序 GUID 主键（.NET 9 `Guid.CreateVersion7()` UUIDv7，弃 `Guid.NewGuid()`）、聚合封装/只经根修改、跨聚合按 Id 引用、审计/软删除/乐观并发下沉基础设施、复合键与简单实体决策表。

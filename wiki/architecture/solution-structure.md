@@ -97,6 +97,47 @@ MyApp.sln
 
 > 举例落点：**分页只在应用层**（`OrderQueryService` 里 `Skip/Take`），领域层不感知分页；规约在**领域层定义**、被应用/基础设施**消费**；`DbContext` 只属于 **Infrastructure**。
 
+### 更细粒度的包拆分（可选：可复用模块 / 远程客户端） {#fine-grained-packages}
+
+上面的 4 层（`Contracts/Domain/Application/Infrastructure`）对**绝大多数应用足够**。只有当某个模块要被**其他团队或其他服务远程复用**（消费方希望"只取自己需要的那部分"）时，才值得把它拆得更细。此时把"公开表面"进一步拆开，并为远程消费补上 API 与客户端包：
+
+| 包 | 职责 | 依赖 |
+|----|------|------|
+| `*.Domain.Shared` | 常量、枚举、错误码、可安全共享给**所有层与外部**的纯类型；**无**实体/仓储/领域服务 | 无内部依赖 |
+| `*.Domain` | 实体、值对象、领域事件、仓储接口、领域服务（接口 + 实现） | `Domain.Shared` |
+| `*.Application.Contracts` | 应用服务接口 + [DTO](dto.md) + 权限定义（消费方要调你，只引这个） | `Domain.Shared` |
+| `*.Application` | 应用服务实现、用例编排、事务边界 | `Domain` + `Application.Contracts` |
+| `*.Infrastructure`（或按 ORM 命名，如 `*.EntityFrameworkCore`） | `DbContext`/映射/仓储实现/外部客户端 | **只依赖 `Domain`**，不碰其它上层 |
+| `*.HttpApi` | 把应用服务暴露为 [Minimal API](../dotnet/aspnet-core/aspnet-core-10.md) 端点 | `Application.Contracts` |
+| `*.HttpApi.Client` | 远程调用本模块的**强类型客户端**（实现 `Application.Contracts` 接口的 HTTP 客户端） | `Application.Contracts` |
+| `*.Web`（可选） | 模块自带 UI（若有） | `HttpApi.Client` / `Application.Contracts` |
+
+依赖方向仍然**只向内**：`Domain.Shared ← Domain ← Application ← Infrastructure`；`Domain.Shared ← Application.Contracts ← {Application, HttpApi, HttpApi.Client}`。领域层永不向上引用应用/基础设施。
+
+```text
+Modules/Orders/
+├── MyApp.Orders.Domain.Shared          # 常量/枚举/错误码；零依赖
+├── MyApp.Orders.Domain                 # 实体/值对象/仓储接口/领域服务
+├── MyApp.Orders.Application.Contracts   # 应用服务接口 + DTO + 权限
+├── MyApp.Orders.Application            # 应用服务实现
+├── MyApp.Orders.EntityFrameworkCore    # OrdersDbContext/映射/仓储实现（只引 Domain）
+├── MyApp.Orders.HttpApi                # Minimal API 端点（引 Application.Contracts）
+├── MyApp.Orders.HttpApi.Client         # 远程强类型客户端（引 Application.Contracts）
+└── MyApp.Orders.Web                    # （可选）模块自带 UI
+```
+
+**按部署形态取包**——同一模块，不同宿主只挑需要的包：
+
+| 部署形态 | 取哪些包 | 说明 |
+|----------|----------|------|
+| 单体（进程内） | Domain.Shared + Domain + Application(.Contracts) + Infrastructure + HttpApi（+ Web） | 全在一个进程，绑本地实现 |
+| 微服务宿主 | 同上，但不含 Web | 只对外提供 HTTP API，UI 另建 |
+| UI 客户端 | Web + HttpApi.Client（+ Application.Contracts） | 只展示 UI，远程消费该模块，不含进程内领域 |
+| 纯远程客户端 | HttpApi.Client（+ Application.Contracts） | 仅作远程调用，不托管 API、不展示 UI |
+| 网关 / 代理 | HttpApi + HttpApi.Client | 对外暴露 API，但转发到另一宿主 |
+
+> **克制原则（[P11](../governance/policy.md)）**：默认就用 4 层，不要为了"完整"提前拆成 8 个包——包越多，装配与维护成本越高。只有**跨团队/跨服务复用**的模块才需要这套细拆；单应用内部的模块，`Contracts` 一个公开包足矣。
+
 ### 自由组合：单体模块 ↔ 独立微服务 {#two-mode-deploy}
 
 因为跨模块只依赖 `*.Contracts`，这套结构支持**同一份模块代码二态部署**：进程内组装成[模块化单体](modular-monolith.md)，或独立宿主成微服务——切换时模块内部不变，只在组合根替换"接缝"（本地实现↔远程客户端、进程内事件↔集成事件）。详见[模块化单体 · 二态部署](modular-monolith.md#二态部署)。

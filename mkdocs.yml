@@ -12,12 +12,21 @@ theme:
   language: zh
   palette:
     - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
   features:
     - navigation.instant
     - navigation.tracking
-    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - navigation.indexes
+    - navigation.prune
     - content.code.copy
     - content.code.annotate
     - content.action.edit
@@ -55,10 +64,6 @@ extra:
 extra_css:
   - extra/fonts.css
   - extra/theme.css
-  - extra/modes.css
-
-extra_javascript:
-  - extra/modes.js
 
 nav:
   - 首页: index.md

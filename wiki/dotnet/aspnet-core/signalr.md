@@ -260,7 +260,7 @@ SignalR 在官方 Native AOT 兼容性矩阵中为 **🟡 部分（Partial）** 
 - 🟡 建议：保持 Hub 逻辑**最小且确定**——避免运行期反射、动态 `Type` 派发、`dynamic`；客户端方法参数类型纳入 `System.Text.Json` **源生成上下文**（JSON 序列化在 AOT 下靠源生成，否则类型元数据被裁剪）。
 - 🟡 AOT 发布后**必须逐个端点/场景实测**：典型故障是"启动正常、首个 SignalR 消息 500"，因为某消息参数类型未进入 JSON 源生成上下文。
 - 认证：后端 AOT 场景下优先 **JWT Bearer**（✅ 支持 AOT），避免 cookie/OIDC（❌ 不支持）。
-- 若某 Hub 功能在 AOT 下确无法消除警告/故障，标注 `⚠️ needs-your-call` 并写入 `qa-report.md`，不要静默织入。
+- 若某 Hub 功能在 AOT 下确无法消除警告/故障，标注 `⚠️ needs-your-call` 并写入 `log.md`（操作日志），不要静默织入。
 
 ## 参考资料
 

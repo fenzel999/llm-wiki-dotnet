@@ -43,7 +43,7 @@ updated: 2026-07-10
 
 ## 之后会发生什么
 
-1. Agent 收到反馈，按 [QA](qa.md) 判定、按 [POLICY](policy.md) 守约。
-2. 能确证则直接 Correct 并写 [QA-REPORT](qa-report.md)；拿不准标 `⚠️ needs-your-call` 先问你。
+1. Agent 收到反馈，按 [POLICY](policy.md) 守约并判断。
+2. 能确证则直接 Correct，并把改动记入 [操作日志](../log.md)；拿不准标 `⚠️ needs-your-call` 先问你。
 3. Agent 自动 `commit` + `push` 到 `main`，GitHub Pages 自动更新。
 4. 你刷新网页即可看到修正。

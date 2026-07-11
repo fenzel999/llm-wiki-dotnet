@@ -116,9 +116,8 @@ updated: 2026-07-10
 
 ### 治理
 
-- [质量准则 QA](governance/qa.md) · [持久约定 POLICY](governance/policy.md) · [巡检流程](governance/patrol.md) · [质量报告](governance/qa-report.md)
-- [如何反馈](governance/feedback.md) · [资料索引](sources/README.md)
-- [思维导图](思维导图.md)
+- [持久约定 POLICY](governance/policy.md) · [如何反馈](governance/feedback.md) · [资料索引](sources/README.md)
+- [思维导图](思维导图.md) · [操作日志](log.md)
 
 ---
 
@@ -146,8 +145,8 @@ updated: 2026-07-10
     - `patterns/` —— 推荐做法（Options、管道、泛型主机、最小 API 组织、释放）
     - `anti-patterns/` —— 反模式（含 ❌ 错误 / ✅ 正确 对比）
     - `comparisons/` —— 取舍对比（record vs class 等）
-    - `governance/` —— 质量准则 `qa.md`、约定 `policy.md`、巡检 `patrol.md`、报告 `qa-report.md`、反馈 `feedback.md`
+    - `governance/` —— 持久约定 `policy.md`、反馈 `feedback.md`
     - `sources/` —— 一手来源登记
 - **链接**：全程相对 Markdown 链接，GitHub / MkDocs / 网页三处均可解析。
-- **质量**：内容需经 `governance/qa.md` 判定；不确定处标 `⚠️ needs-your-call`。
+- **质量**：内容需经 `governance/policy.md` 判定；不确定处标 `⚠️ needs-your-call` 并记入 `log.md`（操作日志）。
 - **新页面**：必须在本索引登记（POLICY P9）。

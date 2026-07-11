@@ -13,6 +13,14 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **精简治理与导航 + 优化思维导图**（人类反馈：QA 与 POLICY 重复、删巡检流程与全景页、主页含首页/思维导图/操作日志/治理、思维导图不好看）。
+    - **删除页面**：`governance/qa.md`（质量准则 Rubric）、`governance/qa-report.md`（审计透明度报告）、`governance/patrol.md`（巡检流程）、`wiki/overview.md`（全景页）。注：保留 `wiki/dotnet/overview.md`（.NET 总览/主题地图，被各版本页引用）。
+    - **审计轨迹归属变更**：原写 `qa-report.md` 的"⚠️ / 已自修"记录改写入 `log.md`（操作日志）。更新 `policy.md`（P5/P10/P16 三处 `qa-report.md`→`log.md`）、`feedback.md`（QA/QA-REPORT→POLICY/log）、`dotnet/versions/net11.md`（去 `qa.md` 链接）、`dotnet/aspnet-core/signalr.md`（qa-report→log）、`index.md`（治理段去 QA/巡检/报告）。
+    - **导航重排**：`mkdocs.yml` 去掉 `全景`；`治理` 仅留 `policy`/`feedback`/`sources`。顶层顺序：首页 / 思维导图 / 操作日志 / .NET / 架构 / 性能与诊断 / 工程规范 / 实践 / 治理（满足"主页含首页信息、思维导图、操作日志、治理"）。
+    - **思维导图重做**：`思维导图.md` 改用 Material 主题 CSS 变量（自动适配浅/深）、节点卡片化 + hover 浮起、分类色板、底部图例、新增「展开全部 / 收起全部」按钮、默认展开到子分组；TREE 同步去掉 QA/巡检/报告/全景节点，治理仅留 policy/feedback/sources，并新增 首页 / 操作日志 顶层节点。
+    - 验证：`mkdocs build --strict` 通过；全库无指向已删页的内链。
+    - 影响：mkdocs.yml、思维导图.md、index.md、governance/policy.md、governance/feedback.md、dotnet/versions/net11.md、dotnet/aspnet-core/signalr.md、log.md；删除 governance/qa.md、governance/qa-report.md、governance/patrol.md、overview.md。
+
 - 2026-07-11 **全库 Audit + Correct（一致性巡检，人类反馈"内容要重新整理/分类，已目测到旧知识未统一"）**。
     - 触发：人类指出"学会了分页，其他地方没按最新方式做"等陈旧/不一致处，要求**全面分析、重新分类、清旧换新**。
     - **分页漂移修复**（用户点名案例）：`architecture/dto.md` 此前用**自创的** `PagedResult<T>(Items,TotalCount)` 2 参 + `PagedQuery` + `OrderByWhitelist`，与权威页 `dotnet/ef-core/pagination.md`（`PagedResult<T>(Items,TotalCount,Page,PageSize)` + `PageRequest` + `DynamicOrderByAllowList`/`WithDynamicOrderBy`/`WithOffsetPaging`）不一致。已统一为权威形状。同时修 `pagination.md` 内部 bug：`PageRequest` 定义 `SortBy/Descending` 但示例使用 `req.Sorting` —— 补 `Sorting` 计算属性。

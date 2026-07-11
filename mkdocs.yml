@@ -67,7 +67,6 @@ extra_css:
 
 nav:
   - 首页: index.md
-  - 全景: overview.md
   - 思维导图: 思维导图.md
   - 操作日志: log.md
   - .NET:
@@ -175,9 +174,6 @@ nav:
           - RAG vs LLM Wiki: comparisons/rag-vs-llm-wiki.md
           - .NET 版本演进: comparisons/net-evolution.md
   - 治理:
-      - 质量准则 QA: governance/qa.md
       - 持久约定 POLICY: governance/policy.md
-      - 巡检流程: governance/patrol.md
-      - 质量报告: governance/qa-report.md
       - 如何反馈: governance/feedback.md
       - 资料索引: sources/README.md

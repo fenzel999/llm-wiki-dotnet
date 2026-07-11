@@ -28,7 +28,7 @@ updated: 2026-07-11
 
 核心规则：**依赖只向内**。应用核心只引用自己定义的端口接口，绝不引用 `Microsoft.EntityFrameworkCore`、`System.Net.Http` 等基础设施类型。这是依赖倒置原则（DIP）的直接应用，与 [依赖注入](../dotnet/fundamentals/dependency-injection.md) 天然契合——运行时由 DI 容器把具体适配器“注入”到端口背后。
 
-六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，仓储（Repository）端口就是典型的次端口，EF Core 仓储是适配器。它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
+六边形与 [DDD](../architecture/ddd.md) 经常一起使用：领域模型与领域服务位于核心，持久化**次端口**就是典型的端口——注意这是依赖倒置的窄接口，并非 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部直接用 `DbContext`。它也常作为 [模块化单体](../architecture/modular-monolith.md) 内部模块的边界风格——每个模块用端口暴露能力、隐藏实现。
 
 ## 正确做法
 
@@ -61,67 +61,61 @@ public interface IConfirmOrderUseCase
     Task ConfirmAsync(Guid orderId, CancellationToken ct = default);
 }
 
-// 用例实现：只依赖端口接口，绝不知道 EF Core / HttpClient 的存在
-public sealed class ConfirmOrderUseCase : IConfirmOrderUseCase
+// 用例实现：只依赖端口接口，绝不知道 EF Core / HttpClient 的存在。
+// C# 12 主构造函数（primary constructor）直接把依赖声明在类型参数上，
+// 编译器自动生成私有只读字段，无需手写 `private readonly _x` + 构造函数体。
+// 主构造函数是编译期特性，天然 Native AOT 友好（见「Native AOT 兼容性」）。
+public sealed class ConfirmOrderUseCase(IOrderRepository orders, INotifier notifier)
+    : IConfirmOrderUseCase
 {
-    private readonly IOrderRepository _orders;
-    private readonly INotifier _notifier;
-
-    public ConfirmOrderUseCase(IOrderRepository orders, INotifier notifier)
-    {
-        _orders = orders;
-        _notifier = notifier;
-    }
-
     public async Task ConfirmAsync(Guid orderId, CancellationToken ct = default)
     {
-        var order = await _orders.GetAsync(orderId, ct)
+        var order = await orders.GetAsync(orderId, ct)
             ?? throw new InvalidOperationException($"订单 {orderId} 不存在");
 
         var confirmed = order with { IsConfirmed = true };
-        await _orders.SaveAsync(confirmed, ct);
-        await _notifier.NotifyAsync($"订单 {orderId} 已确认", ct);
+        await orders.SaveAsync(confirmed, ct);
+        await notifier.NotifyAsync($"订单 {orderId} 已确认", ct);
     }
 }
 ```
 
 ### 2. 实现次适配器（基础设施层，依赖端口 + 具体技术）
 
+下面的 **`IOrderRepository` 端口 + `EfOrderRepository` 适配器** 是六边形的「次端口」落地：用端口把 `AppDbContext` “套壳”起来，核心只认端口接口，永远不 `using Microsoft.EntityFrameworkCore`。注意：这里的端口是**依赖倒置的窄接口**，并不是 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 明确拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部**直接用一个 `DbContext`** 完成持久化，默认不套一层泛型仓储。
+
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using Wiki.AppCore;
 
-// EF Core 持久化适配器：实现次端口 IOrderRepository
-public sealed class EfOrderRepository : IOrderRepository
+// 持久化适配器：实现次端口 IOrderRepository（窄接口，非通用 Repository<T>）。
+// C# 12 主构造函数把 AppDbContext 声明在类型参数上，编译器生成私有只读字段（AOT 友好）。
+// 适配器内部直接使用 DbContext，不引入仓储/工作单元包装。
+public sealed class EfOrderRepository(AppDbContext db) : IOrderRepository
 {
-    private readonly AppDbContext _db;
-    public EfOrderRepository(AppDbContext db) => _db = db;
-
     public async Task<Order?> GetAsync(Guid id, CancellationToken ct = default)
-        => await _db.Orders.FindAsync(new object[] { id }, ct);
+        => await db.Orders.FindAsync(new object[] { id }, ct);
 
     public async Task SaveAsync(Order order, CancellationToken ct = default)
     {
-        _db.Orders.Update(order);
-        await _db.SaveChangesAsync(ct);
+        db.Orders.Update(order);
+        await db.SaveChangesAsync(ct);
     }
 }
 
-// HTTP 通知适配器：实现次端口 INotifier，用内置 HttpClient
-public sealed class HttpNotifier : INotifier, IDisposable
+// HTTP 通知适配器：实现次端口 INotifier，用内置 HttpClient（主构造函数 + IDisposable）
+public sealed class HttpNotifier(HttpClient http) : INotifier, IDisposable
 {
-    private readonly HttpClient _http;
-    public HttpNotifier(HttpClient http) => _http = http;
-
     public async Task NotifyAsync(string message, CancellationToken ct = default)
-        => await _http.PostAsJsonAsync("/notify", new { message }, ct);
+        => await http.PostAsJsonAsync("/notify", new { message }, ct);
 
-    public void Dispose() => _http.Dispose();
+    public void Dispose() => http.Dispose();
 }
 
-public sealed class AppDbContext : DbContext
+// 套壳用的 AppDbContext：纯基础设施，不含任何业务规则，仅暴露 DbSet。
+// 同样用主构造函数把 DbContextOptions 声明在类型参数上。
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<Order> Orders => Set<Order>();
 }
 ```

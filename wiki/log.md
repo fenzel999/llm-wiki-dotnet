@@ -13,6 +13,11 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **Correct（六边形架构页）**：按人类反馈修正 `hexagonal-architecture.md` 示例。
+    - 改用 **C# 12 主构造函数（primary constructor）** 做依赖注入：`ConfirmOrderUseCase(IOrderRepository, INotifier)`、`EfOrderRepository(AppDbContext db)`、`HttpNotifier(HttpClient)`、`AppDbContext(DbContextOptions<...>)` 均改为主构造函数（编译期、AOT 友好），去掉手写 `private readonly _x` + 构造函数体。
+    - 显式展示「用端口套壳 `AppDbContext`」的持久化次适配器，但**纠正命名**：该端口是依赖倒置的**窄接口**，不是 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md) 拒绝的通用「仓储模式（`Repository<T>`）」；适配器内部直接用一个 `DbContext` 完成持久化，不套泛型仓储。同步修正 概述 与 §2 的措辞（去掉"仓储模式落地"等说法），与 `ef-data-access.md` 一致。
+    - 影响：architecture/hexagonal-architecture.md、log.md。
+
 - 2026-07-11 **全库 POLICY 合规巡检（P1–P19）**（人类指令：所有内容都不能违反 POLICY，检查一遍）。
     - **P3 source**：全页 `source` 非空，均为官方 MS Learn URL 或 `AGENTS.md`/本地 `sources/`。
     - **P10 只用 MS/基金会包**：全库命中的 MediatR/AutoMapper/Dapper/Newtonsoft/Moq/Ocelot/FluentValidation/Swashbuckle/Refit/PactNet/Testcontainers/NetArchTest 等**全部为"不推荐/不用"语境**（配 `P10` 链接），无任何第三方推荐。

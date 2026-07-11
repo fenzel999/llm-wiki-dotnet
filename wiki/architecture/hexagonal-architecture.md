@@ -95,13 +95,16 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 // 给 DbSet<Order> 补它“没有的”查询能力：用 C# 14 的 extension 块（最新惯用法，
 // 替代旧的 static class + this 参数写法），挂在 IQueryable<Order> 上。
 // 坚决不建仓储类；扩展方法组合成表达式树，由 EF 提供程序翻译，AOT 安全。
-extension OrderQuery for IQueryable<Order>
+public static class OrderQuery
 {
-    public static IQueryable<Order> ByProduct(this IQueryable<Order> source, string product)
-        => source.Where(o => o.Product == product);
+    extension(IQueryable<Order> source)
+    {
+        public IQueryable<Order> ByProduct(string product)
+            => source.Where(o => o.Product == product);
 
-    public static IQueryable<Order> ConfirmedOnly(this IQueryable<Order> source)
-        => source.Where(o => o.IsConfirmed);
+        public IQueryable<Order> ConfirmedOnly()
+            => source.Where(o => o.IsConfirmed);
+    }
 }
 
 // 只有真正跨进程边界的关注点才做端口 + 适配器，例如用内置 HttpClient 发通知

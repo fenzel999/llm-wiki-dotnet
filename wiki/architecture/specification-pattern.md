@@ -59,7 +59,25 @@ var spec = new ActiveCustomer().And(new HighValueCustomer()).Not();
 var list = await db.Customers.Where(spec.ToExpression()).ToListAsync();
 ```
 
-### 2. 何时用规约？决策表
+### 2. 两种用法：查询下推 vs 内存判定
+
+同一个规约有两种消费方式，避免重复表达同一业务条件：
+
+```csharp
+public abstract class Specification<T>
+{
+    public abstract Expression<Func<T, bool>> ToExpression();
+
+    // 内存单对象判定：守卫校验用（如领域方法里 if (!spec.IsSatisfiedBy(x)) throw ...）
+    public bool IsSatisfiedBy(T candidate) => ToExpression().Compile()(candidate);
+    // ... And/Or/Not 同前
+}
+```
+
+- **查询下推**：`db.Customers.Where(spec.ToExpression())` —— 翻译成 SQL 在数据库端过滤（列表/分页场景）。
+- **内存判定**：`spec.IsSatisfiedBy(customer)` —— 对已在内存的单个对象做校验（领域规则守卫）。同一条规则一处定义、两处复用。
+
+### 3. 何时用规约？决策表
 
 | 场景 | 用规约？ | 理由 |
 |------|----------|------|

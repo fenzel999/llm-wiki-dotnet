@@ -13,6 +13,15 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **Ingest（DDD 战术积木）**：吸收 6 篇企业级 DDD 文档思想（应用服务/实体与聚合根/值对象/领域服务/规约/模块架构）。
+    - 评估：应用服务、领域服务已在 `domain-application-services.md`，规约已在 `specification-pattern.md`，模块架构分层已在 `solution-structure.md`（均深度充分）；缺口是**实体与值对象**只在 `ddd.md` 概览级出现。
+    - 新增 `architecture/entities.md`（实体与聚合根）：标识与相等、顺序 GUID 主键（.NET 9 `Guid.CreateVersion7()` UUIDv7，弃 `Guid.NewGuid()`）、聚合封装/只经根修改、跨聚合按 Id 引用、审计/软删除/乐观并发下沉基础设施、复合键与简单实体决策表。
+    - 新增 `architecture/value-objects.md`（值对象）：无标识按值相等、`record`/`readonly record struct` 免费值相等+不可变、构造即校验、散落属性提炼、EF Core Complex Type（net8+）/Owned 映射、实体 vs 值对象决策表。
+    - 增强：`specification-pattern.md` 补"查询下推 vs 内存 `IsSatisfiedBy` 两种用法"；`ddd.md` 战术积木与参考资料链到新页。
+    - 合规（[P14](governance/policy.md)）：全部以微软官方文档表述与引用（设计领域模型层、Seedwork 基类、实现值对象、EF Core 全局查询筛选器/复杂类型/并发），正文/标题/summary/source/参考资料**无 ABP 字样与 abp.io 链接**；实现均微软内置 + 手写（[P10](governance/policy.md)）、AOT 友好（[P16](governance/policy.md)）。
+    - 同步：mkdocs.yml、index.md、思维导图.md。`mkdocs build --strict` 通过。
+    - 影响：architecture/entities.md、architecture/value-objects.md、architecture/specification-pattern.md、architecture/ddd.md、mkdocs.yml、index.md、思维导图.md、log.md。
+
 - 2026-07-11 **Ingest（DTO 知识）**：新增 `architecture/dto.md`（数据传输对象）。
     - 来源：吸收企业级 DDD 文档中 DTO 章节思想（DTO 的必要性：抽象领域层/数据隐藏/序列化与延迟加载陷阱、输入输出 DTO 原则、列表与分页结果、请求上限校验、映射与校验）；按 [P14](governance/policy.md) 全部以**微软官方文档**表述与引用（微服务应用层实现、面向 DDD 的微服务设计），正文/标题/summary/source/参考资料**均不含 ABP 字样与 abp.io 链接**。
     - 落地约定：用 `record` 定义 DTO；输入 DTO 不复用、输出 DTO 可复用；分页用 `PagedResult<T>` 载体（[P15](governance/policy.md) 明确允许，非统一 Result 信封）；请求分页 DTO 带默认页大小 + 硬上限校验（超限 422）；排序走白名单；映射手写/LINQ 投影不用 AutoMapper（[P10](governance/policy.md)）；序列化用 System.Text.Json 源生成（[P16](governance/policy.md) AOT）。

@@ -90,7 +90,7 @@ updated: 2026-07-10
 
 - [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
 - **系统形态（System-Level）**：[模块化单体](architecture/modular-monolith.md) · [整洁架构（模块内分层）](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md)
-- **模块内部（Module-Internal）**：[DDD](architecture/ddd.md) · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
+- **模块内部（Module-Internal）**：[DDD](architecture/ddd.md) · [实体与聚合根](architecture/entities.md)（标识/UUIDv7/一致性边界） · [值对象](architecture/value-objects.md)（不可变/按值相等/record） · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
 - **横切能力（Cross-Cutting）**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md)
 - **架构决策记录 (ADR)**: [ADR 模板与实践](architecture/adr.md) · [API 设计模式](architecture/api-design.md)
 - **部署与编排（Deployment）**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md)

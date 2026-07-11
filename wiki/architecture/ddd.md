@@ -13,7 +13,7 @@ updated: 2026-07-11
 
 > **要点速览**
 > - **定位**：DDD 是**模块内部（Module-Internal）**的战术建模方法，解决"领域对象怎么设计"，与拆不拆服务无关（见[三种架构不在同一层级](solution-structure.md#arch-levels)）。
-> - **战术积木**：实体（有标识）、值对象（不可变、`record`、按值相等）、聚合（一致性边界）、领域服务、领域事件。
+> - **战术积木**：[实体（有标识）](entities.md)、[值对象（不可变、`record`、按值相等）](value-objects.md)、[聚合（一致性边界）](entities.md)、领域服务、领域事件。
 > - **战略**：限界上下文划分子域，各自独立模型 + 统一语言（Ubiquitous Language）。
 > - **灵魂**：**富领域模型**——业务规则内聚到领域对象的方法里，拒绝贫血模型。
 > - **克制**：只用于**复杂核心域**；简单 CRUD 套全家桶是过度设计。
@@ -42,7 +42,7 @@ public readonly record struct Money(decimal Amount, string Currency)   // 值对
 }
 ```
 
-用 `record`（或 `readonly record struct`）免费获得值相等与不可变；无标识、由属性定义"是不是同一个"。
+用 `record`（或 `readonly record struct`）免费获得值相等与不可变；无标识、由属性定义"是不是同一个"。深入见[值对象](value-objects.md)。
 
 ### 2. 聚合（Aggregate）：一致性边界，只经根修改
 
@@ -62,7 +62,7 @@ public class Order                                          // 聚合根
 }
 ```
 
-外部**只**通过聚合根的方法改状态；内部集合用 `IReadOnlyList` 暴露，防止绕过不变量。聚合是事务一致性边界——一次业务操作应落在一个聚合内。
+外部**只**通过聚合根的方法改状态；内部集合用 `IReadOnlyList` 暴露，防止绕过不变量。聚合是事务一致性边界——一次业务操作应落在一个聚合内。深入见[实体与聚合根](entities.md)。
 
 ### 3. 领域服务（Domain Service）：无状态、承载跨实体的业务
 
@@ -103,6 +103,6 @@ DDD 领域模型**完全兼容 AOT**（✅，[P16](../governance/policy.md)、[A
 ## 参考资料
 
 - [整洁架构（模块内分层）](clean-architecture.md) · [模块化单体（限界上下文=模块）](modular-monolith.md)
-- [领域服务与应用服务](domain-application-services.md) · [领域事件](domain-events.md) · [规约模式](specification-pattern.md)
+- [实体与聚合根](entities.md) · [值对象](value-objects.md) · [领域服务与应用服务](domain-application-services.md) · [领域事件](domain-events.md) · [规约模式](specification-pattern.md)
 - [record vs class](../comparisons/record-vs-class.md) · [AOT 兼容性矩阵](../dotnet/aot/aot-compatibility.md)
 - 官方文档：[DDD 与 CQRS 模式](https://learn.microsoft.com/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/)

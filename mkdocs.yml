@@ -132,6 +132,8 @@ nav:
           - API 设计模式: architecture/api-design.md
       - 模块内部（Module-Internal）:
           - 领域驱动设计 DDD: architecture/ddd.md
+          - 实体与聚合根: architecture/entities.md
+          - 值对象: architecture/value-objects.md
           - 领域服务与应用服务: architecture/domain-application-services.md
           - 数据传输对象 (DTO): architecture/dto.md
           - 领域事件: architecture/domain-events.md

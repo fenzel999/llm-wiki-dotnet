@@ -13,6 +13,14 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **纠正全库 + 新增 6 篇架构页 + 架构导航重排**（人类指令：纠正所有内容、已有知识不得重复添加、检查分类过臃肿需纠正、提升阅读/审美、去掉圆圈叹号 ``）。
+    - **去全库警告符号（圆圈叹号）与 `needs-your-call` 约定**：全库页面与 `policy.md`（P5/P10/P16）移除该符号与 `needs-your-call` 字样；矛盾与待判定改写入 `log.md` 并先问人类（[P5](governance/policy.md)）。`index.md`「给 AI 说明」同步去除引用。
+    - **新增 POLICY 自学习规则**：[P18](governance/policy.md) 新增知识不得重复已有内容（优先扩充既有页、必新建时标明增量）；[P19](governance/policy.md) 分类臃肿/混杂必须重排（按抽象层与关切拆组，阈值≥10 或混入异类即拆）。
+    - **Ingest：新增 6 篇架构页**（深度自足、厂商中立、禁第三方库、均含 `### Native AOT 兼容性` 与 `要点速览`，并交叉链接既有页避免重复）：`event-sourcing.md`（事件溯源：事件存储/重放/快照/版本演进/投影，链 CQRS/事件驱动）、`bounded-context.md`（限界上下文：上下文映射 + 8 种关系 + 手写 ACL 适配器，链 DDD/模块化单体）、`saga.md`（Saga：编排/协同 + 补偿事务 + 幂等 + Outbox，链 微服务/事件驱动）、`api-gateway-bff.md`（网关与 BFF：路由/聚合/边缘横切，YARP 为唯一官方反向代理，链 API 设计/限流/认证）、`architecture-tests.md`（架构测试：xUnit+反射 与 Roslyn 编译期校验，不引 NetArchTest，链 测试/整洁架构/模块化单体）、`hexagonal-architecture.md`（六边形：端口与适配器，链 整洁架构/DDD/依赖注入）。
+    - **架构导航重排（P19）**：原「系统形态」混入了 ADR/API 设计等异类且无 6 新页归属 → 拆为 `系统形态（System-Level）`（模块化单体/整洁/解决方案分层/垂直切片/微服务/六边形/API网关与BFF/组合）、`战略设计与边界（Strategic）`（限界上下文/DDD/API 设计/ADR）、`模块内部（Module-Internal）`、`横切能力（Cross-Cutting）`（CQRS/事件溯源/事件驱动/Saga/多租户/审计软删除/架构测试/设计反模式）、`部署与编排`。各组均 <10 且同抽象层，消除臃肿混杂。
+    - **同步**：`mkdocs.yml`（架构段重组 + 6 新页入 nav）、`index.md`（架构目录补 6 页、去 ``、更新日期）。`mkdocs build --strict` 通过。
+    - 影响：governance/policy.md、wiki/index.md、mkdocs.yml、architecture/event-sourcing.md、bounded-context.md、saga.md、api-gateway-bff.md、architecture-tests.md、hexagonal-architecture.md、log.md。
+
 - 2026-07-11 **导航二次精简：合并工程规范/实践、删思维导图、治理与操作日志归首页**（人类反馈：工程规范与实践融入其他类目、思维导图删除、治理+操作日志放在首页）。
     - **删除**：`思维导图.md`（自写 CSS/JS 可导航思维导图）。同步去除 `index.md`、`policy.md`(P9)、`adr.md` 中对它的引用/链接。
     - **合并类目（nav 重组，文件物理位置不变，故全库链接零断裂）**：
@@ -28,7 +36,7 @@ updated: 2026-07-09
 
 - 2026-07-11 **精简治理与导航 + 优化思维导图**（人类反馈：QA 与 POLICY 重复、删巡检流程与全景页、主页含首页/思维导图/操作日志/治理、思维导图不好看）。
     - **删除页面**：`governance/qa.md`（质量准则 Rubric）、`governance/qa-report.md`（审计透明度报告）、`governance/patrol.md`（巡检流程）、`wiki/overview.md`（全景页）。注：保留 `wiki/dotnet/overview.md`（.NET 总览/主题地图，被各版本页引用）。
-    - **审计轨迹归属变更**：原写 `qa-report.md` 的"⚠️ / 已自修"记录改写入 `log.md`（操作日志）。更新 `policy.md`（P5/P10/P16 三处 `qa-report.md`→`log.md`）、`feedback.md`（QA/QA-REPORT→POLICY/log）、`dotnet/versions/net11.md`（去 `qa.md` 链接）、`dotnet/aspnet-core/signalr.md`（qa-report→log）、`index.md`（治理段去 QA/巡检/报告）。
+    - **审计轨迹归属变更**：原写 `qa-report.md` 的"/ 已自修"记录改写入 `log.md`（操作日志）。更新 `policy.md`（P5/P10/P16 三处 `qa-report.md`→`log.md`）、`feedback.md`（QA/QA-REPORT→POLICY/log）、`dotnet/versions/net11.md`（去 `qa.md` 链接）、`dotnet/aspnet-core/signalr.md`（qa-report→log）、`index.md`（治理段去 QA/巡检/报告）。
     - **导航重排**：`mkdocs.yml` 去掉 `全景`；`治理` 仅留 `policy`/`feedback`/`sources`。顶层顺序：首页 / 思维导图 / 操作日志 / .NET / 架构 / 性能与诊断 / 工程规范 / 实践 / 治理（满足"主页含首页信息、思维导图、操作日志、治理"）。
     - **思维导图重做**：`思维导图.md` 改用 Material 主题 CSS 变量（自动适配浅/深）、节点卡片化 + hover 浮起、分类色板、底部图例、新增「展开全部 / 收起全部」按钮、默认展开到子分组；TREE 同步去掉 QA/巡检/报告/全景节点，治理仅留 policy/feedback/sources，并新增 首页 / 操作日志 顶层节点。
     - 验证：`mkdocs build --strict` 通过；全库无指向已删页的内链。
@@ -166,7 +174,7 @@ updated: 2026-07-09
 - dotnet 内容页（12）：overview、wiki/overview（地图页仅清理）、file-based-apps、native-aot、blazor/javascript-improvements、csharp/csharp-14、aspnet-core/aspnet-core-10、ef-core/ef-core-10、ef-core/ef-data-access、runtime/jit-optimizations、versions/net8、versions/net9 —— 套用「概述/正确做法/反例（常见错误）/适用版本/参考资料」模板。
 - 修复 `jit-optimizations.md`、`versions/net8.md`、`versions/net9.md` 三处乱码（编码损坏），重写为干净中文；保留全部代码示例与相对链接目标。
 - frontmatter：`updated` 统一为 `2026-07-10`；net10 特性 `introduced-in: net10`、`applies-to: [net10]`；版本页按 net8/net9 标注；`source` 一律保留未改。
-- 影响：上述 16 个文件。无新增 ⚠️ 待判定点。
+- 影响：上述 16 个文件。无新增 待判定点。
 
 ## 2026-07-10 · 视觉层整体重构（字体 + 设计）
 
@@ -232,7 +240,7 @@ updated: 2026-07-09
 - 重写 `wiki/concepts/` 下 9 个文件（async-await / dependency-injection / generics / nullable-reference-types / pattern-matching / records / source-generators / span-memory / value-task）。
 - 套用统一模板（概述 / 正确做法 / 反例（常见错误）/ 适用版本 / 参考资料），改为流畅中文段落，补 ❌ 反例代码块，参考资料增加官方文档链接。
 - 修正 frontmatter 版本：records→csharp9、nullable-reference-types→csharp8、pattern-matching→csharp7、generics→csharp2、async-await→csharp5、source-generators→net5、span-memory→netcore21、value-task→netcore20；全部 `updated: 2026-07-10`。source 链接均保留未改。
-- 影响：上述 9 个 concepts 页。无 ⚠️ 待判定点。
+- 影响：上述 9 个 concepts 页。无 待判定点。
 
 ## 2026-07-10 · 清理无用构建产物
 - 删除本地 `site/`（189 个文件）：MkDocs 生成产物，已被 `.gitignore` 忽略且未纳入 git；GitHub Actions 每次 push 自动重建部署，本地留存属冗余。

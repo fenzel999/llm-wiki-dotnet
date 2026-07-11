@@ -33,7 +33,7 @@ AOT 发布产出**原生可执行文件**，不依赖 .NET 运行时。这要求
 | Linux → Linux (同架构) | ✅ 原生 | 直接 `dotnet publish -r linux-x64` |
 | Windows → Linux | ❌ 不可行 | 无 Linux 链接器/glibc 头文件，**必须用 Docker** |
 | macOS → Linux | ❌ 不可行 | 同理，**必须用 Docker** |
-| Linux (x64) → Linux (arm64) | ⚠️ 需 QEMU/多架构镜像 | 推荐原生 Arm64 机器或 GitHub Actions `arm64` runner |
+| Linux (x64) → Linux (arm64) | 需 QEMU/多架构镜像 | 推荐原生 Arm64 机器或 GitHub Actions `arm64` runner |
 | Windows → Windows (x64/arm64) | ✅ 原生 | 安装对应 SDK + VS Build Tools |
 
 > **最佳实践**：所有 Linux AOT 构建统一用 `mcr.microsoft.com/dotnet/sdk:10.0` 镜像，GitHub Actions 用 `ubuntu-latest` (x64) + `ubuntu-latest` + `arm64` matrix。

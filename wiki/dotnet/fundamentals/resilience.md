@@ -178,8 +178,8 @@ await pipeline.ExecuteAsync(async ct => await CallDownstreamAsync(ct));
 ### Native AOT 兼容性
 
 - ✅ **AOT 安全**：`Microsoft.Extensions.Resilience`（基于 Polly v8）的弹性管道在**编译期组合并编译**，不需要运行期反射或动态代码生成；类型化/命名 HttpClient 上的弹性处理器同样静态可用。
-- ⚠️ 在自定义 `FallbackAction` 或策略回调里不要用反射构造对象；保持逻辑编译期可确定，以免被 AOT 裁剪。
-- ⚠️ 若策略涉及 JSON 序列化（如回退体），用 `System.Text.Json` 源生成，不走反射。
+- 在自定义 `FallbackAction` 或策略回调里不要用反射构造对象；保持逻辑编译期可确定，以免被 AOT 裁剪。
+- 若策略涉及 JSON 序列化（如回退体），用 `System.Text.Json` 源生成，不走反射。
 - 详见后端 AOT 落地清单：[Native AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
 
 ## 参考资料

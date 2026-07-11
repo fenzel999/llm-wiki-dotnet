@@ -106,7 +106,7 @@ lldb -p <PID> -o "plugin load libsosplugin.so" -o "sos Threads"
 # !ClrStack
 ```
 
-> ⚠️ AOT 下**首选防御式编程**：大量结构化日志 + 指标 + 链路追踪，减少对生产调试的依赖。
+> AOT 下**首选防御式编程**：大量结构化日志 + 指标 + 链路追踪，减少对生产调试的依赖。
 
 ## 参考资料
 

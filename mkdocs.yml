@@ -145,11 +145,15 @@ nav:
           - 解决方案分层与项目引用: architecture/solution-structure.md
           - 垂直切片: architecture/vertical-slice.md
           - 微服务: architecture/microservices.md
-          - 架构决策记录 (ADR): architecture/adr.md
-          - API 设计模式: architecture/api-design.md
+          - 六边形架构（端口与适配器）: architecture/hexagonal-architecture.md
+          - API 网关与 BFF: architecture/api-gateway-bff.md
           - 组合与架构模式: patterns/composition.md
-      - 模块内部（Module-Internal）:
+      - 战略设计与边界（Strategic）:
+          - 限界上下文: architecture/bounded-context.md
           - 领域驱动设计 DDD: architecture/ddd.md
+          - API 设计模式: architecture/api-design.md
+          - 架构决策记录 (ADR): architecture/adr.md
+      - 模块内部（Module-Internal）:
           - 实体与聚合根: architecture/entities.md
           - 值对象: architecture/value-objects.md
           - 领域服务与应用服务: architecture/domain-application-services.md
@@ -158,9 +162,12 @@ nav:
           - 规约模式: architecture/specification-pattern.md
       - 横切能力（Cross-Cutting）:
           - CQRS: architecture/cqrs.md
+          - 事件溯源: architecture/event-sourcing.md
           - 事件驱动: architecture/event-driven.md
+          - Saga 分布式事务: architecture/saga.md
           - 多租户: architecture/multi-tenancy.md
           - 审计与软删除: architecture/auditing-soft-delete.md
+          - 架构测试（依赖规则校验）: architecture/architecture-tests.md
           - 设计与可维护性反模式: anti-patterns/design-antipatterns.md
       - 部署与编排（Deployment）:
           - .NET Aspire: cloud-native/aspire.md

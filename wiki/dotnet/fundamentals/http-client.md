@@ -185,7 +185,7 @@ builder.Services.AddHttpClient("github")
 
 - ✅ **AOT 安全**：类型化客户端（`AddHttpClient<T>`）、命名客户端（`AddHttpClient("name")`）、`DelegatingHandler` 消息处理器链都是编译期注册、静态可见，AOT 下正常使用。
 - ✅ 请求/响应体用 `System.Text.Json` **源生成**（`JsonSerializerContext`）序列化，不要走反射式 `Serialize`；否则 AOT 裁剪会丢类型元数据。
-- ⚠️ 不要在 handler 里做运行期反射或动态构造 HTTP 调用；保持逻辑编译期可确定。
+- 不要在 handler 里做运行期反射或动态构造 HTTP 调用；保持逻辑编译期可确定。
 - 详见后端 AOT 落地清单：[Native AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
 
 ## 参考资料

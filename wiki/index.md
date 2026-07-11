@@ -6,7 +6,7 @@ introduced-in: general
 applies-to: [all]
 status: stable
 source: AGENTS.md
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 
 # .NET / C# 知识库
@@ -95,10 +95,10 @@ updated: 2026-07-10
 ### 架构
 
 - [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
-- **系统形态（System-Level）**：[模块化单体](architecture/modular-monolith.md) · [整洁架构（模块内分层）](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md) · [组合与架构模式](patterns/composition.md)
-- **模块内部（Module-Internal）**：[DDD](architecture/ddd.md) · [实体与聚合根](architecture/entities.md)（标识/UUIDv7/一致性边界） · [值对象](architecture/value-objects.md)（不可变/按值相等/record） · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
-- **横切能力（Cross-Cutting）**：[CQRS](architecture/cqrs.md) · [事件驱动](architecture/event-driven.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md) · [设计与可维护性反模式](anti-patterns/design-antipatterns.md)
-- **架构决策记录 (ADR)**: [ADR 模板与实践](architecture/adr.md) · [API 设计模式](architecture/api-design.md)
+- **系统形态（System-Level）**：[模块化单体](architecture/modular-monolith.md) · [整洁架构（模块内分层）](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md) · [六边形架构（端口与适配器）](architecture/hexagonal-architecture.md) · [API 网关与 BFF](architecture/api-gateway-bff.md) · [组合与架构模式](patterns/composition.md)
+- **战略设计与边界（Strategic）**：[限界上下文](architecture/bounded-context.md) · [DDD](architecture/ddd.md) · [API 设计模式](architecture/api-design.md) · [架构决策记录 (ADR)](architecture/adr.md)
+- **模块内部（Module-Internal）**：[实体与聚合根](architecture/entities.md)（标识/UUIDv7/一致性边界） · [值对象](architecture/value-objects.md)（不可变/按值相等/record） · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
+- **横切能力（Cross-Cutting）**：[CQRS](architecture/cqrs.md) · [事件溯源](architecture/event-sourcing.md) · [事件驱动](architecture/event-driven.md) · [Saga 分布式事务](architecture/saga.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md) · [架构测试（依赖规则校验）](architecture/architecture-tests.md) · [设计与可维护性反模式](anti-patterns/design-antipatterns.md)
 - **部署与编排（Deployment）**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md) · [AOT CI/CD 与交叉编译](deployment/aot-ci-cd.md)
 
 ### 性能与诊断
@@ -140,5 +140,5 @@ updated: 2026-07-10
     - `governance/` —— 持久约定 `policy.md`、反馈 `feedback.md`
     - `sources/` —— 一手来源登记
 - **链接**：全程相对 Markdown 链接，GitHub / MkDocs / 网页三处均可解析。
-- **质量**：内容需经 `governance/policy.md` 判定；不确定处标 `⚠️ needs-your-call` 并记入 `log.md`（操作日志）。
+- **质量**：内容需经 `governance/policy.md` 判定；不确定处写入 `log.md`（操作日志）并先问人类。
 - **新页面**：必须在本索引登记（POLICY P9）。

@@ -183,7 +183,7 @@ app.MapGet("/b", GetB).CacheOutput("Products");    // 命名策略
 但需注意：
 
 - ✅ 缓存中间件、策略构建、标签失效本身 AOT 安全。
-- ⚠️ 若被缓存的响应体是 JSON（如 `Results.Ok(product)`），**序列化仍走 `System.Text.Json`，AOT 下必须用源生成**（`JsonSerializerContext`），否则类型元数据被裁剪、运行期抛异常。把响应所用类型纳入 JSON 源生成上下文即可。
+- 若被缓存的响应体是 JSON（如 `Results.Ok(product)`），**序列化仍走 `System.Text.Json`，AOT 下必须用源生成**（`JsonSerializerContext`），否则类型元数据被裁剪、运行期抛异常。把响应所用类型纳入 JSON 源生成上下文即可。
 - 建议：AOT 项目启用 `<PublishAot>true</PublishAot>`，发布后用真实请求逐个端点验证输出缓存命中且无裁剪/AOT 警告。
 
 ## 参考资料

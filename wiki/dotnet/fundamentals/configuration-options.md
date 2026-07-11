@@ -47,7 +47,7 @@ builder.Services.AddOptions<SmtpOptions>()
 |------|----------|--------|
 | `IOptions<T>` | 单例快照（首次解析后固定） | 配置只读、进程内不变 |
 | `IOptionsMonitor<T>` | 单例、可监听变更 | 单例服务想感知配置热更新 |
-| `IOptionsSnapshot<T>` | **scoped**（每请求重新读） | 每请求需拿到最新配置（⚠️ 只能注入 scoped） |
+| `IOptionsSnapshot<T>` | **scoped**（每请求重新读） | 每请求需拿到最新配置（只能注入 scoped） |
 
 ```csharp
 public class Mailer(IOptions<SmtpOptions> options)            // 单例，值固定
@@ -67,7 +67,7 @@ public class PerRequest(IOptionsSnapshot<SmtpOptions> snap)   // 每请求重新
 }
 ```
 
-> ⚠️ 把 `IOptionsSnapshot<T>` 注入 **singleton** 会抛生命周期不匹配异常（capture dependency）。单例要热更新用 `IOptionsMonitor<T>`。
+> 把 `IOptionsSnapshot<T>` 注入 **singleton** 会抛生命周期不匹配异常（capture dependency）。单例要热更新用 `IOptionsMonitor<T>`。
 
 ### 3. 命名选项（同一类型多个实例）
 

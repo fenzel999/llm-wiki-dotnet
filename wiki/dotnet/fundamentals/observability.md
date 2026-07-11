@@ -174,7 +174,7 @@ builder.Services.AddOpenTelemetry()
 
 - ✅ **AOT 安全**：`LoggerMessage` 源生成在编译期产出强类型日志代码，**无运行期反射**，是 AOT 后端写日志的首选；不要用需反射的第三方日志库。
 - ✅ 自定义 `Meter` / `ActivitySource` 是纯代码定义，**类型静态可见**，AOT 下照常工作。
-- ⚠️ OpenTelemetry SDK 支持 AOT，但需确保被采集的类型（自定义 Instrument 的 T、Activity 设置的 Tag 值类型）能被静态分析保留、不被裁剪。若按需反射创建对象，需加 `[DynamicDependency]` 或 `DynamicDependency` 特性 / `TrimmerRootDescriptors` 保护。
+- OpenTelemetry SDK 支持 AOT，但需确保被采集的类型（自定义 Instrument 的 T、Activity 设置的 Tag 值类型）能被静态分析保留、不被裁剪。若按需反射创建对象，需加 `[DynamicDependency]` 或 `DynamicDependency` 特性 / `TrimmerRootDescriptors` 保护。
 - 详见后端 AOT 落地清单：[Native AOT 兼容性矩阵与规则](../aot/aot-compatibility.md)。
 
 ## 参考资料

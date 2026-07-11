@@ -13,6 +13,19 @@ updated: 2026-07-09
 
 追加式记录。每次操作后在顶部加一行（新在最上）。
 
+- 2026-07-11 **导航二次精简：合并工程规范/实践、删思维导图、治理与操作日志归首页**（人类反馈：工程规范与实践融入其他类目、思维导图删除、治理+操作日志放在首页）。
+    - **删除**：`思维导图.md`（自写 CSS/JS 可导航思维导图）。同步去除 `index.md`、`policy.md`(P9)、`adr.md` 中对它的引用/链接。
+    - **合并类目（nav 重组，文件物理位置不变，故全库链接零断裂）**：
+        - `standards/`（命名与 API 约定、健壮性与工程质量）→ 归入 `.NET › 框架基础`。
+        - `patterns/disposable-using.md`（释放与 using）→ `.NET › 框架基础`；`patterns/composition.md`（组合与架构模式）→ `架构 › 系统形态`。
+        - `anti-patterns/async-antipatterns.md`（异步反模式）→ `.NET › 框架基础`；`anti-patterns/design-antipatterns.md`（设计与可维护性反模式）→ `架构 › 横切能力`。
+        - `comparisons/record-vs-class`、`List vs ImmutableArray` → `.NET › C# 语言 › 对比`；`EF Core vs ADO.NET` → `.NET › 数据访问 EF Core`；`.NET 版本演进` → `.NET › 版本对照`；`RAG vs LLM Wiki` → 首页组（本库方法论）。
+    - **首页组**：`首页` 顶级节点改为分组，内含 `index.md`、`log.md`（操作日志）、`policy`（POLICY）、`feedback`、`sources`、`RAG vs LLM Wiki`。满足"治理与操作日志放在首页"。
+    - **顶级导航最终**：首页 / .NET / 架构 / 性能与诊断（去掉 思维导图、工程规范、实践 单独顶级）。
+    - `index.md` 同步：去掉思维导图链接；把原「工程规范/实践」页并入对应 .NET/架构 列表；原「治理」节改名为「治理与操作日志」并保留 log / 资料索引 / RAG vs LLM Wiki。
+    - 验证：`mkdocs build --strict` 通过；全库无指向已删页的内链。
+    - 影响：mkdocs.yml、wiki/index.md、wiki/governance/policy.md、wiki/architecture/adr.md、wiki/log.md；删除 wiki/思维导图.md。
+
 - 2026-07-11 **精简治理与导航 + 优化思维导图**（人类反馈：QA 与 POLICY 重复、删巡检流程与全景页、主页含首页/思维导图/操作日志/治理、思维导图不好看）。
     - **删除页面**：`governance/qa.md`（质量准则 Rubric）、`governance/qa-report.md`（审计透明度报告）、`governance/patrol.md`（巡检流程）、`wiki/overview.md`（全景页）。注：保留 `wiki/dotnet/overview.md`（.NET 总览/主题地图，被各版本页引用）。
     - **审计轨迹归属变更**：原写 `qa-report.md` 的"⚠️ / 已自修"记录改写入 `log.md`（操作日志）。更新 `policy.md`（P5/P10/P16 三处 `qa-report.md`→`log.md`）、`feedback.md`（QA/QA-REPORT→POLICY/log）、`dotnet/versions/net11.md`（去 `qa.md` 链接）、`dotnet/aspnet-core/signalr.md`（qa-report→log）、`index.md`（治理段去 QA/巡检/报告）。

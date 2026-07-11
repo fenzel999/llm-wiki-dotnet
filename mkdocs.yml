@@ -66,9 +66,13 @@ extra_css:
   - extra/theme.css
 
 nav:
-  - 首页: index.md
-  - 思维导图: 思维导图.md
-  - 操作日志: log.md
+  - 首页:
+      - 首页: index.md
+      - 操作日志: log.md
+      - 持久约定 POLICY: governance/policy.md
+      - 如何反馈: governance/feedback.md
+      - 资料索引: sources/README.md
+      - RAG vs LLM Wiki: comparisons/rag-vs-llm-wiki.md
   - .NET:
       - 概述: dotnet/overview.md
       - C# 语言:
@@ -79,6 +83,9 @@ nav:
           - 集合选型: dotnet/csharp/collections.md
           - JSON 序列化: dotnet/csharp/serialization.md
           - 源生成器实战: dotnet/csharp/source-generators.md
+          - 对比:
+              - record vs class: comparisons/record-vs-class.md
+              - List vs ImmutableArray: comparisons/list-vs-immutablearray.md
       - 框架基础:
           - 依赖注入: dotnet/fundamentals/dependency-injection.md
           - 配置与 Options: dotnet/fundamentals/configuration-options.md
@@ -91,6 +98,10 @@ nav:
           - 缓存: dotnet/fundamentals/caching.md
           - 后台服务: dotnet/fundamentals/background-services.md
           - 安全加固与机密: dotnet/fundamentals/data-protection.md
+          - 命名与 API 约定: standards/coding-conventions.md
+          - 健壮性与工程质量: standards/quality-engineering.md
+          - 释放与 using: patterns/disposable-using.md
+          - 异步反模式: anti-patterns/async-antipatterns.md
       - Web / Minimal API:
           - ASP.NET Core 10: dotnet/aspnet-core/aspnet-core-10.md
           - 认证与授权: dotnet/aspnet-core/auth.md
@@ -109,6 +120,7 @@ nav:
           - 关系建模: dotnet/ef-core/modeling-relationships.md
           - 查询性能: dotnet/ef-core/query-performance.md
           - 并发控制: dotnet/ef-core/concurrency.md
+          - EF Core vs ADO.NET: comparisons/ef-vs-ado.md
       - AOT 与运行时:
           - 原生 AOT: dotnet/aot/native-aot.md
           - AOT 兼容性矩阵与规则: dotnet/aot/aot-compatibility.md
@@ -124,6 +136,7 @@ nav:
           - .NET 8 / C# 12: dotnet/versions/net8.md
           - .NET 9 / C# 13: dotnet/versions/net9.md
           - .NET 11 / C# 15 前瞻（预览）: dotnet/versions/net11.md
+          - .NET 版本演进: comparisons/net-evolution.md
   - 架构:
       - 企业级架构模式（导览）: architecture/enterprise-patterns.md
       - 系统形态（System-Level）:
@@ -134,6 +147,7 @@ nav:
           - 微服务: architecture/microservices.md
           - 架构决策记录 (ADR): architecture/adr.md
           - API 设计模式: architecture/api-design.md
+          - 组合与架构模式: patterns/composition.md
       - 模块内部（Module-Internal）:
           - 领域驱动设计 DDD: architecture/ddd.md
           - 实体与聚合根: architecture/entities.md
@@ -147,6 +161,7 @@ nav:
           - 事件驱动: architecture/event-driven.md
           - 多租户: architecture/multi-tenancy.md
           - 审计与软删除: architecture/auditing-soft-delete.md
+          - 设计与可维护性反模式: anti-patterns/design-antipatterns.md
       - 部署与编排（Deployment）:
           - .NET Aspire: cloud-native/aspire.md
           - 容器化: cloud-native/containers.md
@@ -157,23 +172,3 @@ nav:
       - GC 与内存: performance/gc-memory.md
       - 诊断与剖析: performance/diagnostics.md
       - AOT 性能工程: performance/aot-performance.md
-  - 工程规范:
-      - 命名与 API 约定: standards/coding-conventions.md
-      - 健壮性与工程质量: standards/quality-engineering.md
-  - 实践:
-      - 模式:
-          - 组合与架构模式: patterns/composition.md
-          - 释放与 using: patterns/disposable-using.md
-      - 反模式:
-          - 异步反模式: anti-patterns/async-antipatterns.md
-          - 设计与可维护性反模式: anti-patterns/design-antipatterns.md
-      - 对比:
-          - record vs class: comparisons/record-vs-class.md
-          - List vs ImmutableArray: comparisons/list-vs-immutablearray.md
-          - EF Core vs ADO.NET: comparisons/ef-vs-ado.md
-          - RAG vs LLM Wiki: comparisons/rag-vs-llm-wiki.md
-          - .NET 版本演进: comparisons/net-evolution.md
-  - 治理:
-      - 持久约定 POLICY: governance/policy.md
-      - 如何反馈: governance/feedback.md
-      - 资料索引: sources/README.md

@@ -92,9 +92,10 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Order> Orders => Set<Order>();
 }
 
-// 给 DbSet<Order> 补它“没有的”查询能力：用静态扩展方法（挂在 IQueryable<T> 上）。
-// 不在 DbContext 里堆方法，也不建仓储类；扩展方法组合成表达式树，由 EF 提供程序翻译，AOT 安全。
-public static class OrderQueries
+// 给 DbSet<Order> 补它“没有的”查询能力：用 C# 14 的 extension 块（最新惯用法，
+// 替代旧的 static class + this 参数写法），挂在 IQueryable<Order> 上。
+// 坚决不建仓储类；扩展方法组合成表达式树，由 EF 提供程序翻译，AOT 安全。
+extension OrderQuery for IQueryable<Order>
 {
     public static IQueryable<Order> ByProduct(this IQueryable<Order> source, string product)
         => source.Where(o => o.Product == product);
@@ -193,7 +194,7 @@ var useCase = new ConfirmOrderUseCase(db, notifier);
 
 ## 适用版本
 
-六边形的原则与具体 .NET 版本无关（`introduced-in: general`），可在 .NET 6 至 .NET 10+ 的任何长期支持版本上使用。Minimal API 自 .NET 6 起可用，`AddHttpClient` 与 `Microsoft.Extensions.*` 内置于框架。
+六边形的原则与具体 .NET 版本无关（`introduced-in: general`），可在 .NET 6 至 .NET 10+ 的任何长期支持版本上使用。Minimal API 自 .NET 6 起可用，`AddHttpClient` 与 `Microsoft.Extensions.*` 内置于框架。本页示例用到的 C# 新语法：主构造函数（C# 12，.NET 8+）、`extension` 块（C# 14，.NET 10）与 `DbContext` 主构造函数——若目标框架低于对应版本，可改写为等价的旧写法（构造函数体 / `static class` 扩展方法）。
 
 ### Native AOT 兼容性
 

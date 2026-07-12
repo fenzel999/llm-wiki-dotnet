@@ -17,6 +17,8 @@ updated: 2026-07-10
 > - **模块内依赖只向内、单向无环**；**跨模块只能引用对方的 `*.Contracts`**，绝不碰其 Domain/Application/Infrastructure。
 > - 只有 **Host（组合根）** 装配所有模块的实现；契约项目保持轻依赖。用架构测试守边界。
 
+> **在体系中的位置**：第 2 步 · 模块内部结构。先读 [架构总览与决策指南](overview.md)；是把 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md) 边界落到物理项目引用的手段；引用方向由 [架构测试](architecture-tests.md) 校验。
+
 ## 概述
 
 项目怎么分、谁能引用谁，决定了架构能否长期不腐化。**关键原则：顶层先按业务能力（模块）切，再在每个模块内部分层**——而不是把整个应用横切成一套 `Domain/Application/Infrastructure` 大项目。后者是传统**分层单体**：业务改一处要横跨所有层项目，模块之间没有真正的边界。我们默认采用[模块化单体](modular-monolith.md)：每个模块是一个自包含的业务切片，内部自有分层，对外只暴露一层很窄的契约。

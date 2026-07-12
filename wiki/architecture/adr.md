@@ -17,6 +17,8 @@ updated: 2026-07-11
 > - 状态：`Proposed` → `Accepted` / `Rejected` / `Superseded` → `Deprecated`
 > - 审批：架构组 + 相关 Tech Lead 签字；`Superseded` 需链接新 ADR。
 
+> **在体系中的位置**：第 4 步 · 跨边界契约。先读 [架构总览与决策指南](overview.md)；贯穿所有决策（[模块化单体](modular-monolith.md) vs [微服务](microservices.md)、[CQRS](cqrs.md) 等）；与 [架构测试](architecture-tests.md) 配合把决策变成可执行规则。
+
 ## 概述
 
 **架构决策记录** 是捕获“为何做此决策、考虑了什么替代方案、后果是什么”的轻量级文档。它不是设计文档，而是**决策留痕**，便于：

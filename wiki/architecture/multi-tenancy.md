@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - 漏一处过滤 = 数据泄漏；保存时自动赋 `TenantId`。
 > - 不引 Finbuckle 等多租户库。
 
+> **在体系中的位置**：第 5 步 · 按需叠加的能力。先读 [架构总览与决策指南](overview.md)；用 [EF Core](../dotnet/ef-core/ef-data-access.md) 全局查询筛选器实现；与 [审计与软删除](auditing-soft-delete.md) 同机制（拦截器/筛选器）；可叠加在任意形态上。
+
 ## 概述
 
 SaaS 的核心难题是**租户数据隔离**：客户 A 永远看不到客户 B 的数据。最省心、最不易错的做法是**单库共享 + `TenantId` 列 + EF Core 全局查询筛选器**——一次性声明"所有查询自动追加 `WHERE TenantId = 当前租户`"，开发者写普通查询即可，框架兜底隔离。手动每查询 `Where(...TenantId...)` 是灾难：漏一处就是跨租户泄漏。

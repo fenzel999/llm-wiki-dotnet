@@ -18,6 +18,8 @@ updated: 2026-07-10
 > - 解耦用异步[事件](event-driven.md)；全链路[可观测性](../dotnet/fundamentals/observability.md)是刚需。
 > - 与 [.NET Aspire](../cloud-native/aspire.md) 协作：Aspire 负责编排这些服务/容器的启动、连接与可观测，不影响代码内部分层。
 
+> **在体系中的位置**：第 1 步 · 边界形态。先读 [架构总览与决策指南](overview.md)；与 [模块化单体](modular-monolith.md) 是二态；每服务内部仍用整洁/六边形 + DDD 战术；跨服务用 [事件驱动](event-driven.md)+[Saga](saga.md)，边缘用 [API 网关与 BFF](api-gateway-bff.md)。
+
 ## 概述
 
 微服务把一个应用拆成一组**围绕业务能力划分、各自独立部署、各自拥有数据**的小服务，服务间通过网络（HTTP/gRPC 或消息）通信。好处：团队独立开发部署、按需单独扩缩、技术栈可局部演进、故障可隔离。代价同样真实：网络不可靠、跨服务没有分布式事务只能最终一致、可观测性与运维复杂度陡增。

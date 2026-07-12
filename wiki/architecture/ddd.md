@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - **灵魂**：**富领域模型**——业务规则内聚到领域对象的方法里，拒绝贫血模型。
 > - **克制**：只用于**复杂核心域**；简单 CRUD 套全家桶是过度设计。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；战术构件：[实体与聚合根](entities.md)/[值对象](value-objects.md)/[领域事件](domain-events.md)/[领域服务与应用服务](domain-application-services.md)/[DTO](dto.md)/[规约模式](specification-pattern.md)；战略边界见 [限界上下文](bounded-context.md)；落在整洁/六边形内部。
+
 ## 概述
 
 领域驱动设计是应对**复杂业务**的建模方法，核心是让代码和业务专家说同一种语言（统一语言）。它分两层：

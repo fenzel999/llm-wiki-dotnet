@@ -19,6 +19,8 @@ updated: 2026-07-11
 > - **封装**：属性 `private/protected set`，集合以 `IReadOnlyList` 暴露；ORM 需要一个 `protected` 无参构造。
 > - **审计/软删除/乐观并发**是横切能力，下沉到[基础设施](../dotnet/ef-core/ef-data-access.md)自动处理，别污染领域方法（见[审计与软删除](auditing-soft-delete.md)、[并发](../dotnet/ef-core/concurrency.md)）。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；与 [值对象](value-objects.md) 互补（无标识描述用值对象）；状态变更发 [领域事件](domain-events.md)；审计字段/软删除见 [审计与软删除](auditing-soft-delete.md)。
+
 ## 概述
 
 实体是 DDD 战术建模的核心积木（见 [DDD 总览](ddd.md)）。它的身份不来自属性值，而来自**标识**：同一个 `Order`，今天改了状态、明天加了行，仍是同一个订单。这与[值对象](value-objects.md)（无标识、按值相等）正相反。

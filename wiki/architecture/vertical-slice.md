@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - 不引 MediatR（[P10](../governance/policy.md)）；直接方法调用或手写极简分发。
 > - 切片间只经**明确契约**（接口/事件）通信，不互调内部逻辑。
 
+> **在体系中的位置**：第 2 步 · 模块内部结构。先读 [架构总览与决策指南](overview.md)；与 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md) 互补（按功能而非技术分层）；每切片内部仍可用 DDD 战术与 [领域事件](domain-events.md)，与 [CQRS](cqrs.md) 契合。
+
 ## 概述
 
 传统分层（Controller / Service / Repository 各一个目录）是**按技术**切分，改一个功能要跳三四个文件夹。**垂直切片（Vertical Slice）**换个轴：**按功能**切分**——"创建订单"的请求模型、验证、处理逻辑、数据访问、响应，全在一个 feature 文件夹里。每个切片自成一体，改动局限切片内，彼此低耦合。

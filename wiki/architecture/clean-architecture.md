@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - **回报**：领域/应用层可脱离数据库与 Web 独立做单元测试；存储可替换。
 > - **克制**：不是每个 CRUD 都要接口。多数项目[直接注入 `DbContext`](../dotnet/ef-core/ef-data-access.md)即可；只在需要"领域层彻底不认识持久化框架"时才引入窄接口。
 
+> **在体系中的位置**：第 2 步 · 模块内部结构。先读 [架构总览与决策指南](overview.md)；与 [六边形架构](hexagonal-architecture.md)/[垂直切片](vertical-slice.md)/[解决方案分层](solution-structure.md) 同层互补；内部构件即 DDD 战术（[实体](entities.md)/[值对象](value-objects.md)/[领域服务与应用服务](domain-application-services.md)）；依赖方向由 [架构测试](architecture-tests.md) 守护。
+
 ## 概述
 
 整洁架构（Clean Architecture，与洋葱架构、六边形架构同源）把代码按"离业务核心的距离"分成若干同心环。**越靠内越抽象、越不依赖框架；越靠外越具体**。一条铁律贯穿始终：

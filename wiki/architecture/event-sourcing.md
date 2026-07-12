@@ -17,6 +17,8 @@ updated: 2026-07-11
 > - 删除/GDPR 是 ES 的硬伤：不能物理删事件，只能追加"纠正"事件或加密/遗忘。
 > - Native AOT 下避开按名 `Type.GetType` 反序列化，用封闭事件集 + 类型判别器 + 源生成。
 
+> **在体系中的位置**：第 5 步 · 按需叠加的能力。先读 [架构总览与决策指南](overview.md)；叠在 [CQRS](cqrs.md) 之上；状态重建消费 [领域事件](domain-events.md)；跨进程发布用 [事件驱动](event-driven.md)；AOT 注意事件类型用源生成 JSON（[Native AOT](../dotnet/aot/native-aot.md)）。
+
 ## 概述
 
 事件溯源（Event Sourcing, ES）是一种架构模式：把**对领域对象每一次状态变更的事实**以不可变、只追加（append-only）的事件形式持久化。系统的当前状态**不是**被直接存储的，而是通过对事件流从头到尾重放（replay）推导出来的。

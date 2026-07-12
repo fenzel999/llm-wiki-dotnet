@@ -19,6 +19,8 @@ updated: 2026-07-11
 > - 把散落在实体上的相关属性（`Street`+`City`+`Zip`）**聚成一个值对象**（`Address`），让模型更贴业务。
 > - **别给值对象加 Id**；EF Core 用 **Complex Type（net8+）** 或 **Owned Type** 映射到宿主表列。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；是 [实体与聚合根](entities.md) 的组成；EF Core 用 Complex Type/Owned（见 [EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）；整体在 [DDD](ddd.md) 内。
+
 ## 概述
 
 值对象是 DDD 战术积木之一（见 [DDD 总览](ddd.md)），与[实体](entities.md)相对：

@@ -17,6 +17,8 @@ updated: 2026-07-11
 > - 可测试性来自“替换基础设施”：跨进程端口可用内存替身，持久化可用 EF Core 内存提供程序，无需真实数据库或网络即可驱动与断言核心。
 > - 小应用不必上六边形——端口过多会带来样板代码负担，见[常见误区](#common-pitfalls)。
 
+> **在体系中的位置**：第 2 步 · 模块内部结构。先读 [架构总览与决策指南](overview.md)；与 [整洁架构](clean-architecture.md) 同源（依赖倒置），更强调端口隔离 I/O；持久化适配器直接注入 `AppDbContext`（[EF Core 数据访问](../dotnet/ef-core/ef-data-access.md)）；[架构测试](architecture-tests.md) 守护。
+
 ## 概述
 
 六边形架构（Hexagonal Architecture，由 Alistair Cockburn 提出，又称 Ports & Adapters）是[整洁架构](../architecture/clean-architecture.md)、洋葱架构的思想近亲，但它用一个统一的隐喻组织代码：**中心是应用核心，周围是端口，端口之外是适配器**。

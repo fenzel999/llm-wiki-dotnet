@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - 用标记接口（`IAuditedEntity`/`ISoftDelete`）+ 拦截器集中处理，零重复代码、零第三方（[P10](../governance/policy.md)）。
 > - 软删除忘了配全局筛选 = 仍查得出"已删除"；真要物删用 `IgnoreQueryFilters` + 显式删除。
 
+> **在体系中的位置**：第 5 步 · 按需叠加的能力。先读 [架构总览与决策指南](overview.md)；用 [EF Core](../dotnet/ef-core/ef-data-access.md) `SaveChanges` 拦截器统一填充；与 [多租户](multi-tenancy.md) 同机制（全局筛选器/拦截器）；审计接口由 [实体与聚合根](entities.md) 实现。
+
 ## 概述
 
 两个几乎每个企业应用都要的横切能力：**审计**（谁在何时创建/修改了记录）和**软删除**（删除仅标记，数据仍在，可追溯、可恢复）。我们用 EF Core 原生机制手写实现，零第三方。

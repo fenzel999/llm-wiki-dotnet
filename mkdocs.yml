@@ -138,31 +138,29 @@ nav:
           - .NET 9 / C# 13: dotnet/versions/net9.md
           - .NET 11 / C# 15 前瞻（预览）: dotnet/versions/net11.md
           - .NET 版本演进: comparisons/net-evolution.md
-  - 架构:
+  - 架构（六步决策旅程）:
       - 架构总览与决策指南: architecture/overview.md
-      - 企业级架构模式（导览）: architecture/enterprise-patterns.md
-      - 系统形态（System-Level）:
+      - 第 1 步 · 边界形态:
           - 模块化单体架构: architecture/modular-monolith.md
-          - 整洁架构（模块内分层）: architecture/clean-architecture.md
-          - 解决方案分层与项目引用: architecture/solution-structure.md
-          - 垂直切片: architecture/vertical-slice.md
           - 微服务: architecture/microservices.md
+      - 第 2 步 · 模块内部结构:
+          - 整洁架构（模块内分层）: architecture/clean-architecture.md
           - 六边形架构（端口与适配器）: architecture/hexagonal-architecture.md
-          - API 网关与 BFF: architecture/api-gateway-bff.md
-          - 组合与架构模式: patterns/composition.md
-      - 战略设计与边界（Strategic）:
-          - 限界上下文: architecture/bounded-context.md
+          - 垂直切片: architecture/vertical-slice.md
+          - 解决方案分层与项目引用: architecture/solution-structure.md
+      - 第 3 步 · 领域建模（DDD 战术）:
           - 领域驱动设计 DDD: architecture/ddd.md
-          - API 设计模式: architecture/api-design.md
-          - 架构决策记录 (ADR): architecture/adr.md
-      - 模块内部（Module-Internal）:
           - 实体与聚合根: architecture/entities.md
           - 值对象: architecture/value-objects.md
+          - 领域事件: architecture/domain-events.md
           - 领域服务与应用服务: architecture/domain-application-services.md
           - 数据传输对象 (DTO): architecture/dto.md
-          - 领域事件: architecture/domain-events.md
           - 规约模式: architecture/specification-pattern.md
-      - 横切能力（Cross-Cutting）:
+      - 第 4 步 · 跨边界契约:
+          - 限界上下文: architecture/bounded-context.md
+          - API 设计模式: architecture/api-design.md
+          - 架构决策记录 (ADR): architecture/adr.md
+      - 第 5 步 · 按需叠加的能力:
           - CQRS: architecture/cqrs.md
           - 事件溯源: architecture/event-sourcing.md
           - 事件驱动: architecture/event-driven.md
@@ -170,6 +168,11 @@ nav:
           - 多租户: architecture/multi-tenancy.md
           - 审计与软删除: architecture/auditing-soft-delete.md
           - 架构测试（依赖规则校验）: architecture/architecture-tests.md
+      - 第 6 步 · 边缘:
+          - API 网关与 BFF: architecture/api-gateway-bff.md
+      - 导览与反模式:
+          - 企业级架构模式（导览）: architecture/enterprise-patterns.md
+          - 组合与架构模式: patterns/composition.md
           - 设计与可维护性反模式: anti-patterns/design-antipatterns.md
       - 部署与编排（Deployment）:
           - .NET Aspire: cloud-native/aspire.md

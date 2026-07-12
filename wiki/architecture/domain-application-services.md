@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - 应用服务**不写核心业务**，只协调；核心规则在领域层。
 > - DTO 边界**手写映射**（投影/LINQ），不引 AutoMapper（第三方且已商用，[P10](../governance/policy.md)）。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；应用服务接收/返回 [DTO](dto.md)，映射手写（不用 AutoMapper，[POLICY P10](../governance/policy.md)）；配合 [CQRS](cqrs.md) 命令侧；领域逻辑在 [实体](entities.md)/[值对象](value-objects.md)。
+
 ## 概述
 
 DDD 分层里有两类"服务"，职责必须分清：

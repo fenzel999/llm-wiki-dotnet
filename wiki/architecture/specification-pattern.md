@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - 用 And/Or/Not 组合小规约成复杂条件；手写基类即可，零第三方（[P10](../governance/policy.md)）。
 > - 别返回 `Func`（会退化成客户端求值，整表拉进内存）。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；返回表达式树给 [EF Core](../dotnet/ef-core/ef-data-access.md) 翻译 SQL；与 [DTO](dto.md) 投影、[CQRS](cqrs.md) 查询侧、[分页](../dotnet/ef-core/pagination.md) 配合。
+
 ## 概述
 
 同一套查询条件（"活跃的高价值客户"、"待发货的订单"）在代码里反复出现、各写各的 `Where`，既重复又容易写歪。**规约模式（Specification）**把这类"筛选规则"提炼成一个**有名字、可复用、可组合**的对象——业务语义集中表达一次，处处引用。我们用**手写基类 + EF Core 表达式树**实现，不引任何第三方包。

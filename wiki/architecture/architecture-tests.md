@@ -17,6 +17,8 @@ updated: 2026-07-11
 > - 反射扫描较慢，**缓存结果并只跑一次**，避免拖慢整个测试套件。
 > - 不要测太多：只锁最关键、最易被悄悄破坏的边界，避免噪音。
 
+> **在体系中的位置**：第 5 步 · 按需叠加的能力。先读 [架构总览与决策指南](overview.md)；守护 [整洁架构](clean-architecture.md)/[六边形架构](hexagonal-architecture.md)/[解决方案分层](solution-structure.md)/[模块化单体](modular-monolith.md) 边界；把 [ADR](adr.md) 变成可自动校验的规则（不用 NetArchTest，[POLICY P10](../governance/policy.md)）。
+
 ## 概述
 
 传统的单元测试验证"行为是否正确"，而**架构测试（architecture tests）**验证"代码是否还符合我们约定的结构"。它们回答的问题是：某个层是否偷偷引用了它不该引用的层？命名空间是否偏离约定？公共 API 是否引入了不该暴露的类型？领域层里是否混入了 `DateTime.Now` 这类环境耦合？

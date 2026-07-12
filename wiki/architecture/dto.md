@@ -20,6 +20,8 @@ updated: 2026-07-11
 > - 请求分页 DTO 必须**限制并校验上限**（防滥用）；排序走**白名单**（[分页](../dotnet/ef-core/pagination.md)）。
 > - 映射**手写/LINQ 投影**，不用 AutoMapper（[P10](../governance/policy.md)）；序列化用 `System.Text.Json` **源生成**（AOT 友好）。
 
+> **在体系中的位置**：第 3 步 · 领域建模（DDD 战术）。先读 [架构总览与决策指南](overview.md)；在 [领域服务与应用服务](domain-application-services.md)/[API 设计](api-design.md)/[API 网关与 BFF](api-gateway-bff.md) 间传递；JSON 用源生成（[Native AOT](../dotnet/aot/native-aot.md)）；分页载体配 [CQRS](cqrs.md) 查询侧。
+
 ## 概述
 
 **DTO** 是应用服务的**契约边界**：表现层（或其他客户端）用 DTO 作参数调用[应用服务](domain-application-services.md)，应用服务用领域对象执行业务逻辑，再（可选）返回 DTO。这样表现层与领域层彻底解耦。

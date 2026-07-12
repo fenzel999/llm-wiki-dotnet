@@ -17,6 +17,8 @@ updated: 2026-07-11
 > - 幂等用 `Idempotency-Key` 保护非幂等写入；`ETag/If-Match` 乐观并发。
 > - 仅用 Minimal API + 标准库；不引入 Swashbuckle/FluentValidation/第三方 SDK。
 
+> **在体系中的位置**：第 4 步 · 跨边界契约。先读 [架构总览与决策指南](overview.md)；契约服务于 [微服务](microservices.md)/[API 网关与 BFF](api-gateway-bff.md)/[模块化单体](modular-monolith.md)；与 [事件驱动](event-driven.md)（集成事件）分工：同步契约 vs 异步事件；仅用 Minimal API（[POLICY P10](../governance/policy.md)）。
+
 ## 概述
 
 API 是系统对外的契约，**稳定、可演进、可观测** 是核心目标。本页给出在 .NET Minimal API + 标准库下的落地规范，不依赖第三方框架。

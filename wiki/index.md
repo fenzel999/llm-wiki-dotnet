@@ -92,15 +92,17 @@ updated: 2026-07-11
     - [.NET 11 / C# 15 前瞻（预览）](dotnet/versions/net11.md) — 预览期；联合类型、封闭类层次、Runtime Async（生产仍用 .NET 10）
     - [.NET 版本演进](comparisons/net-evolution.md) — 时间线、LTS/STS 与特性矩阵
 
-### 架构
+### 架构（六步决策旅程）
 
-- **[架构总览与决策指南](architecture/overview.md)** — 先读这篇：三层心智模型、模式地图、何时用何种、推荐技术栈组合、由浅入深学习路径，把下面这些页串成一套体系而非一堆文章。
-- [企业级架构模式（导览）](architecture/enterprise-patterns.md) — 用微软内置 + 手写 + Minimal API 表达企业级需求（不用控制器/重抽象/付费）
-- **系统形态（System-Level）**：[模块化单体](architecture/modular-monolith.md) · [整洁架构（模块内分层）](architecture/clean-architecture.md) · [解决方案分层与项目引用](architecture/solution-structure.md) · [垂直切片](architecture/vertical-slice.md) · [微服务](architecture/microservices.md) · [六边形架构（端口与适配器）](architecture/hexagonal-architecture.md) · [API 网关与 BFF](architecture/api-gateway-bff.md) · [组合与架构模式](patterns/composition.md)
-- **战略设计与边界（Strategic）**：[限界上下文](architecture/bounded-context.md) · [DDD](architecture/ddd.md) · [API 设计模式](architecture/api-design.md) · [架构决策记录 (ADR)](architecture/adr.md)
-- **模块内部（Module-Internal）**：[实体与聚合根](architecture/entities.md)（标识/UUIDv7/一致性边界） · [值对象](architecture/value-objects.md)（不可变/按值相等/record） · [领域服务与应用服务](architecture/domain-application-services.md)（DTO 手写映射） · [数据传输对象 (DTO)](architecture/dto.md)（输入/输出分离 + 分页载体 + 上限校验） · [领域事件](architecture/domain-events.md)（聚合收集 + 随工作单元分发） · [规约模式](architecture/specification-pattern.md)
-- **横切能力（Cross-Cutting）**：[CQRS](architecture/cqrs.md) · [事件溯源](architecture/event-sourcing.md) · [事件驱动](architecture/event-driven.md) · [Saga 分布式事务](architecture/saga.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md) · [架构测试（依赖规则校验）](architecture/architecture-tests.md) · [设计与可维护性反模式](anti-patterns/design-antipatterns.md)
-- **部署与编排（Deployment）**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md) · [AOT CI/CD 与交叉编译](deployment/aot-ci-cd.md)
+- **[架构总览与决策指南](architecture/overview.md)** — 体系总线：主干图 + 六步走 + 决策速查 + 推荐组合 + 学习路径。先读这篇，其余页是节点。
+- **第 1 步 · 边界形态**：[模块化单体](architecture/modular-monolith.md)（默认） · [微服务](architecture/microservices.md)
+- **第 2 步 · 模块内部结构**：[整洁架构](architecture/clean-architecture.md) · [六边形架构](architecture/hexagonal-architecture.md) · [垂直切片](architecture/vertical-slice.md) · [解决方案分层与项目引用](architecture/solution-structure.md)
+- **第 3 步 · 领域建模（DDD 战术）**：[DDD](architecture/ddd.md) · [实体与聚合根](architecture/entities.md) · [值对象](architecture/value-objects.md) · [领域事件](architecture/domain-events.md) · [领域服务与应用服务](architecture/domain-application-services.md) · [DTO](architecture/dto.md) · [规约模式](architecture/specification-pattern.md)
+- **第 4 步 · 跨边界契约**：[限界上下文](architecture/bounded-context.md) · [API 设计模式](architecture/api-design.md) · [架构决策记录 ADR](architecture/adr.md)
+- **第 5 步 · 按需叠加的能力**：[CQRS](architecture/cqrs.md) · [事件溯源](architecture/event-sourcing.md) · [事件驱动](architecture/event-driven.md) · [Saga](architecture/saga.md) · [多租户](architecture/multi-tenancy.md) · [审计与软删除](architecture/auditing-soft-delete.md) · [架构测试](architecture/architecture-tests.md)
+- **第 6 步 · 边缘**：[API 网关与 BFF](architecture/api-gateway-bff.md)
+- **导览与反模式**：[企业级架构模式（导览）](architecture/enterprise-patterns.md) · [组合与架构模式](patterns/composition.md) · [设计与可维护性反模式](anti-patterns/design-antipatterns.md)
+- **部署与编排**：[.NET Aspire](cloud-native/aspire.md) · [容器化](cloud-native/containers.md) · [健康检查](cloud-native/health-checks.md) · [AOT CI/CD 与交叉编译](deployment/aot-ci-cd.md)
 
 ### 性能与诊断
 

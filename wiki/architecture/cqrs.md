@@ -18,6 +18,8 @@ updated: 2026-07-11
 > - **重量版**：读写分库/分存储 + 事件同步，复杂度高，仅读写负载严重不对称才值。
 > - **不引 MediatR**：处理器是普通类，DI 注入直接调用（[P10](../governance/policy.md)）。
 
+> **在体系中的位置**：第 5 步 · 按需叠加的能力。先读 [架构总览与决策指南](overview.md)；与 [垂直切片](vertical-slice.md) 契合（一个命令/查询即一个切片）；常配 [事件溯源](event-sourcing.md)；查询侧用 [规约模式](specification-pattern.md)/[DTO](dto.md)，写侧发 [领域事件](domain-events.md)。
+
 ## 概述
 
 CQRS（Command Query Responsibility Segregation）的核心只有一句：**把"改状态的操作"（命令 Command）和"读数据的操作"（查询 Query）分成两条独立的路径**。这二者的关注点本就不同：
